@@ -7,6 +7,8 @@ A pull-to-refresh react component that behave like almost native app.
 
 > Be sure it's a mobile-only component that works by touch events.
 
+![KakaoTalk_Video_2021-09-24-01-25-47 mp4](https://user-images.githubusercontent.com/17351661/134546882-bfd45ce3-34bc-49cc-a6d0-b3316adec249.gif)
+
 # Examples
 
 See examples in a mobile browser.
