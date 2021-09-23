@@ -28,7 +28,6 @@ export default [
       }),
       postcss({
         extract: true,
-        modules: true,
         sourceMap: true,
         use: ["sass"],
       }),
