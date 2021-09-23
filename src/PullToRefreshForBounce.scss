@@ -1,0 +1,39 @@
+.react-awesome-ptr {
+  &.for-bounce {
+    &.transition-enabled {
+      transition: height 0.2s cubic-bezier(0, 0, 0, 1);
+    }
+    height: 0;
+    position: fixed;
+    width: 100%;
+    z-index: -1;
+    opacity: 0;
+    right: 0;
+    .spinner {
+      margin: 0 auto;
+      padding: 0 24px;
+      img.bump {
+        animation: bump 0.3s 1;
+      }
+      img.spin {
+        animation: spin 1s steps(10, end) infinite 0.1s;
+      }
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes bump {
+        from {
+          transform: scale(1.3);
+        }
+        to {
+          transform: scale(1);
+        }
+      }
+    }
+  }
+}
