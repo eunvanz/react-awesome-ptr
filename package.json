@@ -1,6 +1,6 @@
 {
   "name": "react-awesome-ptr",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A pull-to-refresh component that behaves like in native app",
   "source": "src/index.ts",
   "module": "dist/index.js",
