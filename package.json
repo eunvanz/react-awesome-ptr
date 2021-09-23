@@ -19,10 +19,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/eunvanz/react-awesome-pull-to-refresh.git"
+    "url": "https://github.com/eunvanz/react-awesome-ptr.git"
   },
   "bugs": {
-    "url": "https://github.com/eunvanz/react-awesome-pull-to-refresh/issues"
+    "url": "https://github.com/eunvanz/react-awesome-ptr/issues"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
