@@ -28,13 +28,13 @@ export const OnTheTop = () => {
         isRefreshing={isRefreshing}
       />
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
-        Content
+        Pull in a mobile browser
       </div>
     </div>
   );
 };
 
-export const HasHeader = () => {
+export const WithHeader = () => {
   const targetRef = useRef<HTMLDivElement>(null);
 
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -70,7 +70,7 @@ export const HasHeader = () => {
         style={{ height: "100vh", background: "pink", padding: 20, marginTop: 100 }}
         ref={targetRef}
       >
-        Content
+        Pull in a mobile browser
       </div>
     </div>
   );

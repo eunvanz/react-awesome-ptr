@@ -5,14 +5,22 @@ import PullToRefreshForNoBounce, {
   PullToRefreshForNoBounceProps,
 } from "./PullToRefreshForNoBounce";
 
-export type PullToRefreshProps = PullToRefreshForNoBounceProps &
-  PullToRefreshForBounceProps;
+export interface PullToRefreshProps
+  extends PullToRefreshForNoBounceProps,
+    PullToRefreshForBounceProps {
+  isBounceSupported?: boolean;
+  isBounceNotSupported?: boolean;
+}
 
 const isIos =
   typeof window === "undefined" && /iPhone|iPad|iPod|Io\//i.test(navigator.userAgent);
 
-const PullToRefresh = (props: PullToRefreshProps) => {
-  return isIos ? (
+const PullToRefresh = ({
+  isBounceSupported,
+  isBounceNotSupported,
+  ...props
+}: PullToRefreshProps) => {
+  return isBounceSupported || (isIos && !isBounceNotSupported) ? (
     <PullToRefreshForBounce {...props} />
   ) : (
     <PullToRefreshForNoBounce {...props} />

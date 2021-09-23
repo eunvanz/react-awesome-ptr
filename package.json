@@ -28,6 +28,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
+    "deploy-storybook": "storybook-to-ghpages",
     "build": "rollup -c",
     "build:types": "tsc --emitDeclarationOnly",
     "prepare": "rm -rf dist && npm run build && npm run build:types"
@@ -40,6 +41,7 @@
     "@storybook/addon-essentials": "^6.3.8",
     "@storybook/addon-links": "^6.3.8",
     "@storybook/react": "^6.3.8",
+    "@storybook/storybook-deployer": "^2.8.10",
     "babel-loader": "^8.2.2",
     "babel-preset-react-app": "^10.0.0",
     "classnames": "^2.3.1",
