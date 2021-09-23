@@ -11,7 +11,7 @@ A pull-to-refresh react component that behave like almost native app.
 
 See examples in a mobile browser.
 
-- [On the top](https://eunvanz.github.io/react-awesome-ptr/?path=/story/pulltorefresh--on-the-top)
+- [On the top](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--on-the-top&args=&viewMode=story)
 
 ```typescript
 import PullToRefresh from "react-awesome-ptr";
@@ -30,7 +30,7 @@ export const OnTheTop = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <PullToRefresh
         targetRef={targetRef}
         onRefresh={onRefresh}
@@ -39,12 +39,12 @@ export const OnTheTop = () => {
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
         Pull in a mobile browser
       </div>
-    </div>
+    </>
   );
 };
 ```
 
-- [With header](https://eunvanz.github.io/react-awesome-ptr/?path=/story/pulltorefresh--with-header)
+- [With header](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--with-header&args=&viewMode=story)
 
 ```typescript
 import PullToRefresh from "react-awesome-ptr";
@@ -63,15 +63,15 @@ export const WithHeader = () => {
   }, []);
 
   return (
-    <div style={{ position: "relative" }}>
+    <>
       <div
         style={{
           height: 60,
           background: "cyan",
           padding: 20,
-          position: "sticky",
+          position: "fixed",
           top: 0,
-          right: 0,
+          width: "100%",
         }}
       >
         Header
@@ -81,6 +81,7 @@ export const WithHeader = () => {
         onRefresh={onRefresh}
         isRefreshing={isRefreshing}
         originTop={100}
+        originMarginTop={100}
       />
       <div
         style={{ height: "100vh", background: "pink", padding: 20, marginTop: 100 }}
@@ -88,12 +89,12 @@ export const WithHeader = () => {
       >
         Pull in a mobile browser
       </div>
-    </div>
+    </>
   );
 };
 ```
 
-- [Artificial bounce](https://eunvanz.github.io/react-awesome-ptr/?path=/story/pulltorefresh--artificial-bounce)
+- [Artificial bounce](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--artificial-bounce&args=&viewMode=story)
 
 ```typescript
 import PullToRefresh from "react-awesome-ptr";
@@ -112,7 +113,7 @@ export const OnTheTop = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <PullToRefresh
         targetRef={targetRef}
         onRefresh={onRefresh}
@@ -120,9 +121,9 @@ export const OnTheTop = () => {
         isBounceNotSupported
       />
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
-        Pull in a mobile browser
+        Pull in a mobile browser (forced artificial bounce)
       </div>
-    </div>
+    </>
   );
 };
 ```

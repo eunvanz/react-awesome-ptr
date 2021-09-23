@@ -21,7 +21,7 @@ export const OnTheTop = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <PullToRefresh
         targetRef={targetRef}
         onRefresh={onRefresh}
@@ -30,7 +30,7 @@ export const OnTheTop = () => {
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
         Pull in a mobile browser
       </div>
-    </div>
+    </>
   );
 };
 
@@ -47,15 +47,15 @@ export const WithHeader = () => {
   }, []);
 
   return (
-    <div style={{ position: "relative" }}>
+    <>
       <div
         style={{
           height: 60,
           background: "cyan",
           padding: 20,
-          position: "sticky",
+          position: "fixed",
           top: 0,
-          right: 0,
+          width: "100%",
         }}
       >
         Header
@@ -65,6 +65,7 @@ export const WithHeader = () => {
         onRefresh={onRefresh}
         isRefreshing={isRefreshing}
         originTop={100}
+        originMarginTop={100}
       />
       <div
         style={{ height: "100vh", background: "pink", padding: 20, marginTop: 100 }}
@@ -72,7 +73,7 @@ export const WithHeader = () => {
       >
         Pull in a mobile browser
       </div>
-    </div>
+    </>
   );
 };
 
@@ -89,7 +90,7 @@ export const ArtificialBounce = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <PullToRefresh
         targetRef={targetRef}
         onRefresh={onRefresh}
@@ -97,8 +98,8 @@ export const ArtificialBounce = () => {
         isBounceNotSupported
       />
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
-        Pull in a mobile browser
+        Pull in a mobile browser (forced artificial bounce)
       </div>
-    </div>
+    </>
   );
 };

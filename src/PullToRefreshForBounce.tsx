@@ -65,7 +65,7 @@ const PullToRefreshForBounce = ({
         fn();
       }
     },
-    [checkOffsetPosition]
+    [checkOffsetPosition],
   );
 
   const showSpinner = useCallback(
@@ -92,7 +92,7 @@ const PullToRefreshForBounce = ({
         }
       }
     },
-    [triggerHeight]
+    [triggerHeight],
   );
 
   const handleOnTouchMove = useCallback(() => {
@@ -127,7 +127,7 @@ const PullToRefreshForBounce = ({
     touchMoveFuncRef.current = () => {
       checkConditionAndRun(
         () => isDisabledRef.current || isRefreshing || isRefreshingRef.current,
-        () => handleOnTouchMove()
+        () => handleOnTouchMove(),
       );
     };
     touchEndFuncRef.current =
@@ -178,7 +178,7 @@ const PullToRefreshForBounce = ({
         }}
       >
         <img
-          alt=""
+          alt="spinner"
           className={classNames({ spin: isRefreshing })}
           ref={spinnerRef}
           src={CONST.SPINNER_IMG_URL}
