@@ -75,3 +75,30 @@ export const WithHeader = () => {
     </div>
   );
 };
+
+export const ArtificialBounce = () => {
+  const targetRef = useRef<HTMLDivElement>(null);
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true);
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 5000);
+  }, []);
+
+  return (
+    <div>
+      <PullToRefresh
+        targetRef={targetRef}
+        onRefresh={onRefresh}
+        isRefreshing={isRefreshing}
+        isBounceNotSupported
+      />
+      <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
+        Pull in a mobile browser
+      </div>
+    </div>
+  );
+};
