@@ -31,7 +31,7 @@
     "deploy-storybook": "storybook-to-ghpages",
     "build": "rollup -c",
     "build:types": "tsc --emitDeclarationOnly",
-    "prepare": "rm -rf dist && npm run build && npm run build:types"
+    "prepare": "rm -rf dist && npm run build && npm run build:types && npm run deploy-storybook"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
