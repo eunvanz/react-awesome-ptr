@@ -53,8 +53,10 @@ const PullToRefreshForNoBounce = ({
     const pullToRefreshDOM = wrapperRef.current;
     const targetDOM = targetRef.current;
     if (pullToRefreshDOM) {
+      pullToRefreshDOM.classList.add("transition-enabled");
       pullToRefreshDOM.style.opacity = "0";
       setTimeout(() => {
+        pullToRefreshDOM.classList.remove("transition-enabled");
         isRefreshingRef.current = isRefreshing;
       }, CONST.TRANSITION_DURATION);
     }
@@ -92,7 +94,7 @@ const PullToRefreshForNoBounce = ({
         fn();
       }
     },
-    [checkOffsetPosition]
+    [checkOffsetPosition],
   );
 
   const showSpinner = useCallback(
@@ -121,7 +123,7 @@ const PullToRefreshForNoBounce = ({
         }
       }
     },
-    [originMarginTop, targetRef, triggerHeight]
+    [originMarginTop, targetRef, triggerHeight],
   );
 
   const handleOnTouchMove = useCallback(
@@ -133,7 +135,7 @@ const PullToRefreshForNoBounce = ({
       const poweredHeight = Math.pow(height, tension);
       showSpinner(poweredHeight);
     },
-    [showSpinner]
+    [showSpinner],
   );
 
   const setTouchStart = useCallback((e: TouchEvent) => {
@@ -144,13 +146,13 @@ const PullToRefreshForNoBounce = ({
     touchStartFuncRef.current = (e) => {
       checkConditionAndRun(
         () => isRefreshingRef.current || isDisabledRef.current || isRefreshing,
-        () => setTouchStart(e)
+        () => setTouchStart(e),
       );
     };
     touchMoveFuncRef.current = (e: TouchEvent) => {
       checkConditionAndRun(
         () => isDisabledRef.current || isRefreshing || isRefreshingRef.current,
-        () => handleOnTouchMove(e)
+        () => handleOnTouchMove(e),
       );
     };
     touchEndFuncRef.current =
