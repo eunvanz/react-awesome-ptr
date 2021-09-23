@@ -95,20 +95,20 @@ export const WithHeader = () => {
 
 # Props
 
-| name                 |              type              | required | default | description                                                                                                                                      |
-| :------------------- | :----------------------------: | :------: | :-----: | :----------------------------------------------------------------------------------------------------------------------------------------------- |
-| targetRef            | `React.RefObject<HTMLElement>` |    O     |         | target element to pull                                                                                                                           |
-| originTop            |            `number`            |          |   `0`   | top of the target where pull-to-refresh starts (based on (clientRects)[https://developer.mozilla.org/en-US/docs/Web/API/Element/getClientRects]) |
-| originMarginTop      |            `number`            |          |   `0`   | original margin of the target                                                                                                                    |
-| triggerHeight        |            `number`            |          |  `80`   | the height(distance) at which pull-to-refresh is triggered                                                                                       |
-| progressHeight       |            `number`            |          |  `50`   | height to keep during refresh                                                                                                                    |
-| onRefresh            |         `VoidFunction`         |    O     |         | callback to refresh                                                                                                                              |
-| refreshDelay         |            `number`            |          |   `0`   | If refresh time is too short to show indicator, use this prop to delay.                                                                          |
-| isRefreshing         |           `boolean`            |    O     |         | Pass `true` during refresh.                                                                                                                      |
-| spinnerSize          |            `number`            |          |  `32`   | size of spinner in pixel                                                                                                                         |
-| tension              |            `number`            |          |  `0.8`  | value of artificial tension. set under 1, 0 is the most powerful tension. (0.85 ~ 0.75 is appropriate)                                           |
-| isBounceSupported    |           `boolean`            |          |         | Set if native scroll bounce is supported not in iOS                                                                                              |
-| isBounceNotSupported |           `boolean`            |          |         | Set if native scroll bounce is not supported in iOS                                                                                              |
+| name                 |              type              | required | default | description                                                                                                                                    |
+| :------------------- | :----------------------------: | :------: | :-----: | :--------------------------------------------------------------------------------------------------------------------------------------------- |
+| targetRef            | `React.RefObject<HTMLElement>` |    O     |         | target element to pull                                                                                                                         |
+| originTop            |            `number`            |          |   `0`   | top of the target where pull-to-refresh starts based on [clientRects](https://developer.mozilla.org/en-US/docs/Web/API/Element/getClientRects) |
+| originMarginTop      |            `number`            |          |   `0`   | original margin of the target                                                                                                                  |
+| triggerHeight        |            `number`            |          |  `80`   | the height(distance) at which pull-to-refresh is triggered                                                                                     |
+| progressHeight       |            `number`            |          |  `50`   | height to keep during refresh                                                                                                                  |
+| onRefresh            |         `VoidFunction`         |    O     |         | callback to refresh                                                                                                                            |
+| refreshDelay         |            `number`            |          |   `0`   | If refresh time is too short to show indicator, use this prop to delay.                                                                        |
+| isRefreshing         |           `boolean`            |    O     |         | Pass `true` during refresh.                                                                                                                    |
+| spinnerSize          |            `number`            |          |  `32`   | size of spinner in pixel                                                                                                                       |
+| tension              |            `number`            |          |  `0.8`  | value of artificial tension. set under 1, 0 is the most powerful tension. (0.85 ~ 0.75 is appropriate)                                         |
+| isBounceSupported    |           `boolean`            |          |         | Set if native scroll bounce is supported not in iOS                                                                                            |
+| isBounceNotSupported |           `boolean`            |          |         | Set if native scroll bounce is not supported in iOS                                                                                            |
 
 # License
 
