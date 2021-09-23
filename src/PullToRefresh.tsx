@@ -13,7 +13,7 @@ export interface PullToRefreshProps
 }
 
 const isIos =
-  typeof window === "undefined" && /iPhone|iPad|iPod|Io\//i.test(navigator.userAgent);
+  typeof window !== "undefined" && /iPhone|iPad|iPod|Io\//i.test(navigator.userAgent);
 
 const PullToRefresh = ({
   isBounceSupported,
