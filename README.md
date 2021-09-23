@@ -93,6 +93,40 @@ export const WithHeader = () => {
 };
 ```
 
+- [Artificial bounce](https://eunvanz.github.io/react-awesome-ptr/?path=/story/pulltorefresh--artificial-bounce)
+
+```typescript
+import PullToRefresh from "react-awesome-ptr";
+import "react-awesome-ptr/dist/index.css";
+
+export const OnTheTop = () => {
+  const targetRef = useRef<HTMLDivElement>(null);
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true);
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 5000);
+  }, []);
+
+  return (
+    <div>
+      <PullToRefresh
+        targetRef={targetRef}
+        onRefresh={onRefresh}
+        isRefreshing={isRefreshing}
+        isBounceNotSupported
+      />
+      <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
+        Pull in a mobile browser
+      </div>
+    </div>
+  );
+};
+```
+
 # Props
 
 | name                 |              type              | required | default | description                                                                                                                                    |
