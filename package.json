@@ -1,29 +1,58 @@
 {
-  "name": "react-awesome-pull-to-refresh",
-  "version": "1.0.0",
-  "description": "A pull-to-refresh component that behaves like something in native",
-  "main": "index.ts",
+  "name": "react-awesome-ptr",
+  "version": "0.1.0",
+  "description": "A pull-to-refresh component that behaves like in native app",
+  "source": "src/index.ts",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "sideEffects": false,
+  "keywords": [
+    "pull-to-refresh",
+    "react",
+    "ptr",
+    "react-pull-to-refresh"
+  ],
+  "author": "eunvanz@gmail.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eunvanz/react-awesome-pull-to-refresh.git"
+  },
+  "bugs": {
+    "url": "https://github.com/eunvanz/react-awesome-pull-to-refresh/issues"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "build": "rollup -c",
+    "build:types": "tsc --emitDeclarationOnly",
+    "prepare": "rm -rf dist && npm run build && npm run build:types"
   },
-  "keywords": [
-    "pull to refresh"
-  ],
-  "author": "Woonghee Lee",
-  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.15.5",
+    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.5",
     "@storybook/addon-actions": "^6.3.8",
     "@storybook/addon-essentials": "^6.3.8",
     "@storybook/addon-links": "^6.3.8",
     "@storybook/react": "^6.3.8",
     "babel-loader": "^8.2.2",
+    "babel-preset-react-app": "^10.0.0",
     "classnames": "^2.3.1",
     "css-loader": "^5.2.7",
+    "postcss": "^8.3.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "rollup": "^2.57.0",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.1",
+    "rollup-plugin-sass": "^1.2.8",
+    "rollup-plugin-terser": "^7.0.2",
     "sass": "^1.42.1",
     "sass-loader": "^10.2.0",
     "style-loader": "^2.0.0",

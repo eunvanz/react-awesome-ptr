@@ -5,5 +5,15 @@
     "strict": true,
     "moduleResolution": "node",
     "jsx": "react-jsx",
-  }
+    "declaration": true,
+    "outDir": "dist",
+    "emitDeclarationOnly": false,
+  },
+  "include": [
+    "src/**/*.*",
+  ],
+  "exclude": [
+    "**/*.stories.tsx",
+    "**/*.test.tsx"
+  ]
 }
