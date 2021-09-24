@@ -78,22 +78,27 @@ const PullToRefreshForBounce = ({
       const pullToRefreshDOM = wrapperRef.current;
       const spinnerDOM = spinnerRef.current;
 
-      if (pullToRefreshDOM && spinnerDOM) {
+      if (pullToRefreshDOM) {
         if (height <= triggerHeight) {
           setShouldRefresh(false);
           pullToRefreshDOM.style.opacity = `${height / triggerHeight}`;
-          const rotate = `rotate(${
-            (height / triggerHeight) * CONST.SPINNER_SPIN_DEGREE
-          }deg)`;
-          spinnerDOM.style.webkitTransform = rotate;
-          spinnerDOM.style.transform = rotate;
-          spinnerDOM.classList.remove("bump");
+          if (spinnerDOM) {
+            const rotate = `rotate(${
+              (height / triggerHeight) * CONST.SPINNER_SPIN_DEGREE
+            }deg)`;
+            spinnerDOM.style.webkitTransform = rotate;
+            spinnerDOM.style.transform = rotate;
+            spinnerDOM.classList.remove("bump");
+          }
         } else {
+          onReachTriggerHeight?.();
           setShouldRefresh(true);
-          const rotate = `rotate(${CONST.SPINNER_SPIN_DEGREE}deg)`;
-          spinnerDOM.style.webkitTransform = rotate;
-          spinnerDOM.style.transform = rotate;
-          spinnerDOM.classList.add("bump");
+          if (spinnerDOM) {
+            const rotate = `rotate(${CONST.SPINNER_SPIN_DEGREE}deg)`;
+            spinnerDOM.style.webkitTransform = rotate;
+            spinnerDOM.style.transform = rotate;
+            spinnerDOM.classList.add("bump");
+          }
         }
       }
     },
