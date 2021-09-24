@@ -20,6 +20,11 @@ const PullToRefreshForBounce = ({
   style,
   className,
   spinnerSize = CONST.SPINNER_SIZE,
+  customSpinner,
+  onReachTriggerHeight,
+  onStartToPull,
+  onPull,
+  onRelease,
   ...restProps
 }: PullToRefreshForBounceProps) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -170,20 +175,22 @@ const PullToRefreshForBounce = ({
       {...restProps}
       style={{ ...style, top: originTop }}
     >
-      <div
-        className="spinner"
-        style={{
-          marginTop: (progressHeight - spinnerSize) / 2,
-          width: spinnerSize,
-        }}
-      >
-        <img
-          alt="spinner"
-          className={classNames({ spin: isRefreshing })}
-          ref={spinnerRef}
-          src={CONST.SPINNER_IMG_URL}
-        />
-      </div>
+      {customSpinner || (
+        <div
+          className="spinner"
+          style={{
+            marginTop: (progressHeight - spinnerSize) / 2,
+            width: spinnerSize,
+          }}
+        >
+          <img
+            alt="spinner"
+            className={classNames({ spin: isRefreshing })}
+            ref={spinnerRef}
+            src={CONST.SPINNER_IMG_URL}
+          />
+        </div>
+      )}
     </div>
   );
 };

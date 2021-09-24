@@ -16,6 +16,11 @@ export interface CommonPullToRefreshProps
   refreshDelay?: number;
   isRefreshing: boolean;
   spinnerSize?: number;
+  customSpinner?: React.ReactNode;
+  onReachTriggerHeight?: VoidFunction;
+  onStartToPull?: VoidFunction;
+  onPull?: (progress: number) => void;
+  onRelease?: VoidFunction;
 }
 
 export interface PullToRefreshForNoBounceProps extends CommonPullToRefreshProps {
@@ -35,6 +40,11 @@ const PullToRefreshForNoBounce = ({
   tension = 0.8,
   className,
   spinnerSize = CONST.SPINNER_SIZE,
+  customSpinner,
+  onReachTriggerHeight,
+  onStartToPull,
+  onPull,
+  onRelease,
   ...restProps
 }: PullToRefreshForNoBounceProps) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -211,20 +221,22 @@ const PullToRefreshForNoBounce = ({
       {...restProps}
       style={{ ...style, top: originTop }}
     >
-      <div
-        className="spinner"
-        style={{
-          marginTop: (progressHeight - spinnerSize) / 2,
-          width: spinnerSize,
-        }}
-      >
-        <img
-          alt=""
-          className={classNames({ spin: isRefreshing })}
-          ref={spinnerRef}
-          src={CONST.SPINNER_IMG_URL}
-        />
-      </div>
+      {customSpinner || (
+        <div
+          className="spinner"
+          style={{
+            marginTop: (progressHeight - spinnerSize) / 2,
+            width: spinnerSize,
+          }}
+        >
+          <img
+            alt=""
+            className={classNames({ spin: isRefreshing })}
+            ref={spinnerRef}
+            src={CONST.SPINNER_IMG_URL}
+          />
+        </div>
+      )}
     </div>
   );
 };
