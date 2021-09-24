@@ -32,7 +32,7 @@ See examples in a mobile browser, or turn on the browser debugger and toggle dev
 
 ## [On the top](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--on-the-top&args=&viewMode=story)
 
-[<img src="https://user-images.githubusercontent.com/17351661/134727991-29d51d18-a928-4236-9aac-97724de3dd6c.png" width="100" />](https://user-images.githubusercontent.com/17351661/134727991-29d51d18-a928-4236-9aac-97724de3dd6c.png)
+[<img src="https://user-images.githubusercontent.com/17351661/134727991-29d51d18-a928-4236-9aac-97724de3dd6c.png" width="200" />](https://user-images.githubusercontent.com/17351661/134727991-29d51d18-a928-4236-9aac-97724de3dd6c.png)
 
 ```typescript
 import PullToRefresh from "react-awesome-ptr";
@@ -67,7 +67,7 @@ export const OnTheTop = () => {
 
 ## [With header](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--with-header&args=&viewMode=story)
 
-[<img src="https://user-images.githubusercontent.com/17351661/134729401-e3e25cb3-ccf7-4ba4-ba39-1f61c0c59629.png" width="100" />](https://user-images.githubusercontent.com/17351661/134729401-e3e25cb3-ccf7-4ba4-ba39-1f61c0c59629.png)
+[<img src="https://user-images.githubusercontent.com/17351661/134729401-e3e25cb3-ccf7-4ba4-ba39-1f61c0c59629.png" width="200" />](https://user-images.githubusercontent.com/17351661/134729401-e3e25cb3-ccf7-4ba4-ba39-1f61c0c59629.png)
 
 ```typescript
 import PullToRefresh from "react-awesome-ptr";
@@ -119,7 +119,7 @@ export const WithHeader = () => {
 
 ## [Artificial bounce](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--artificial-bounce&args=&viewMode=story)
 
-[<img src="https://user-images.githubusercontent.com/17351661/134729633-13f4f2b6-9727-4a88-876a-79b2327609e1.png" width="100" />](https://user-images.githubusercontent.com/17351661/134729633-13f4f2b6-9727-4a88-876a-79b2327609e1.png)
+[<img src="https://user-images.githubusercontent.com/17351661/134729633-13f4f2b6-9727-4a88-876a-79b2327609e1.png" width="200" />](https://user-images.githubusercontent.com/17351661/134729633-13f4f2b6-9727-4a88-876a-79b2327609e1.png)
 
 ```typescript
 import PullToRefresh from "react-awesome-ptr";
@@ -155,7 +155,7 @@ export const OnTheTop = () => {
 
 ## [Custom spinner](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--custom-spinner&args=&viewMode=story)
 
-[<img src="https://user-images.githubusercontent.com/17351661/134729756-1b8a1d5d-66e1-414e-b14c-0283a5bd027a.png" width="100" />](https://user-images.githubusercontent.com/17351661/134729756-1b8a1d5d-66e1-414e-b14c-0283a5bd027a.png)
+[<img src="https://user-images.githubusercontent.com/17351661/134729756-1b8a1d5d-66e1-414e-b14c-0283a5bd027a.png" width="200" />](https://user-images.githubusercontent.com/17351661/134729756-1b8a1d5d-66e1-414e-b14c-0283a5bd027a.png)
 
 ```typescript
 import PullToRefresh from "react-awesome-ptr";
