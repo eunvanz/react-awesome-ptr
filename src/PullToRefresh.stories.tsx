@@ -133,14 +133,11 @@ export const CustomSpinner = () => {
   const targetRef = useRef<HTMLDivElement>(null);
 
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [isEnough, setIsEnough] = useState(false);
 
   const [progress, setProgress] = useState(0);
-  const [releaseCnt, setReleaseCnt] = useState(0);
-  const [refreshCnt, setRefreshCnt] = useState(0);
+  const [isTriggerReady, setIsTriggerReady] = useState(false);
 
   const onRefresh = useCallback(() => {
-    setRefreshCnt((cnt) => ++cnt);
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
@@ -151,13 +148,21 @@ export const CustomSpinner = () => {
     setProgress(progress);
   }, []);
 
-  const onRelease = useCallback(() => {
-    setReleaseCnt((cnt) => ++cnt);
+  const onChangeTriggerReady = useCallback((isTriggerReady: boolean) => {
+    setIsTriggerReady(isTriggerReady);
   }, []);
 
   const customSpinner = useMemo(() => {
-    return <div style={{ textAlign: "center", marginTop: 15 }}>⬇️ Pull to refresh</div>;
-  }, []);
+    return (
+      <div style={{ textAlign: "center", marginTop: 15 }}>
+        {isTriggerReady
+          ? "⬆️ Release"
+          : isRefreshing
+          ? "Refreshing..."
+          : `⬇️ Pull to refresh (${(progress * 100).toFixed()}%)`}
+      </div>
+    );
+  }, [isTriggerReady, isRefreshing, progress]);
 
   return (
     <>
@@ -166,14 +171,11 @@ export const CustomSpinner = () => {
         onRefresh={onRefresh}
         isRefreshing={isRefreshing}
         onPull={onPull}
-        onRelease={onRelease}
+        onChangeTriggerReady={onChangeTriggerReady}
         customSpinner={customSpinner}
       />
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
         <p>Pull in a mobile browser</p>
-        <p>onPull: passed progress is {progress}</p>
-        <p>onRelease: called {releaseCnt} times</p>
-        <p>onRefresh: called {refreshCnt} times</p>
       </div>
     </>
   );

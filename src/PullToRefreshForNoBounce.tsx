@@ -92,9 +92,22 @@ const PullToRefreshForNoBounce = ({
     if (pullToRefreshDOM) {
       isRefreshingRef.current = true;
       setShouldRefresh(false);
-      setTimeout(onRefresh, refreshDelay);
+      setTimeout(() => {
+        onRefresh();
+        if (triggerReadyRef.current) {
+          onChangeTriggerReady?.(false);
+          triggerReadyRef.current = false;
+        }
+      }, refreshDelay);
     }
-  }, [targetRef, progressHeight, originMarginTop, onRefresh, refreshDelay]);
+  }, [
+    targetRef,
+    progressHeight,
+    originMarginTop,
+    onRefresh,
+    refreshDelay,
+    onChangeTriggerReady,
+  ]);
 
   const checkOffsetPosition = useCallback(() => {
     isDisabledRef.current = window.scrollY > originTop;
@@ -186,9 +199,11 @@ const PullToRefreshForNoBounce = ({
     touchEndFuncRef.current = () => {
       if (shouldRefresh && !isRefreshingRef.current) {
         onRelease?.();
+        onPull?.(0);
         refresh();
       } else if (!isRefreshing) {
         onRelease?.();
+        onPull?.(0);
         resetHeightToDOM();
       }
     };

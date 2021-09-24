@@ -144,8 +144,21 @@ const PullToRefreshForBounce = ({
     }
     isRefreshingRef.current = true;
     setShouldRefresh(false);
-    setTimeout(onRefresh, refreshDelay);
-  }, [targetRef, onRefresh, refreshDelay, progressHeight, originMarginTop]);
+    setTimeout(() => {
+      onRefresh();
+      if (triggerReadyRef.current) {
+        onChangeTriggerReady?.(false);
+        triggerReadyRef.current = false;
+      }
+    }, refreshDelay);
+  }, [
+    targetRef,
+    onRefresh,
+    refreshDelay,
+    progressHeight,
+    originMarginTop,
+    onChangeTriggerReady,
+  ]);
 
   useEffect(() => {
     touchMoveFuncRef.current = () => {
@@ -157,9 +170,11 @@ const PullToRefreshForBounce = ({
     touchEndFuncRef.current = () => {
       if (shouldRefresh && !isRefreshingRef.current) {
         onRelease?.();
+        onPull?.(0);
         refresh();
       } else if (!isRefreshing) {
         onRelease?.();
+        onPull?.(0);
         resetHeightToDOM();
       }
     };
