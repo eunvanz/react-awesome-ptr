@@ -2,6 +2,7 @@ import { ComponentMeta } from "@storybook/react";
 import { useCallback, useMemo, useRef, useState } from "react";
 
 import PullToRefresh from "./PullToRefresh";
+import { PullToRefreshState } from "./PullToRefreshForNoBounce";
 
 export default {
   title: "PullToRefresh",
@@ -16,7 +17,9 @@ export const OnTheTop = () => {
   const [progress, setProgress] = useState(0);
   const [releaseCnt, setReleaseCnt] = useState(0);
   const [refreshCnt, setRefreshCnt] = useState(0);
-  const [isTriggerReady, setIsTriggerReady] = useState(false);
+  const [pullToRefreshState, setPullToRefreshState] = useState<PullToRefreshState>(
+    "idle",
+  );
 
   const onRefresh = useCallback(() => {
     setRefreshCnt((cnt) => ++cnt);
@@ -34,8 +37,8 @@ export const OnTheTop = () => {
     setReleaseCnt((cnt) => ++cnt);
   }, []);
 
-  const onChangeTriggerReady = useCallback((isTriggerReady: boolean) => {
-    setIsTriggerReady(isTriggerReady);
+  const onChangeState = useCallback((state: PullToRefreshState) => {
+    setPullToRefreshState(state);
   }, []);
 
   return (
@@ -46,14 +49,14 @@ export const OnTheTop = () => {
         isRefreshing={isRefreshing}
         onPull={onPull}
         onRelease={onRelease}
-        onChangeTriggerReady={onChangeTriggerReady}
+        onChangeState={onChangeState}
       />
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
         <p>Pull in a mobile browser</p>
         <p>onPull: passed progress is {progress}</p>
         <p>onRelease: called {releaseCnt} times</p>
         <p>onRefresh: called {refreshCnt} times</p>
-        <p>isTriggerReady: {String(isTriggerReady)}</p>
+        <p>state: {pullToRefreshState}</p>
       </div>
     </>
   );
@@ -135,7 +138,7 @@ export const CustomSpinner = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const [progress, setProgress] = useState(0);
-  const [isTriggerReady, setIsTriggerReady] = useState(false);
+  const [pullToRefreshState, setPullToRefreshState] = useState("idle");
 
   const onRefresh = useCallback(() => {
     setIsRefreshing(true);
@@ -148,21 +151,23 @@ export const CustomSpinner = () => {
     setProgress(progress);
   }, []);
 
-  const onChangeTriggerReady = useCallback((isTriggerReady: boolean) => {
-    setIsTriggerReady(isTriggerReady);
+  const onChangeState = useCallback((state: PullToRefreshState) => {
+    setPullToRefreshState(state);
   }, []);
 
   const customSpinner = useMemo(() => {
     return (
       <div style={{ textAlign: "center", marginTop: 15 }}>
-        {isTriggerReady
+        {pullToRefreshState === "triggerReady"
           ? "⬆️ Release"
-          : isRefreshing
+          : pullToRefreshState === "refreshing"
           ? "Refreshing..."
+          : pullToRefreshState === "complete"
+          ? "Complete"
           : `⬇️ Pull to refresh (${(progress * 100).toFixed()}%)`}
       </div>
     );
-  }, [isTriggerReady, isRefreshing, progress]);
+  }, [pullToRefreshState, isRefreshing, progress]);
 
   return (
     <>
@@ -171,8 +176,9 @@ export const CustomSpinner = () => {
         onRefresh={onRefresh}
         isRefreshing={isRefreshing}
         onPull={onPull}
-        onChangeTriggerReady={onChangeTriggerReady}
+        onChangeState={onChangeState}
         customSpinner={customSpinner}
+        completeDelay={500}
       />
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
         <p>Pull in a mobile browser</p>

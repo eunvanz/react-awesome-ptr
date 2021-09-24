@@ -6,6 +6,13 @@ import "./PullToRefreshForNoBounce.scss";
 
 const DEFAULT_TARGET_MARGIN_TRANSITION = "margin 0.25s cubic-bezier(0, 0, 0, 1)";
 
+export type PullToRefreshState =
+  | "idle"
+  | "pulling"
+  | "triggerReady"
+  | "refreshing"
+  | "complete";
+
 export interface CommonPullToRefreshProps
   extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   targetRef: React.RefObject<HTMLElement>;
@@ -20,7 +27,8 @@ export interface CommonPullToRefreshProps
   customSpinner?: React.ReactNode;
   onPull?: (progress: number) => void; // progress is 0 to 1
   onRelease?: VoidFunction;
-  onChangeTriggerReady?: (isTriggerReady: boolean) => void;
+  onChangeState?: (state: PullToRefreshState) => void;
+  completeDelay?: number;
 }
 
 export interface PullToRefreshForNoBounceProps extends CommonPullToRefreshProps {
@@ -43,7 +51,8 @@ const PullToRefreshForNoBounce = ({
   customSpinner,
   onPull,
   onRelease,
-  onChangeTriggerReady,
+  onChangeState,
+  completeDelay = 0,
   ...restProps
 }: PullToRefreshForNoBounceProps) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -54,25 +63,29 @@ const PullToRefreshForNoBounce = ({
   const touchStartFuncRef = useRef<(e: TouchEvent) => void>(() => {});
   const touchMoveFuncRef = useRef<(e: TouchEvent) => void>(() => {});
   const touchEndFuncRef = useRef<(e: TouchEvent) => void>(() => {});
-  const triggerReadyRef = useRef<boolean>(false);
+  const stateRef = useRef<PullToRefreshState>("idle");
 
   const [initialized, setInitialized] = useState(false);
   const [shouldRefresh, setShouldRefresh] = useState(false);
 
-  const resetHeightToDOM = useCallback(() => {
+  const resetHeightToDOM = useCallback(async () => {
+    const nextState = stateRef.current === "refreshing" ? "complete" : "idle";
+    onChangeState?.(nextState);
+    stateRef.current = nextState;
     const pullToRefreshDOM = wrapperRef.current;
     const targetDOM = targetRef.current;
     if (pullToRefreshDOM) {
+      await new Promise((resolve) => setTimeout(resolve, completeDelay));
       pullToRefreshDOM.classList.add("transition-enabled");
       pullToRefreshDOM.style.opacity = "0";
       setTimeout(() => {
         pullToRefreshDOM.classList.remove("transition-enabled");
         isRefreshingRef.current = isRefreshing;
-        if (triggerReadyRef.current) {
-          onChangeTriggerReady?.(false);
-          triggerReadyRef.current = false;
+        if (stateRef.current !== "idle") {
+          onChangeState?.("idle");
+          stateRef.current = "idle";
         }
-      }, CONST.TRANSITION_DURATION);
+      }, CONST.TRANSITION_DURATION + completeDelay);
     }
     if (targetDOM) {
       targetDOM.style.transition = DEFAULT_TARGET_MARGIN_TRANSITION;
@@ -81,7 +94,7 @@ const PullToRefreshForNoBounce = ({
         targetDOM.style.transition = "none";
       }, CONST.TRANSITION_DURATION);
     }
-  }, [isRefreshing, originMarginTop, targetRef, onChangeTriggerReady]);
+  }, [isRefreshing, originMarginTop, targetRef, onChangeState, completeDelay]);
 
   const refresh = useCallback(() => {
     const targetDOM = targetRef.current;
@@ -92,13 +105,13 @@ const PullToRefreshForNoBounce = ({
     const pullToRefreshDOM = wrapperRef.current;
     if (pullToRefreshDOM) {
       isRefreshingRef.current = true;
+      if (stateRef.current !== "refreshing") {
+        onChangeState?.("refreshing");
+        stateRef.current = "refreshing";
+      }
       setShouldRefresh(false);
       setTimeout(() => {
         onRefresh();
-        if (triggerReadyRef.current) {
-          onChangeTriggerReady?.(false);
-          triggerReadyRef.current = false;
-        }
       }, refreshDelay);
     }
   }, [
@@ -107,7 +120,7 @@ const PullToRefreshForNoBounce = ({
     originMarginTop,
     onRefresh,
     refreshDelay,
-    onChangeTriggerReady,
+    onChangeState,
   ]);
 
   const checkOffsetPosition = useCallback(() => {
@@ -138,9 +151,9 @@ const PullToRefreshForNoBounce = ({
           setShouldRefresh(false);
           const progress = height / triggerHeight;
           onPull?.(progress);
-          if (triggerReadyRef.current) {
-            onChangeTriggerReady?.(false);
-            triggerReadyRef.current = false;
+          if (stateRef.current !== "pulling") {
+            onChangeState?.("pulling");
+            stateRef.current = "pulling";
           }
           pullToRefreshDOM.style.opacity = `${height / triggerHeight}`;
           if (spinnerDOM) {
@@ -153,9 +166,9 @@ const PullToRefreshForNoBounce = ({
           }
         } else {
           onPull?.(1);
-          if (!triggerReadyRef.current) {
-            onChangeTriggerReady?.(true);
-            triggerReadyRef.current = true;
+          if (stateRef.current !== "triggerReady") {
+            onChangeState?.("triggerReady");
+            stateRef.current = "triggerReady";
           }
           setShouldRefresh(true);
           if (spinnerDOM) {
@@ -167,7 +180,7 @@ const PullToRefreshForNoBounce = ({
         }
       }
     },
-    [originMarginTop, targetRef, triggerHeight, onChangeTriggerReady, onPull],
+    [originMarginTop, targetRef, triggerHeight, onChangeState, onPull],
   );
 
   const handleOnTouchMove = useCallback(
