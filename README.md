@@ -45,7 +45,7 @@ export const OnTheTop = () => {
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
-    }, 5000);
+    }, 3000);
   }, []);
 
   return (
@@ -78,7 +78,7 @@ export const WithHeader = () => {
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
-    }, 5000);
+    }, 3000);
   }, []);
 
   return (
@@ -128,7 +128,7 @@ export const OnTheTop = () => {
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
-    }, 5000);
+    }, 3000);
   }, []);
 
   return (
@@ -165,7 +165,7 @@ export const CustomSpinner = () => {
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
-    }, 5000);
+    }, 3000);
   }, []);
 
   const onPull = useCallback((progress: number) => {
