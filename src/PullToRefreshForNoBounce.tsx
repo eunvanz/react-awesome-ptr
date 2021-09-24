@@ -18,8 +18,7 @@ export interface CommonPullToRefreshProps
   spinnerSize?: number;
   customSpinner?: React.ReactNode;
   onReachTriggerHeight?: VoidFunction;
-  onStartToPull?: VoidFunction;
-  onPull?: (progress: number) => void;
+  onPull?: (progress: number) => void; // progress is 0 to 1
   onRelease?: VoidFunction;
 }
 
@@ -42,7 +41,6 @@ const PullToRefreshForNoBounce = ({
   spinnerSize = CONST.SPINNER_SIZE,
   customSpinner,
   onReachTriggerHeight,
-  onStartToPull,
   onPull,
   onRelease,
   ...restProps
@@ -117,8 +115,10 @@ const PullToRefreshForNoBounce = ({
         targetDOM.style.marginTop = `${height + originMarginTop}px`;
         if (height <= triggerHeight) {
           setShouldRefresh(false);
-          pullToRefreshDOM.style.opacity = `${height / triggerHeight}`;
+          const progress = height / triggerHeight;
+          onPull?.(progress);
           if (spinnerDOM) {
+            pullToRefreshDOM.style.opacity = `${height / triggerHeight}`;
             const rotate = `rotate(${
               (height / triggerHeight) * CONST.SPINNER_SPIN_DEGREE
             }deg)`;
@@ -128,6 +128,7 @@ const PullToRefreshForNoBounce = ({
           }
         } else {
           onReachTriggerHeight?.();
+          onPull?.(1);
           setShouldRefresh(true);
           if (spinnerDOM) {
             const rotate = `rotate(${CONST.SPINNER_SPIN_DEGREE}deg)`;

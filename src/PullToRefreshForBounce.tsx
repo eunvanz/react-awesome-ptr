@@ -22,7 +22,6 @@ const PullToRefreshForBounce = ({
   spinnerSize = CONST.SPINNER_SIZE,
   customSpinner,
   onReachTriggerHeight,
-  onStartToPull,
   onPull,
   onRelease,
   ...restProps
@@ -81,8 +80,10 @@ const PullToRefreshForBounce = ({
       if (pullToRefreshDOM) {
         if (height <= triggerHeight) {
           setShouldRefresh(false);
-          pullToRefreshDOM.style.opacity = `${height / triggerHeight}`;
+          const progress = height / triggerHeight;
+          onPull?.(progress);
           if (spinnerDOM) {
+            pullToRefreshDOM.style.opacity = `${height / triggerHeight}`;
             const rotate = `rotate(${
               (height / triggerHeight) * CONST.SPINNER_SPIN_DEGREE
             }deg)`;
@@ -92,6 +93,7 @@ const PullToRefreshForBounce = ({
           }
         } else {
           onReachTriggerHeight?.();
+          onPull?.(1);
           setShouldRefresh(true);
           if (spinnerDOM) {
             const rotate = `rotate(${CONST.SPINNER_SPIN_DEGREE}deg)`;
