@@ -25,10 +25,6 @@ export const OnTheTop = () => {
     }, 5000);
   }, []);
 
-  const onReachTriggerHeight = useCallback(() => {
-    setTriggerHeightReachedCnt((cnt) => ++cnt);
-  }, []);
-
   const onPull = useCallback((progress: number) => {
     setProgress(progress);
   }, []);

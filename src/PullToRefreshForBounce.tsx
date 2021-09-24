@@ -35,7 +35,6 @@ const PullToRefreshForBounce = ({
   const [shouldRefresh, setShouldRefresh] = useState(false);
 
   const resetHeightToDOM = useCallback(() => {
-    onRelease?.();
     const targetDOM = targetRef.current;
     const pullToRefreshDOM = wrapperRef.current;
     if (pullToRefreshDOM) {
@@ -125,7 +124,6 @@ const PullToRefreshForBounce = ({
   }, [isRefreshing, resetHeightToDOM]);
 
   const refresh = useCallback(() => {
-    onRelease?.();
     const targetDOM = targetRef.current;
     if (targetDOM) {
       targetDOM.style.marginTop = `${progressHeight + originMarginTop}px`;
