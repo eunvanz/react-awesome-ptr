@@ -1,5 +1,5 @@
 {
-  "extends": ["react-app", "react-app/jest"],
+  "extends": ["react-app", "react-app/jest", "airbnb", "airbnb/hooks"],
   "overrides": [
     {
       "files": ["*.test.tsx", "*.test.ts"],

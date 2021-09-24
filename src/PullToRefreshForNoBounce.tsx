@@ -113,23 +113,28 @@ const PullToRefreshForNoBounce = ({
       const targetDOM = targetRef.current;
       const spinnerDOM = spinnerRef.current;
 
-      if (pullToRefreshDOM && spinnerDOM && targetDOM) {
+      if (pullToRefreshDOM && targetDOM) {
         targetDOM.style.marginTop = `${height + originMarginTop}px`;
         if (height <= triggerHeight) {
           setShouldRefresh(false);
           pullToRefreshDOM.style.opacity = `${height / triggerHeight}`;
-          const rotate = `rotate(${
-            (height / triggerHeight) * CONST.SPINNER_SPIN_DEGREE
-          }deg)`;
-          spinnerDOM.style.webkitTransform = rotate;
-          spinnerDOM.style.transform = rotate;
-          spinnerDOM.classList.remove("bump");
+          if (spinnerDOM) {
+            const rotate = `rotate(${
+              (height / triggerHeight) * CONST.SPINNER_SPIN_DEGREE
+            }deg)`;
+            spinnerDOM.style.webkitTransform = rotate;
+            spinnerDOM.style.transform = rotate;
+            spinnerDOM.classList.remove("bump");
+          }
         } else {
+          onReachTriggerHeight?.();
           setShouldRefresh(true);
-          const rotate = `rotate(${CONST.SPINNER_SPIN_DEGREE}deg)`;
-          spinnerDOM.style.webkitTransform = rotate;
-          spinnerDOM.style.transform = rotate;
-          spinnerDOM.classList.add("bump");
+          if (spinnerDOM) {
+            const rotate = `rotate(${CONST.SPINNER_SPIN_DEGREE}deg)`;
+            spinnerDOM.style.webkitTransform = rotate;
+            spinnerDOM.style.transform = rotate;
+            spinnerDOM.classList.add("bump");
+          }
         }
       }
     },
@@ -201,9 +206,8 @@ const PullToRefreshForNoBounce = ({
   }, [isRefreshing, resetHeightToDOM]);
 
   useEffect(() => {
-    const spinnerDOM = spinnerRef.current;
     const pullToRefreshDOM = wrapperRef.current;
-    if (spinnerDOM && !initialized) {
+    if (!initialized) {
       if (isRefreshing) {
         showSpinner(triggerHeight);
         if (pullToRefreshDOM) {
@@ -212,7 +216,7 @@ const PullToRefreshForNoBounce = ({
       }
       setInitialized(true);
     }
-  }, [initialized, spinnerRef, isRefreshing, triggerHeight, showSpinner]);
+  }, [initialized, isRefreshing, triggerHeight, showSpinner]);
 
   return (
     <div
