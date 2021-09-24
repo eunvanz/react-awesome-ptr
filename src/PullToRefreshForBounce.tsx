@@ -197,6 +197,7 @@ const PullToRefreshForBounce = ({
     resetHeightToDOM,
     targetRef,
     onRelease,
+    onPull,
   ]);
 
   useEffect(() => {

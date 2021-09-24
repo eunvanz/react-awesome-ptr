@@ -228,6 +228,7 @@ const PullToRefreshForNoBounce = ({
     isRefreshing,
     targetRef,
     onRelease,
+    onPull,
   ]);
 
   useEffect(() => {
