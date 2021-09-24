@@ -5,6 +5,8 @@ import postcss from "rollup-plugin-postcss";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
+import svgr from "@svgr/rollup";
+import url from "rollup-plugin-url";
 
 const extensions = [".js", ".jsx", ".ts", ".tsx", ".scss"];
 
@@ -32,6 +34,8 @@ export default [
         use: ["sass"],
       }),
       babel({ extensions, include: ["src/**/*"], runtimeHelpers: true }),
+      url(),
+      svgr(),
       terser(),
     ],
     external: ["react", "react-dom"],
