@@ -132,6 +132,65 @@ export const OnTheTop = () => {
 };
 ```
 
+- [Custom spinner](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--custom-spinner&args=&viewMode=story)
+
+```typescript
+import PullToRefresh from "react-awesome-ptr";
+import "react-awesome-ptr/dist/index.css";
+
+export const CustomSpinner = () => {
+  const targetRef = useRef<HTMLDivElement>(null);
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const [progress, setProgress] = useState(0);
+  const [isTriggerReady, setIsTriggerReady] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true);
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 5000);
+  }, []);
+
+  const onPull = useCallback((progress: number) => {
+    setProgress(progress);
+  }, []);
+
+  const onChangeTriggerReady = useCallback((isTriggerReady: boolean) => {
+    setIsTriggerReady(isTriggerReady);
+  }, []);
+
+  const customSpinner = useMemo(() => {
+    return (
+      <div style={{ textAlign: "center", marginTop: 15 }}>
+        {isTriggerReady
+          ? "⬆️ Release"
+          : isRefreshing
+          ? "Refreshing..."
+          : `⬇️ Pull to refresh (${(progress * 100).toFixed()}%)`}
+      </div>
+    );
+  }, [isTriggerReady, isRefreshing, progress]);
+
+  return (
+    <>
+      <PullToRefresh
+        targetRef={targetRef}
+        onRefresh={onRefresh}
+        isRefreshing={isRefreshing}
+        onPull={onPull}
+        onChangeTriggerReady={onChangeTriggerReady}
+        customSpinner={customSpinner}
+      />
+      <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
+        <p>Pull in a mobile browser</p>
+      </div>
+    </>
+  );
+};
+```
+
 # Props
 
 | name                 |              type              | required | default | description                                                                                                                                    |
