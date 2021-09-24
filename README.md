@@ -3,7 +3,7 @@
 A pull-to-refresh react component that behave like almost native app.
 
 - in iOS: It utilizes natively supported scroll bounce.
-- in Others: it makes natural scroll bounce artificially.
+- in Others: It makes natural scroll bounce artificially.
 - Support Typescript
 - Light weight (2.86kb gzipped)
 
@@ -13,7 +13,7 @@ A pull-to-refresh react component that behave like almost native app.
 
 # Examples
 
-See examples in a mobile browser or turn on the browser debugger and toggle device toolbar.
+See examples in a mobile browser, or turn on the browser debugger and toggle device toolbar.
 
 - [On the top](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--on-the-top&args=&viewMode=story)
 
