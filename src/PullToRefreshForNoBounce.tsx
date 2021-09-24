@@ -111,7 +111,9 @@ const PullToRefreshForNoBounce = ({
   ]);
 
   const checkOffsetPosition = useCallback(() => {
-    isDisabledRef.current = window.scrollY > originTop;
+    // -1 is for some android mobile browser like firefox.
+    // It sometimes calculate scrollY on the top as like 0.788968612
+    isDisabledRef.current = window.scrollY - 1 > originTop;
   }, [originTop]);
 
   const checkConditionAndRun = useCallback(
