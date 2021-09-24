@@ -11,6 +11,21 @@ A pull-to-refresh react component that behave like almost native app.
 
 ![KakaoTalk_Video_2021-09-24-01-58-31 mp4](https://user-images.githubusercontent.com/17351661/134551289-7d2aef8f-ca6c-4b21-b6c7-74a7a2654e8d.gif)
 
+# Usage
+
+## Install
+
+```
+npm i --save react-awesome-ptr
+```
+
+## import
+
+```typescript
+import PullToRefresh from "react-awesome-ptr";
+import "react-awesome-ptr/dist/index.css";
+```
+
 # Examples
 
 See examples in a mobile browser, or turn on the browser debugger and toggle device toolbar.

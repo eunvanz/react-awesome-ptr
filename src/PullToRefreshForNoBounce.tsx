@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
-import "./PullToRefreshForNoBounce.scss";
-import CONST from "./constants";
 import DefaultSpinner from "./DefaultSpinner";
+import CONST from "./constants";
+import "./PullToRefreshForNoBounce.scss";
 
 const DEFAULT_TARGET_MARGIN_TRANSITION = "margin 0.25s cubic-bezier(0, 0, 0, 1)";
 
@@ -177,7 +177,7 @@ const PullToRefreshForNoBounce = ({
       const poweredHeight = Math.pow(height, tension);
       showSpinner(poweredHeight);
     },
-    [showSpinner],
+    [showSpinner, tension],
   );
 
   const setTouchStart = useCallback((e: TouchEvent) => {
@@ -230,6 +230,7 @@ const PullToRefreshForNoBounce = ({
     targetRef,
     onRelease,
     onPull,
+    setTouchStart,
   ]);
 
   useEffect(() => {
