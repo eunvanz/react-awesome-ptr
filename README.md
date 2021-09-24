@@ -5,7 +5,7 @@ A pull-to-refresh react component that behave like almost native app.
 - in iOS: It utilizes natively supported scroll bounce.
 - in Others: It makes natural scroll bounce artificially.
 - Support Typescript
-- Light weight (2.86kb gzipped)
+- Light weight (3.58kb gzipped)
 
 > Be sure it's a mobile-only component that works by touch events.
 
