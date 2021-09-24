@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import "./PullToRefreshForNoBounce.scss";
 import CONST from "./constants";
+import DefaultSpinner from "./DefaultSpinner";
 
 const DEFAULT_TARGET_MARGIN_TRANSITION = "margin 0.25s cubic-bezier(0, 0, 0, 1)";
 
@@ -259,20 +260,14 @@ const PullToRefreshForNoBounce = ({
       style={{ ...style, top: originTop }}
     >
       {customSpinner || (
-        <div
-          className="spinner"
+        <DefaultSpinner
+          className={classNames({ spin: isRefreshing })}
+          ref={spinnerRef}
           style={{
             marginTop: (progressHeight - spinnerSize) / 2,
             width: spinnerSize,
           }}
-        >
-          <img
-            alt=""
-            className={classNames({ spin: isRefreshing })}
-            ref={spinnerRef}
-            src={CONST.SPINNER_IMG_URL}
-          />
-        </div>
+        />
       )}
     </div>
   );
