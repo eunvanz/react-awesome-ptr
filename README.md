@@ -209,7 +209,7 @@ export const CustomSpinner = () => {
 # Props
 
 | name                 |                type                 | required | default | description                                                                                                                                    |
-| :------------------- | :---------------------------------: | :------: | :-----: | :--------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| :------------------- | :---------------------------------: | :------: | :-----: | :--------------------------------------------------------------------------------------------------------------------------------------------- |
 | targetRef            |   `React.RefObject<HTMLElement>`    |    O     |         | target element to pull                                                                                                                         |
 | originTop            |              `number`               |          |   `0`   | top of the target where pull-to-refresh starts based on [clientRects](https://developer.mozilla.org/en-US/docs/Web/API/Element/getClientRects) |
 | originMarginTop      |              `number`               |          |   `0`   | original margin of the target                                                                                                                  |
@@ -224,7 +224,7 @@ export const CustomSpinner = () => {
 | isBounceNotSupported |              `boolean`              |          |         | Set if native scroll bounce is not supported in iOS                                                                                            |
 | customSpinner        |          `React.ReactNode`          |          |         | custom spinner component                                                                                                                       |
 | onPull               |    `(progress: number) => void`     |          |         | callback passing progress 0 to 1 as a param that is called when user is pulling                                                                |
-| onRelease            |           `VoidFunction`            |          |         |                                                                                                                                                | callback that is called when user releases target |
+| onRelease            |           `VoidFunction`            |          |         | callback that is called when user releases target                                                                                              |
 | onChangeTriggerReady | `(isTriggerReady: boolean) => void` |          |         | callback passing whether trigger is ready as a param when the state changed                                                                    |
 
 # License
