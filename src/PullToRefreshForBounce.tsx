@@ -21,7 +21,6 @@ const PullToRefreshForBounce = ({
   className,
   spinnerSize = CONST.SPINNER_SIZE,
   customSpinner,
-  onReachTriggerHeight,
   onPull,
   onRelease,
   ...restProps
@@ -93,7 +92,6 @@ const PullToRefreshForBounce = ({
             spinnerDOM.classList.remove("bump");
           }
         } else {
-          onReachTriggerHeight?.();
           onPull?.(1);
           setShouldRefresh(true);
           if (spinnerDOM) {
@@ -144,12 +142,15 @@ const PullToRefreshForBounce = ({
         () => handleOnTouchMove(),
       );
     };
-    touchEndFuncRef.current =
-      shouldRefresh && !isRefreshingRef.current
-        ? refresh
-        : isRefreshing
-        ? () => {}
-        : resetHeightToDOM;
+    touchEndFuncRef.current = () => {
+      if (shouldRefresh && !isRefreshingRef.current) {
+        onRelease?.();
+        refresh();
+      } else if (!isRefreshing) {
+        onRelease?.();
+        resetHeightToDOM();
+      }
+    };
     const targetDOM = targetRef.current;
     if (targetDOM) {
       targetDOM.addEventListener("touchmove", touchMoveFuncRef.current);

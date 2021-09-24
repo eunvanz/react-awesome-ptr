@@ -17,7 +17,6 @@ export interface CommonPullToRefreshProps
   isRefreshing: boolean;
   spinnerSize?: number;
   customSpinner?: React.ReactNode;
-  onReachTriggerHeight?: VoidFunction;
   onPull?: (progress: number) => void; // progress is 0 to 1
   onRelease?: VoidFunction;
 }
@@ -40,7 +39,6 @@ const PullToRefreshForNoBounce = ({
   className,
   spinnerSize = CONST.SPINNER_SIZE,
   customSpinner,
-  onReachTriggerHeight,
   onPull,
   onRelease,
   ...restProps
@@ -58,7 +56,6 @@ const PullToRefreshForNoBounce = ({
   const [shouldRefresh, setShouldRefresh] = useState(false);
 
   const resetHeightToDOM = useCallback(() => {
-    onRelease?.();
     const pullToRefreshDOM = wrapperRef.current;
     const targetDOM = targetRef.current;
     if (pullToRefreshDOM) {
@@ -79,7 +76,6 @@ const PullToRefreshForNoBounce = ({
   }, [isRefreshing, originMarginTop, targetRef]);
 
   const refresh = useCallback(() => {
-    onRelease?.();
     const targetDOM = targetRef.current;
     if (targetDOM) {
       targetDOM.style.transition = DEFAULT_TARGET_MARGIN_TRANSITION;
@@ -129,7 +125,6 @@ const PullToRefreshForNoBounce = ({
             spinnerDOM.classList.remove("bump");
           }
         } else {
-          onReachTriggerHeight?.();
           onPull?.(1);
           setShouldRefresh(true);
           if (spinnerDOM) {
@@ -173,12 +168,15 @@ const PullToRefreshForNoBounce = ({
         () => handleOnTouchMove(e),
       );
     };
-    touchEndFuncRef.current =
-      shouldRefresh && !isRefreshingRef.current
-        ? refresh
-        : isRefreshing
-        ? () => {}
-        : resetHeightToDOM;
+    touchEndFuncRef.current = () => {
+      if (shouldRefresh && !isRefreshingRef.current) {
+        onRelease?.();
+        refresh();
+      } else if (!isRefreshing) {
+        onRelease?.();
+        resetHeightToDOM();
+      }
+    };
     const targetDOM = targetRef.current;
     if (targetDOM) {
       targetDOM.addEventListener("touchstart", touchStartFuncRef.current);

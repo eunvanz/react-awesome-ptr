@@ -13,11 +13,28 @@ export const OnTheTop = () => {
 
   const [isRefreshing, setIsRefreshing] = useState(false);
 
+  const [progress, setProgress] = useState(0);
+  const [releaseCnt, setReleaseCnt] = useState(0);
+  const [refreshCnt, setRefreshCnt] = useState(0);
+
   const onRefresh = useCallback(() => {
+    setRefreshCnt((cnt) => ++cnt);
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
     }, 5000);
+  }, []);
+
+  const onReachTriggerHeight = useCallback(() => {
+    setTriggerHeightReachedCnt((cnt) => ++cnt);
+  }, []);
+
+  const onPull = useCallback((progress: number) => {
+    setProgress(progress);
+  }, []);
+
+  const onRelease = useCallback(() => {
+    setReleaseCnt((cnt) => ++cnt);
   }, []);
 
   return (
@@ -26,9 +43,14 @@ export const OnTheTop = () => {
         targetRef={targetRef}
         onRefresh={onRefresh}
         isRefreshing={isRefreshing}
+        onPull={onPull}
+        onRelease={onRelease}
       />
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
-        Pull in a mobile browser
+        <p>Pull in a mobile browser</p>
+        <p>onPull: passed progress is {progress}</p>
+        <p>onRelease: called {releaseCnt} times</p>
+        <p>onRefresh: called {refreshCnt} times</p>
       </div>
     </>
   );
