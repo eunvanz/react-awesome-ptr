@@ -23,6 +23,7 @@ const PullToRefreshForBounce = ({
   customSpinner,
   onPull,
   onRelease,
+  onChangeTriggerReady,
   ...restProps
 }: PullToRefreshForBounceProps) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -31,6 +32,7 @@ const PullToRefreshForBounce = ({
   const isRefreshingRef = useRef<boolean>(false);
   const touchMoveFuncRef = useRef<(e: TouchEvent) => void>(() => {});
   const touchEndFuncRef = useRef<(e: TouchEvent) => void>(() => {});
+  const triggerReadyRef = useRef<boolean>(false);
 
   const [shouldRefresh, setShouldRefresh] = useState(false);
 
@@ -43,6 +45,10 @@ const PullToRefreshForBounce = ({
       setTimeout(() => {
         pullToRefreshDOM.classList.remove("transition-enabled");
         isRefreshingRef.current = isRefreshing;
+        if (triggerReadyRef.current) {
+          onChangeTriggerReady?.(false);
+          triggerReadyRef.current = false;
+        }
       }, CONST.TRANSITION_DURATION);
     }
     if (targetDOM) {
@@ -52,7 +58,7 @@ const PullToRefreshForBounce = ({
         targetDOM.style.transition = DEFAULT_TARGET_MARGIN_TRANSITION;
       }, CONST.TRANSITION_DURATION);
     }
-  }, [isRefreshing, originMarginTop, targetRef]);
+  }, [isRefreshing, originMarginTop, targetRef, onChangeTriggerReady]);
 
   const checkOffsetPosition = useCallback(() => {
     const targetDOM = targetRef.current;
@@ -81,8 +87,12 @@ const PullToRefreshForBounce = ({
           setShouldRefresh(false);
           const progress = height / triggerHeight;
           onPull?.(progress);
+          if (triggerReadyRef.current) {
+            onChangeTriggerReady?.(false);
+            triggerReadyRef.current = false;
+          }
+          pullToRefreshDOM.style.opacity = `${height / triggerHeight}`;
           if (spinnerDOM) {
-            pullToRefreshDOM.style.opacity = `${height / triggerHeight}`;
             const rotate = `rotate(${
               (height / triggerHeight) * CONST.SPINNER_SPIN_DEGREE
             }deg)`;
@@ -92,6 +102,10 @@ const PullToRefreshForBounce = ({
           }
         } else {
           onPull?.(1);
+          if (!triggerReadyRef.current) {
+            onChangeTriggerReady?.(true);
+            triggerReadyRef.current = true;
+          }
           setShouldRefresh(true);
           if (spinnerDOM) {
             const rotate = `rotate(${CONST.SPINNER_SPIN_DEGREE}deg)`;
@@ -102,7 +116,7 @@ const PullToRefreshForBounce = ({
         }
       }
     },
-    [triggerHeight],
+    [triggerHeight, onPull, onChangeTriggerReady],
   );
 
   const handleOnTouchMove = useCallback(() => {
@@ -167,6 +181,7 @@ const PullToRefreshForBounce = ({
     isRefreshing,
     resetHeightToDOM,
     targetRef,
+    onRelease,
   ]);
 
   useEffect(() => {

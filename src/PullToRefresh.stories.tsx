@@ -1,5 +1,5 @@
 import { ComponentMeta } from "@storybook/react";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 
 import PullToRefresh from "./PullToRefresh";
 
@@ -16,6 +16,7 @@ export const OnTheTop = () => {
   const [progress, setProgress] = useState(0);
   const [releaseCnt, setReleaseCnt] = useState(0);
   const [refreshCnt, setRefreshCnt] = useState(0);
+  const [isTriggerReady, setIsTriggerReady] = useState(false);
 
   const onRefresh = useCallback(() => {
     setRefreshCnt((cnt) => ++cnt);
@@ -33,6 +34,10 @@ export const OnTheTop = () => {
     setReleaseCnt((cnt) => ++cnt);
   }, []);
 
+  const onChangeTriggerReady = useCallback((isTriggerReady: boolean) => {
+    setIsTriggerReady(isTriggerReady);
+  }, []);
+
   return (
     <>
       <PullToRefresh
@@ -41,12 +46,14 @@ export const OnTheTop = () => {
         isRefreshing={isRefreshing}
         onPull={onPull}
         onRelease={onRelease}
+        onChangeTriggerReady={onChangeTriggerReady}
       />
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
         <p>Pull in a mobile browser</p>
         <p>onPull: passed progress is {progress}</p>
         <p>onRelease: called {releaseCnt} times</p>
         <p>onRefresh: called {refreshCnt} times</p>
+        <p>isTriggerReady: {String(isTriggerReady)}</p>
       </div>
     </>
   );
@@ -117,6 +124,56 @@ export const ArtificialBounce = () => {
       />
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
         Pull in a mobile browser (forced artificial bounce)
+      </div>
+    </>
+  );
+};
+
+export const CustomSpinner = () => {
+  const targetRef = useRef<HTMLDivElement>(null);
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isEnough, setIsEnough] = useState(false);
+
+  const [progress, setProgress] = useState(0);
+  const [releaseCnt, setReleaseCnt] = useState(0);
+  const [refreshCnt, setRefreshCnt] = useState(0);
+
+  const onRefresh = useCallback(() => {
+    setRefreshCnt((cnt) => ++cnt);
+    setIsRefreshing(true);
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 5000);
+  }, []);
+
+  const onPull = useCallback((progress: number) => {
+    setProgress(progress);
+  }, []);
+
+  const onRelease = useCallback(() => {
+    setReleaseCnt((cnt) => ++cnt);
+  }, []);
+
+  const customSpinner = useMemo(() => {
+    return <div style={{ textAlign: "center", marginTop: 15 }}>⬇️ Pull to refresh</div>;
+  }, []);
+
+  return (
+    <>
+      <PullToRefresh
+        targetRef={targetRef}
+        onRefresh={onRefresh}
+        isRefreshing={isRefreshing}
+        onPull={onPull}
+        onRelease={onRelease}
+        customSpinner={customSpinner}
+      />
+      <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
+        <p>Pull in a mobile browser</p>
+        <p>onPull: passed progress is {progress}</p>
+        <p>onRelease: called {releaseCnt} times</p>
+        <p>onRefresh: called {refreshCnt} times</p>
       </div>
     </>
   );

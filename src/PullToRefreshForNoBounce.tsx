@@ -19,6 +19,7 @@ export interface CommonPullToRefreshProps
   customSpinner?: React.ReactNode;
   onPull?: (progress: number) => void; // progress is 0 to 1
   onRelease?: VoidFunction;
+  onChangeTriggerReady?: (isTriggerReady: boolean) => void;
 }
 
 export interface PullToRefreshForNoBounceProps extends CommonPullToRefreshProps {
@@ -41,6 +42,7 @@ const PullToRefreshForNoBounce = ({
   customSpinner,
   onPull,
   onRelease,
+  onChangeTriggerReady,
   ...restProps
 }: PullToRefreshForNoBounceProps) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -51,6 +53,7 @@ const PullToRefreshForNoBounce = ({
   const touchStartFuncRef = useRef<(e: TouchEvent) => void>(() => {});
   const touchMoveFuncRef = useRef<(e: TouchEvent) => void>(() => {});
   const touchEndFuncRef = useRef<(e: TouchEvent) => void>(() => {});
+  const triggerReadyRef = useRef<boolean>(false);
 
   const [initialized, setInitialized] = useState(false);
   const [shouldRefresh, setShouldRefresh] = useState(false);
@@ -64,6 +67,10 @@ const PullToRefreshForNoBounce = ({
       setTimeout(() => {
         pullToRefreshDOM.classList.remove("transition-enabled");
         isRefreshingRef.current = isRefreshing;
+        if (triggerReadyRef.current) {
+          onChangeTriggerReady?.(false);
+          triggerReadyRef.current = false;
+        }
       }, CONST.TRANSITION_DURATION);
     }
     if (targetDOM) {
@@ -73,7 +80,7 @@ const PullToRefreshForNoBounce = ({
         targetDOM.style.transition = "none";
       }, CONST.TRANSITION_DURATION);
     }
-  }, [isRefreshing, originMarginTop, targetRef]);
+  }, [isRefreshing, originMarginTop, targetRef, onChangeTriggerReady]);
 
   const refresh = useCallback(() => {
     const targetDOM = targetRef.current;
@@ -115,8 +122,12 @@ const PullToRefreshForNoBounce = ({
           setShouldRefresh(false);
           const progress = height / triggerHeight;
           onPull?.(progress);
+          if (triggerReadyRef.current) {
+            onChangeTriggerReady?.(false);
+            triggerReadyRef.current = false;
+          }
+          pullToRefreshDOM.style.opacity = `${height / triggerHeight}`;
           if (spinnerDOM) {
-            pullToRefreshDOM.style.opacity = `${height / triggerHeight}`;
             const rotate = `rotate(${
               (height / triggerHeight) * CONST.SPINNER_SPIN_DEGREE
             }deg)`;
@@ -126,6 +137,10 @@ const PullToRefreshForNoBounce = ({
           }
         } else {
           onPull?.(1);
+          if (!triggerReadyRef.current) {
+            onChangeTriggerReady?.(true);
+            triggerReadyRef.current = true;
+          }
           setShouldRefresh(true);
           if (spinnerDOM) {
             const rotate = `rotate(${CONST.SPINNER_SPIN_DEGREE}deg)`;
@@ -136,7 +151,7 @@ const PullToRefreshForNoBounce = ({
         }
       }
     },
-    [originMarginTop, targetRef, triggerHeight],
+    [originMarginTop, targetRef, triggerHeight, onChangeTriggerReady, onPull],
   );
 
   const handleOnTouchMove = useCallback(
@@ -197,6 +212,7 @@ const PullToRefreshForNoBounce = ({
     refresh,
     isRefreshing,
     targetRef,
+    onRelease,
   ]);
 
   useEffect(() => {
