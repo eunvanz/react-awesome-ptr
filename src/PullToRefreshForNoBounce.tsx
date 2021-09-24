@@ -58,6 +58,7 @@ const PullToRefreshForNoBounce = ({
   const [shouldRefresh, setShouldRefresh] = useState(false);
 
   const resetHeightToDOM = useCallback(() => {
+    onRelease?.();
     const pullToRefreshDOM = wrapperRef.current;
     const targetDOM = targetRef.current;
     if (pullToRefreshDOM) {
@@ -78,6 +79,7 @@ const PullToRefreshForNoBounce = ({
   }, [isRefreshing, originMarginTop, targetRef]);
 
   const refresh = useCallback(() => {
+    onRelease?.();
     const targetDOM = targetRef.current;
     if (targetDOM) {
       targetDOM.style.transition = DEFAULT_TARGET_MARGIN_TRANSITION;
