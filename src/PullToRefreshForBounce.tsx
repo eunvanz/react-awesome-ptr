@@ -25,7 +25,7 @@ const PullToRefreshForBounce = ({
   onPull,
   onRelease,
   onChangeState,
-  completeDelay,
+  completeDelay = 0,
   ...restProps
 }: PullToRefreshForBounceProps) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
