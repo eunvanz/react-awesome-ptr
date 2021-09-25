@@ -45,7 +45,7 @@ const PullToRefreshForNoBounce = ({
   refreshDelay = 0,
   isRefreshing,
   style,
-  tension = 0.8,
+  tension = 0.82,
   className,
   spinnerSize = CONST.SPINNER_SIZE,
   customSpinner,

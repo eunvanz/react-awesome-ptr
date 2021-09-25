@@ -237,13 +237,13 @@ export const CustomSpinner = () => {
 | refreshDelay         |               `number`                |          |   `0`   | If refresh time is too short to show spinner, use this prop to delay.                                                                          |
 | isRefreshing         |               `boolean`               |    O     |         | Set `true` during refresh.                                                                                                                     |
 | spinnerSize          |               `number`                |          |  `32`   | Size of spinner in pixel                                                                                                                       |
-| tension              |               `number`                |          |  `0.8`  | Value of artificial tension. Set under 1, 0 is the most powerful tension. (0.85 ~ 0.75 is appropriate)                                         |
+| tension              |               `number`                |          | `0.82`  | Value of artificial tension. Set under 1, 0 is the most powerful tension. (0.85 ~ 0.75 is appropriate)                                         |
 | isBounceSupported    |               `boolean`               |          |         | Set if native scroll bounce is supported not in iOS.                                                                                           |
 | isBounceNotSupported |               `boolean`               |          |         | Set if native scroll bounce is not supported in iOS.                                                                                           |
 | customSpinner        |           `React.ReactNode`           |          |         | Custom spinner                                                                                                                                 |
 | onPull               |     `(progress: number) => void`      |          |         | Callback passing progress 0 to 1 as a param that is called when user is pulling                                                                |
 | onRelease            |            `VoidFunction`             |          |         | Callback that is called when user releases target                                                                                              |
-| onChangeState        | `(state: PullToRefreshState) => void` |          |         | Callback passing state `idle`, `pulling`, `triggerReady`, `refreshing`, `complete`                                                             |
+| onChangeState        | `(state: PullToRefreshState) => void` |          |         | Callback passing state `idle`, `pulling`, `triggerReady`, `refreshing`, `complete` when state changes                                          |
 | completeDelay        |               `number`                |          |   `0`   | Set milliseconds if you want to show complete message during `complete`                                                                        |
 
 # Contributions
@@ -252,7 +252,7 @@ Contributions will be welcomed! Just make PRs to https://github.com/eunvanz/reac
 
 # Have some Github contributions?
 
-You probably like my side project! 👉 https://gitkemon.com/link/sl_68A
+You probably like my side project 👉 https://gitkemon.com/link/sl_68A
 
 # License
 
