@@ -34,7 +34,6 @@ const PullToRefreshForBounce = ({
   const isRefreshingRef = useRef<boolean>(false);
   const touchMoveFuncRef = useRef<(e: TouchEvent) => void>(() => {});
   const touchEndFuncRef = useRef<(e: TouchEvent) => void>(() => {});
-  const triggerReadyRef = useRef<boolean>(false);
   const stateRef = useRef<PullToRefreshState>("idle");
 
   const [shouldRefresh, setShouldRefresh] = useState(false);
@@ -46,7 +45,8 @@ const PullToRefreshForBounce = ({
     const targetDOM = targetRef.current;
     const pullToRefreshDOM = wrapperRef.current;
     if (pullToRefreshDOM) {
-      await new Promise((resolve) => setTimeout(resolve, completeDelay));
+      nextState === "complete" &&
+        (await new Promise((resolve) => setTimeout(resolve, completeDelay)));
       pullToRefreshDOM.classList.add("transition-enabled");
       pullToRefreshDOM.style.opacity = "0";
       setTimeout(() => {
@@ -90,7 +90,7 @@ const PullToRefreshForBounce = ({
       const spinnerDOM = spinnerRef.current;
 
       if (pullToRefreshDOM) {
-        if (height <= triggerHeight) {
+        if (height < triggerHeight) {
           setShouldRefresh(false);
           const progress = height / triggerHeight;
           onPull?.(progress);

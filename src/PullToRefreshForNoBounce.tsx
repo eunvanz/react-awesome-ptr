@@ -86,7 +86,7 @@ const PullToRefreshForNoBounce = ({
           onChangeState?.("idle");
           stateRef.current = "idle";
         }
-      }, CONST.TRANSITION_DURATION + completeDelay);
+      }, CONST.TRANSITION_DURATION);
     }
     if (targetDOM) {
       targetDOM.style.transition = DEFAULT_TARGET_MARGIN_TRANSITION;
@@ -148,7 +148,7 @@ const PullToRefreshForNoBounce = ({
 
       if (pullToRefreshDOM && targetDOM) {
         targetDOM.style.marginTop = `${height + originMarginTop}px`;
-        if (height <= triggerHeight) {
+        if (height < triggerHeight) {
           setShouldRefresh(false);
           const progress = height / triggerHeight;
           onPull?.(progress);
