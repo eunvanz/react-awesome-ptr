@@ -186,7 +186,7 @@ const PullToRefreshForNoBounce = ({
 
   const handleOnTouchMove = useCallback(
     (e) => {
-      if (stateRef.current !== "idle") {
+      if (stateRef.current !== "idle" && e.cancelable) {
         e.preventDefault();
       }
       const height = e.touches[0].clientY - touchStartRef.current;
