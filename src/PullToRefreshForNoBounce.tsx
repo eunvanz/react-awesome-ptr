@@ -75,7 +75,8 @@ const PullToRefreshForNoBounce = ({
     const pullToRefreshDOM = wrapperRef.current;
     const targetDOM = targetRef.current;
     if (pullToRefreshDOM) {
-      await new Promise((resolve) => setTimeout(resolve, completeDelay));
+      nextState === "complete" &&
+        (await new Promise((resolve) => setTimeout(resolve, completeDelay)));
       pullToRefreshDOM.classList.add("transition-enabled");
       pullToRefreshDOM.style.opacity = "0";
       setTimeout(() => {
