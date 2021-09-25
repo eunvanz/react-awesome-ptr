@@ -127,7 +127,9 @@ const PullToRefreshForNoBounce = ({
   const checkOffsetPosition = useCallback(() => {
     // -1 is for some android mobile browser like firefox.
     // It sometimes calculate scrollY on the top as like 0.788968612
-    isDisabledRef.current = window.scrollY - 1 > originTop;
+    if (stateRef.current === "idle") {
+      isDisabledRef.current = window.scrollY - 1 > originTop;
+    }
   }, [originTop]);
 
   const checkConditionAndRun = useCallback(
@@ -186,7 +188,7 @@ const PullToRefreshForNoBounce = ({
 
   const handleOnTouchMove = useCallback(
     (e) => {
-      if (stateRef.current !== "idle" && e.cancelable) {
+      if (stateRef.current !== "idle") {
         e.preventDefault();
       }
       const height = e.touches[0].clientY - touchStartRef.current;

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import PullToRefreshForBounce, {
   PullToRefreshForBounceProps,
 } from "./PullToRefreshForBounce";
@@ -20,6 +21,17 @@ const PullToRefresh = ({
   isBounceNotSupported,
   ...props
 }: PullToRefreshProps) => {
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      const originValue = document.body.style.overscrollBehaviorY;
+      document.body.style.overscrollBehaviorY = "contain";
+
+      return () => {
+        document.body.style.overscrollBehaviorY = originValue;
+      };
+    }
+  }, []);
+
   return isBounceSupported || (isIos && !isBounceNotSupported) ? (
     <PullToRefreshForBounce {...props} />
   ) : (
