@@ -24,6 +24,8 @@ npm i --save react-awesome-ptr
 ```typescript
 import PullToRefresh from "react-awesome-ptr";
 import "react-awesome-ptr/dist/index.css";
+
+// put the PullToRefresh component where the spinner should be shown
 ```
 
 # Examples
