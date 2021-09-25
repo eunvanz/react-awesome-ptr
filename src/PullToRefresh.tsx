@@ -22,6 +22,7 @@ const PullToRefresh = ({
   ...props
 }: PullToRefreshProps) => {
   useEffect(() => {
+    // for disable browser's default pull to refresh
     if (typeof document !== "undefined") {
       const originValue = document.body.style.overscrollBehaviorY;
       document.body.style.overscrollBehaviorY = "contain";
