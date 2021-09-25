@@ -1,11 +1,16 @@
 # react-awesome-ptr
 
-A pull-to-refresh react component that behave like almost native app.
+#### A pull-to-refresh react component that behave like almost native app.
 
-- in iOS: It utilizes natively supported scroll bounce.
-- in Others: It makes natural scroll bounce artificially.
-- Support Typescript
-- Light weight (3.58kb gzipped)
+- in iOS:
+  - It utilizes natively supported scroll bounce.
+- in the others:
+  - It makes natural scroll bounce artificially.
+- Suitable for all of mobile browsers and web views (inactivated in desktop).
+- Automatically disable mobile browser's default pull-to-refresh.
+- Customizable spinner.
+- Support Typescript.
+- Light weight (3.58kb gzipped).
 
 > Be sure it's a mobile-only component that works by touch events.
 
