@@ -1,14 +1,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import classNames from "classnames";
 import DefaultSpinner from "./DefaultSpinner";
-import CONST from "./constants";
-import "./PullToRefreshForNoBounce.scss";
-import "./PullToRefreshForBounce.scss";
+import "./CommonPullToRefresh.scss";
 
 const DEFAULT_TARGET_MARGIN_TRANSITION_FOR_NO_BOUNCE =
   "margin 0.25s cubic-bezier(0, 0, 0, 1)";
 const DEFAULT_TARGET_MARGIN_TRANSITION_FOR_BOUNCE =
   "margin 0.7s cubic-bezier(0, 0, 0, 1)";
+
+const SPINNER_SIZE = 32;
+const TRANSITION_DURATION = 250;
+const SPINNER_SPIN_DEGREE = 360;
 
 export type PullToRefreshState =
   | "idle"
@@ -49,7 +51,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
   style,
   tension = 0.82,
   className,
-  spinnerSize = CONST.SPINNER_SIZE,
+  spinnerSize = SPINNER_SIZE,
   customSpinner,
   onPull,
   onRelease,
@@ -95,7 +97,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
           onChangeState?.("idle");
           stateRef.current = "idle";
         }
-      }, CONST.TRANSITION_DURATION);
+      }, TRANSITION_DURATION);
     }
     if (targetDOM) {
       targetDOM.style.marginTop = `${originMarginTop}px`;
@@ -106,7 +108,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
         targetDOM.style.transition = isBounceSupported
           ? DEFAULT_TARGET_MARGIN_TRANSITION
           : "none";
-      }, CONST.TRANSITION_DURATION);
+      }, TRANSITION_DURATION);
     }
   }, [isRefreshing, originMarginTop, targetRef, onChangeState, completeDelay]);
 
@@ -186,9 +188,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
           }
           pullToRefreshDOM.style.opacity = `${height / triggerHeight}`;
           if (spinnerDOM) {
-            const rotate = `rotate(${
-              (height / triggerHeight) * CONST.SPINNER_SPIN_DEGREE
-            }deg)`;
+            const rotate = `rotate(${(height / triggerHeight) * SPINNER_SPIN_DEGREE}deg)`;
             spinnerDOM.style.webkitTransform = rotate;
             spinnerDOM.style.transform = rotate;
             spinnerDOM.classList.remove("bump");
@@ -201,7 +201,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
           }
           setShouldRefresh(true);
           if (spinnerDOM) {
-            const rotate = `rotate(${CONST.SPINNER_SPIN_DEGREE}deg)`;
+            const rotate = `rotate(${SPINNER_SPIN_DEGREE}deg)`;
             spinnerDOM.style.webkitTransform = rotate;
             spinnerDOM.style.transform = rotate;
             spinnerDOM.classList.add("bump");

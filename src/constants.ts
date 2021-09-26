@@ -1,7 +1,0 @@
-export const CONST = {
-  SPINNER_SIZE: 32,
-  TRANSITION_DURATION: 250,
-  SPINNER_SPIN_DEGREE: 360,
-};
-
-export default CONST;
