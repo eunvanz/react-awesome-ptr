@@ -21,11 +21,9 @@ jobs:
         run: git config remote.origin.url 'https://${{secrets.GH_ACCESS_TOKEN}}@github.com/${{github.repository}}'
       - run: npm install
       - name: Test
-        uses: mattallty/jest-github-action@v1
+        uses: artiomtr/jest-coverage-report-action@v2.0-rc.1
         env:
-          GITHUB_TOKEN: ${{secrets.GH_ACCESS_TOKEN}}
-        with:
-          test-command: "npm test"
+          github-token: ${{secrets.GH_ACCESS_TOKEN}}
       - name: Publish
         run: npm publish --access public
         env:
