@@ -2,7 +2,7 @@ import { useRef, useEffect, useCallback, useState } from "react";
 import classNames from "classnames";
 import "./PullToRefreshForBounce.scss";
 import CONST from "./constants";
-import { CommonPullToRefreshProps, PullToRefreshState } from "./PullToRefreshForNoBounce";
+import { CommonPullToRefreshProps, PullToRefreshState } from "./CommonPullToRefresh";
 import DefaultSpinner from "./DefaultSpinner";
 
 const DEFAULT_TARGET_MARGIN_TRANSITION = "margin 0.7s cubic-bezier(0, 0, 0, 1)";

@@ -1,10 +1,8 @@
 import { useEffect, useMemo } from "react";
-import PullToRefreshForBounce from "./PullToRefreshForBounce";
-import PullToRefreshForNoBounce, {
-  PullToRefreshForNoBounceProps,
-} from "./PullToRefreshForNoBounce";
+import type { CommonPullToRefreshProps } from "./CommonPullToRefresh";
+import CommonPullToRefresh from "./CommonPullToRefresh";
 
-export interface PullToRefreshProps extends PullToRefreshForNoBounceProps {
+export interface PullToRefreshProps extends CommonPullToRefreshProps {
   isBounceSupported?: boolean;
   isBounceNotSupported?: boolean;
 }
@@ -32,11 +30,11 @@ const PullToRefresh: React.FC<PullToRefreshProps> = ({
     }
   }, []);
 
-  return isBounceSupported || (isIos && !isBounceNotSupported) ? (
-    <PullToRefreshForBounce {...props} />
-  ) : (
-    <PullToRefreshForNoBounce {...props} />
-  );
+  const isBounceSupportedProp = useMemo(() => {
+    return isBounceSupported || (isIos && !isBounceNotSupported);
+  }, []);
+
+  return <CommonPullToRefresh {...props} isBounceSupported={isBounceSupportedProp} />;
 };
 
 export default PullToRefresh;

@@ -1,10 +1,14 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import classNames from "classnames";
 import DefaultSpinner from "./DefaultSpinner";
 import CONST from "./constants";
 import "./PullToRefreshForNoBounce.scss";
+import "./PullToRefreshForBounce.scss";
 
-const DEFAULT_TARGET_MARGIN_TRANSITION = "margin 0.25s cubic-bezier(0, 0, 0, 1)";
+const DEFAULT_TARGET_MARGIN_TRANSITION_FOR_NO_BOUNCE =
+  "margin 0.25s cubic-bezier(0, 0, 0, 1)";
+const DEFAULT_TARGET_MARGIN_TRANSITION_FOR_BOUNCE =
+  "margin 0.7s cubic-bezier(0, 0, 0, 1)";
 
 export type PullToRefreshState =
   | "idle"
@@ -29,13 +33,11 @@ export interface CommonPullToRefreshProps
   onRelease?: VoidFunction;
   onChangeState?: (state: PullToRefreshState) => void;
   completeDelay?: number;
-}
-
-export interface PullToRefreshForNoBounceProps extends CommonPullToRefreshProps {
+  isBounceSupported?: boolean;
   tension?: number;
 }
 
-const PullToRefreshForNoBounce: React.FC<PullToRefreshForNoBounceProps> = ({
+const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
   targetRef,
   originTop = 0,
   originMarginTop = 0,
@@ -53,8 +55,9 @@ const PullToRefreshForNoBounce: React.FC<PullToRefreshForNoBounceProps> = ({
   onRelease,
   onChangeState,
   completeDelay = 0,
+  isBounceSupported,
   ...restProps
-}: PullToRefreshForNoBounceProps) => {
+}: CommonPullToRefreshProps) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const spinnerRef = useRef<HTMLImageElement | null>(null);
   const touchStartRef = useRef<number>(0);
@@ -65,6 +68,12 @@ const PullToRefreshForNoBounce: React.FC<PullToRefreshForNoBounceProps> = ({
   const touchEndFuncRef = useRef<(e: TouchEvent) => void>(() => undefined);
   const stateRef = useRef<PullToRefreshState>("idle");
 
+  const DEFAULT_TARGET_MARGIN_TRANSITION = useMemo(() => {
+    return isBounceSupported
+      ? DEFAULT_TARGET_MARGIN_TRANSITION_FOR_BOUNCE
+      : DEFAULT_TARGET_MARGIN_TRANSITION_FOR_NO_BOUNCE;
+  }, [isBounceSupported]);
+
   const [initialized, setInitialized] = useState(false);
   const [shouldRefresh, setShouldRefresh] = useState(false);
 
@@ -72,8 +81,8 @@ const PullToRefreshForNoBounce: React.FC<PullToRefreshForNoBounceProps> = ({
     const nextState = stateRef.current === "refreshing" ? "complete" : "idle";
     onChangeState?.(nextState);
     stateRef.current = nextState;
-    const pullToRefreshDOM = wrapperRef.current;
     const targetDOM = targetRef.current;
+    const pullToRefreshDOM = wrapperRef.current;
     if (pullToRefreshDOM) {
       nextState === "complete" &&
         (await new Promise((resolve) => setTimeout(resolve, completeDelay)));
@@ -89,10 +98,14 @@ const PullToRefreshForNoBounce: React.FC<PullToRefreshForNoBounceProps> = ({
       }, CONST.TRANSITION_DURATION);
     }
     if (targetDOM) {
-      targetDOM.style.transition = DEFAULT_TARGET_MARGIN_TRANSITION;
       targetDOM.style.marginTop = `${originMarginTop}px`;
+      targetDOM.style.transition = isBounceSupported
+        ? "margin 0.2s cubic-bezier(0, 0, 0, 1)"
+        : DEFAULT_TARGET_MARGIN_TRANSITION;
       setTimeout(() => {
-        targetDOM.style.transition = "none";
+        targetDOM.style.transition = isBounceSupported
+          ? DEFAULT_TARGET_MARGIN_TRANSITION
+          : "none";
       }, CONST.TRANSITION_DURATION);
     }
   }, [isRefreshing, originMarginTop, targetRef, onChangeState, completeDelay]);
@@ -100,24 +113,23 @@ const PullToRefreshForNoBounce: React.FC<PullToRefreshForNoBounceProps> = ({
   const refresh = useCallback(() => {
     const targetDOM = targetRef.current;
     if (targetDOM) {
-      targetDOM.style.transition = DEFAULT_TARGET_MARGIN_TRANSITION;
+      if (!isBounceSupported) {
+        targetDOM.style.transition = DEFAULT_TARGET_MARGIN_TRANSITION;
+      }
       targetDOM.style.marginTop = `${progressHeight + originMarginTop}px`;
     }
-    const pullToRefreshDOM = wrapperRef.current;
-    if (pullToRefreshDOM) {
-      isRefreshingRef.current = true;
-      if (stateRef.current !== "refreshing") {
-        onChangeState?.("refreshing");
-        stateRef.current = "refreshing";
-      }
-      setShouldRefresh(false);
-      if (refreshDelay) {
-        setTimeout(() => {
-          onRefresh();
-        }, refreshDelay);
-      } else {
+    isRefreshingRef.current = true;
+    if (stateRef.current !== "refreshing") {
+      onChangeState?.("refreshing");
+      stateRef.current = "refreshing";
+    }
+    setShouldRefresh(false);
+    if (refreshDelay) {
+      setTimeout(() => {
         onRefresh();
-      }
+      }, refreshDelay);
+    } else {
+      onRefresh();
     }
   }, [
     targetRef,
@@ -126,15 +138,23 @@ const PullToRefreshForNoBounce: React.FC<PullToRefreshForNoBounceProps> = ({
     onRefresh,
     refreshDelay,
     onChangeState,
+    isBounceSupported,
   ]);
 
   const checkOffsetPosition = useCallback(() => {
-    // -1 is for some android mobile browser like firefox.
-    // It sometimes calculate scrollY on the top as like 0.788968612
-    if (stateRef.current === "idle") {
-      isDisabledRef.current = window.scrollY - 1 > originTop;
+    if (isBounceSupported) {
+      const targetDOM = targetRef.current;
+      if (targetDOM) {
+        isDisabledRef.current = targetDOM.getClientRects()[0].top < originTop;
+      }
+    } else {
+      // -1 is for some android mobile browser like firefox.
+      // It sometimes calculate scrollY on the top as like 0.788968612
+      if (stateRef.current === "idle") {
+        isDisabledRef.current = window.scrollY - 1 > originTop;
+      }
     }
-  }, [originTop]);
+  }, [originTop, isBounceSupported]);
 
   const checkConditionAndRun = useCallback(
     (conditionFn, fn) => {
@@ -152,8 +172,10 @@ const PullToRefreshForNoBounce: React.FC<PullToRefreshForNoBounceProps> = ({
       const targetDOM = targetRef.current;
       const spinnerDOM = spinnerRef.current;
 
-      if (pullToRefreshDOM && targetDOM) {
-        targetDOM.style.marginTop = `${height + originMarginTop}px`;
+      if (pullToRefreshDOM) {
+        if (targetDOM && !isBounceSupported) {
+          targetDOM.style.marginTop = `${height + originMarginTop}px`;
+        }
         if (height < triggerHeight) {
           setShouldRefresh(false);
           const progress = height / triggerHeight;
@@ -187,22 +209,33 @@ const PullToRefreshForNoBounce: React.FC<PullToRefreshForNoBounceProps> = ({
         }
       }
     },
-    [originMarginTop, targetRef, triggerHeight, onChangeState, onPull],
+    [originMarginTop, targetRef, triggerHeight, onChangeState, onPull, isBounceSupported],
   );
 
   const handleOnTouchMove = useCallback(
     (e) => {
-      if (stateRef.current !== "idle") {
-        e.preventDefault();
+      if (isBounceSupported) {
+        const targetDOM = targetRef.current;
+        if (targetDOM) {
+          const height = targetDOM.getClientRects()[0].top - originTop;
+          if (height <= 0 || isNaN(height)) {
+            return;
+          }
+          showSpinner(height);
+        }
+      } else {
+        if (stateRef.current !== "idle") {
+          e.preventDefault();
+        }
+        const height = e.touches[0].clientY - touchStartRef.current;
+        if (height <= 0 || isNaN(height)) {
+          return;
+        }
+        const poweredHeight = Math.pow(height, tension);
+        showSpinner(poweredHeight);
       }
-      const height = e.touches[0].clientY - touchStartRef.current;
-      if (height <= 0 || isNaN(height)) {
-        return;
-      }
-      const poweredHeight = Math.pow(height, tension);
-      showSpinner(poweredHeight);
     },
-    [showSpinner, tension],
+    [showSpinner, tension, isBounceSupported, originTop, targetRef],
   );
 
   const setTouchStart = useCallback((e: TouchEvent) => {
@@ -210,13 +243,15 @@ const PullToRefreshForNoBounce: React.FC<PullToRefreshForNoBounceProps> = ({
   }, []);
 
   useEffect(() => {
-    touchStartFuncRef.current = (e) => {
-      checkConditionAndRun(
-        () => isRefreshingRef.current || isDisabledRef.current || isRefreshing,
-        () => setTouchStart(e),
-      );
-    };
-    touchMoveFuncRef.current = (e: TouchEvent) => {
+    if (!isBounceSupported) {
+      touchStartFuncRef.current = (e) => {
+        checkConditionAndRun(
+          () => isRefreshingRef.current || isDisabledRef.current || isRefreshing,
+          () => setTouchStart(e),
+        );
+      };
+    }
+    touchMoveFuncRef.current = (e) => {
       checkConditionAndRun(
         () => isDisabledRef.current || isRefreshing || isRefreshingRef.current,
         () => handleOnTouchMove(e),
@@ -235,11 +270,14 @@ const PullToRefreshForNoBounce: React.FC<PullToRefreshForNoBounceProps> = ({
     };
     const targetDOM = targetRef.current;
     if (targetDOM) {
-      targetDOM.addEventListener("touchstart", touchStartFuncRef.current);
+      !isBounceSupported &&
+        targetDOM.addEventListener("touchstart", touchStartFuncRef.current);
+
       targetDOM.addEventListener("touchmove", touchMoveFuncRef.current);
       targetDOM.addEventListener("touchend", touchEndFuncRef.current);
       return () => {
-        targetDOM.removeEventListener("touchstart", touchStartFuncRef.current);
+        !isBounceSupported &&
+          targetDOM.removeEventListener("touchstart", touchStartFuncRef.current);
         targetDOM.removeEventListener("touchmove", touchMoveFuncRef.current);
         targetDOM.removeEventListener("touchend", touchEndFuncRef.current);
       };
@@ -256,6 +294,7 @@ const PullToRefreshForNoBounce: React.FC<PullToRefreshForNoBounceProps> = ({
     onRelease,
     onPull,
     setTouchStart,
+    isBounceSupported,
   ]);
 
   useEffect(() => {
@@ -266,21 +305,36 @@ const PullToRefreshForNoBounce: React.FC<PullToRefreshForNoBounceProps> = ({
   }, [isRefreshing, resetHeightToDOM]);
 
   useEffect(() => {
-    const pullToRefreshDOM = wrapperRef.current;
-    if (!initialized) {
-      if (isRefreshing) {
-        showSpinner(triggerHeight);
-        if (pullToRefreshDOM) {
-          pullToRefreshDOM.style.height = `${triggerHeight}px`;
+    if (!isBounceSupported) {
+      const pullToRefreshDOM = wrapperRef.current;
+      if (!initialized) {
+        if (isRefreshing) {
+          showSpinner(triggerHeight);
+          if (pullToRefreshDOM) {
+            pullToRefreshDOM.style.height = `${triggerHeight}px`;
+          }
         }
+        setInitialized(true);
       }
-      setInitialized(true);
     }
-  }, [initialized, isRefreshing, triggerHeight, showSpinner]);
+  }, [initialized, isRefreshing, triggerHeight, showSpinner, isBounceSupported]);
+
+  useEffect(() => {
+    if (isBounceSupported) {
+      const targetDOM = targetRef.current;
+      if (targetDOM) {
+        targetDOM.style.transition = DEFAULT_TARGET_MARGIN_TRANSITION;
+      }
+    }
+  }, [targetRef, isBounceSupported]);
 
   return (
     <div
-      className={classNames("react-awesome-ptr", "for-no-bounce", className)}
+      className={classNames(
+        "react-awesome-ptr",
+        isBounceSupported ? "for-bounce" : "for-no-bounce",
+        className,
+      )}
       ref={wrapperRef}
       {...restProps}
       style={{ ...style, top: originTop }}
@@ -299,4 +353,4 @@ const PullToRefreshForNoBounce: React.FC<PullToRefreshForNoBounceProps> = ({
   );
 };
 
-export default PullToRefreshForNoBounce;
+export default CommonPullToRefresh;
