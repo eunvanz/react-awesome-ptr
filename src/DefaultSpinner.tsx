@@ -11,7 +11,13 @@ const DefaultSpinner = forwardRef<HTMLImageElement, DefaultSpinnerProps>(
   ({ style, className }: DefaultSpinnerProps, ref) => {
     return (
       <div className="react-awesome-ptr-spinner" style={style}>
-        <img alt="" className={className} ref={ref} src={spinnerImage} />
+        <img
+          data-testid="spinner"
+          alt=""
+          className={className}
+          ref={ref}
+          src={spinnerImage}
+        />
       </div>
     );
   },

@@ -195,6 +195,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
           }
         } else {
           onPull?.(1);
+          pullToRefreshDOM.style.opacity = "1";
           if (stateRef.current !== "triggerReady") {
             onChangeState?.("triggerReady");
             stateRef.current = "triggerReady";
@@ -330,6 +331,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
 
   return (
     <div
+      data-testid="spinner-container"
       className={classNames(
         "react-awesome-ptr",
         isBounceSupported ? "for-bounce" : "for-no-bounce",

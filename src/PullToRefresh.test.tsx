@@ -1,6 +1,6 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import { fireEvent, render, waitFor, screen } from "@testing-library/react";
 import PullToRefresh, { PullToRefreshProps } from "./PullToRefresh";
 import { mockUserAgent } from "jest-useragent-mock";
 
@@ -93,6 +93,8 @@ describe("PullToRefresh", () => {
 
           expect(onChangeState).toBeCalledTimes(1);
           expect(onChangeState).toBeCalledWith("idle");
+          expect(screen.getByTestId("spinner-container").style.opacity).toBe("0");
+          expect(screen.getByTestId("spinner").style.transform).toBe("");
         });
       });
 
@@ -108,6 +110,12 @@ describe("PullToRefresh", () => {
 
           expect(onChangeState).toBeCalledWith("pulling");
           expect(onPull).toBeCalledWith(79 / 80);
+          expect(screen.getByTestId("spinner-container").style.opacity).toBe(
+            `${79 / 80}`,
+          );
+          expect(screen.getByTestId("spinner").style.transform).toBe(
+            `rotate(${(79 * 360) / 80}deg)`,
+          );
         });
       });
 
@@ -128,6 +136,8 @@ describe("PullToRefresh", () => {
 
           expect(onChangeState).toBeCalledWith("triggerReady");
           expect(onPull).toBeCalledWith(1);
+          expect(screen.getByTestId("spinner-container").style.opacity).toBe("1");
+          expect(screen.getByTestId("spinner").style.transform).toBe(`rotate(360deg)`);
         });
       });
 
@@ -206,6 +216,7 @@ describe("PullToRefresh", () => {
           await waitFor(() => {
             expect(onChangeState).toBeCalledWith("idle");
           });
+          expect(screen.getByTestId("spinner-container").style.opacity).toBe("0");
         });
       });
     });
@@ -237,6 +248,8 @@ describe("PullToRefresh", () => {
 
           expect(onChangeState).toBeCalledTimes(1);
           expect(onChangeState).toBeCalledWith("idle");
+          expect(screen.getByTestId("spinner-container").style.opacity).toBe("0");
+          expect(screen.getByTestId("spinner").style.transform).toBe("");
         });
       });
 
@@ -252,6 +265,12 @@ describe("PullToRefresh", () => {
 
           expect(onChangeState).toBeCalledWith("pulling");
           expect(onPull).toBeCalledWith(79 / 80);
+          expect(screen.getByTestId("spinner-container").style.opacity).toBe(
+            `${79 / 80}`,
+          );
+          expect(screen.getByTestId("spinner").style.transform).toBe(
+            `rotate(${(79 * 360) / 80}deg)`,
+          );
         });
       });
 
@@ -272,6 +291,8 @@ describe("PullToRefresh", () => {
 
           expect(onChangeState).toBeCalledWith("triggerReady");
           expect(onPull).toBeCalledWith(1);
+          expect(screen.getByTestId("spinner-container").style.opacity).toBe("1");
+          expect(screen.getByTestId("spinner").style.transform).toBe(`rotate(360deg)`);
         });
       });
 
@@ -350,6 +371,7 @@ describe("PullToRefresh", () => {
           await waitFor(() => {
             expect(onChangeState).toBeCalledWith("idle");
           });
+          expect(screen.getByTestId("spinner-container").style.opacity).toBe("0");
         });
       });
     });
