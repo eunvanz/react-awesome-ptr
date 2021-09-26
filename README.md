@@ -12,7 +12,6 @@
 - Automatically disable mobile browser's default pull-to-refresh.
 - Customizable spinner.
 - Support Typescript.
-- Light weight (3.58kb gzipped).
 
 > Be sure it's a mobile-only component that works by touch events.
 
