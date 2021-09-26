@@ -1,6 +1,6 @@
 # react-awesome-ptr
 
-![npm version](https://img.shields.io/npm/v/react-awesome-ptr) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/react-awesome-ptr) ![npm type definitions](https://img.shields.io/npm/types/react-awesome-ptr) ![npm](https://img.shields.io/npm/dw/react-awesome-ptr)
+![npm version](https://img.shields.io/npm/v/react-awesome-ptr) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/react-awesome-ptr) ![npm type definitions](https://img.shields.io/npm/types/react-awesome-ptr) ![npm](https://img.shields.io/npm/dw/react-awesome-ptr) ![GitHub](https://img.shields.io/github/license/eunvanz/react-awesome-ptr)
 
 #### A pull-to-refresh react component that behave like almost native app.
 
