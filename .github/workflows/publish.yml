@@ -20,7 +20,7 @@ jobs:
       - name: Auth Github
         run: git config remote.origin.url 'https://${{secrets.GH_ACCESS_TOKEN}}@github.com/${{github.repository}}'
       - run: npm install
-      - run: npm test
+      - run: npm test:publish
       - name: Publish
         run: npm publish --access public
         env:
