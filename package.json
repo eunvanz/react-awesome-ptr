@@ -32,7 +32,7 @@
     "deploy-storybook": "storybook-to-ghpages",
     "build": "rollup -c",
     "build:types": "tsc --emitDeclarationOnly",
-    "prepare": "rm -rf dist && npm run build && npm run build:types && npm run deploy-storybook",
+    "prepublishOnly": "rm -rf dist && npm run build && npm run build:types && npm run deploy-storybook",
     "publish:patch": "npm version patch && git push",
     "publish:minor": "npm version minor && git push",
     "publish:major": "npm version major && git push"
