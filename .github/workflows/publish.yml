@@ -18,7 +18,7 @@ jobs:
           node-version: 14
           registry-url: https://registry.npmjs.org
       - name: Auth Github
-        run: git config remote.origin.url 'https://${{secrets.GITHUB_ACCESS_TOKEN}}@github.com/${{github.repository}}'
+        run: git config remote.origin.url 'https://${{secrets.GH_ACCESS_TOKEN}}@github.com/${{github.repository}}'
       - run: npm install
       - run: npm test
       - name: Publish
