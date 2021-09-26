@@ -1,19 +1,15 @@
 import { useEffect, useMemo } from "react";
-import PullToRefreshForBounce, {
-  PullToRefreshForBounceProps,
-} from "./PullToRefreshForBounce";
+import PullToRefreshForBounce from "./PullToRefreshForBounce";
 import PullToRefreshForNoBounce, {
   PullToRefreshForNoBounceProps,
 } from "./PullToRefreshForNoBounce";
 
-export interface PullToRefreshProps
-  extends PullToRefreshForNoBounceProps,
-    PullToRefreshForBounceProps {
+export interface PullToRefreshProps extends PullToRefreshForNoBounceProps {
   isBounceSupported?: boolean;
   isBounceNotSupported?: boolean;
 }
 
-const PullToRefresh = ({
+const PullToRefresh: React.FC<PullToRefreshProps> = ({
   isBounceSupported,
   isBounceNotSupported,
   ...props

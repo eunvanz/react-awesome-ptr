@@ -7,9 +7,7 @@ import DefaultSpinner from "./DefaultSpinner";
 
 const DEFAULT_TARGET_MARGIN_TRANSITION = "margin 0.7s cubic-bezier(0, 0, 0, 1)";
 
-export interface PullToRefreshForBounceProps extends CommonPullToRefreshProps {}
-
-const PullToRefreshForBounce = ({
+const PullToRefreshForBounce: React.FC<CommonPullToRefreshProps> = ({
   targetRef,
   originTop = 0,
   originMarginTop = 0,
@@ -27,13 +25,13 @@ const PullToRefreshForBounce = ({
   onChangeState,
   completeDelay = 0,
   ...restProps
-}: PullToRefreshForBounceProps) => {
+}: CommonPullToRefreshProps) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const spinnerRef = useRef<HTMLImageElement>(null);
   const isDisabledRef = useRef<boolean>(false);
   const isRefreshingRef = useRef<boolean>(false);
-  const touchMoveFuncRef = useRef<(e: TouchEvent) => void>(() => {});
-  const touchEndFuncRef = useRef<(e: TouchEvent) => void>(() => {});
+  const touchMoveFuncRef = useRef<(e: TouchEvent) => void>(() => undefined);
+  const touchEndFuncRef = useRef<(e: TouchEvent) => void>(() => undefined);
   const stateRef = useRef<PullToRefreshState>("idle");
 
   const [shouldRefresh, setShouldRefresh] = useState(false);

@@ -35,7 +35,7 @@ export interface PullToRefreshForNoBounceProps extends CommonPullToRefreshProps 
   tension?: number;
 }
 
-const PullToRefreshForNoBounce = ({
+const PullToRefreshForNoBounce: React.FC<PullToRefreshForNoBounceProps> = ({
   targetRef,
   originTop = 0,
   originMarginTop = 0,
@@ -60,9 +60,9 @@ const PullToRefreshForNoBounce = ({
   const touchStartRef = useRef<number>(0);
   const isDisabledRef = useRef<boolean>(false);
   const isRefreshingRef = useRef<boolean>(false);
-  const touchStartFuncRef = useRef<(e: TouchEvent) => void>(() => {});
-  const touchMoveFuncRef = useRef<(e: TouchEvent) => void>(() => {});
-  const touchEndFuncRef = useRef<(e: TouchEvent) => void>(() => {});
+  const touchStartFuncRef = useRef<(e: TouchEvent) => void>(() => undefined);
+  const touchMoveFuncRef = useRef<(e: TouchEvent) => void>(() => undefined);
+  const touchEndFuncRef = useRef<(e: TouchEvent) => void>(() => undefined);
   const stateRef = useRef<PullToRefreshState>("idle");
 
   const [initialized, setInitialized] = useState(false);
