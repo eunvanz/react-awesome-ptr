@@ -23,7 +23,7 @@ jobs:
       - name: Test
         uses: mattallty/jest-github-action@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{secrets.GH_ACCESS_TOKEN}}
         with:
           test-command: "npm test"
       - name: Publish
