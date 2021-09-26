@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import PullToRefreshForBounce, {
   PullToRefreshForBounceProps,
 } from "./PullToRefreshForBounce";
@@ -13,14 +13,17 @@ export interface PullToRefreshProps
   isBounceNotSupported?: boolean;
 }
 
-const isIos =
-  typeof window !== "undefined" && /iPhone|iPad|iPod|Io\//i.test(navigator.userAgent);
-
 const PullToRefresh = ({
   isBounceSupported,
   isBounceNotSupported,
   ...props
 }: PullToRefreshProps) => {
+  const isIos = useMemo(() => {
+    return (
+      typeof window !== "undefined" && /iPhone|iPad|iPod|Io\//i.test(navigator.userAgent)
+    );
+  }, []);
+
   useEffect(() => {
     // for disable browser's default pull to refresh
     if (typeof document !== "undefined") {

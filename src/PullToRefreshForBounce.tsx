@@ -155,9 +155,13 @@ const PullToRefreshForBounce = ({
       stateRef.current = "refreshing";
     }
     setShouldRefresh(false);
-    setTimeout(() => {
+    if (refreshDelay) {
+      setTimeout(() => {
+        onRefresh();
+      }, refreshDelay);
+    } else {
       onRefresh();
-    }, refreshDelay);
+    }
   }, [
     targetRef,
     onRefresh,
