@@ -20,10 +20,7 @@ jobs:
       - name: Auth Github
         run: git config remote.origin.url 'https://${{secrets.GH_ACCESS_TOKEN}}@github.com/${{github.repository}}'
       - run: npm install
-      - name: Test
-        uses: mattallty/jest-github-action@v1
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - run: npm test
       - name: Publish
         run: npm publish --access public
         env:
