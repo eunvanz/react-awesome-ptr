@@ -5,11 +5,13 @@ import CommonPullToRefresh from "./CommonPullToRefresh";
 export interface PullToRefreshProps extends CommonPullToRefreshProps {
   isBounceSupported?: boolean;
   isBounceNotSupported?: boolean;
+  hasDefaultPullToRefreshPossibly?: boolean;
 }
 
 const PullToRefresh: React.FC<PullToRefreshProps> = ({
   isBounceSupported,
   isBounceNotSupported,
+  hasDefaultPullToRefreshPossibly,
   ...props
 }: PullToRefreshProps) => {
   const isIos = useMemo(() => {
@@ -17,6 +19,15 @@ const PullToRefresh: React.FC<PullToRefreshProps> = ({
       typeof window !== "undefined" && /iPhone|iPad|iPod|Io\//i.test(navigator.userAgent)
     );
   }, []);
+
+  const hasDefaultPullToRefresh = useMemo(() => {
+    return (
+      isIos &&
+      hasDefaultPullToRefreshPossibly &&
+      /OS 15/.test(navigator.userAgent) &&
+      /Safari/.test(navigator.userAgent)
+    );
+  }, [isIos, hasDefaultPullToRefreshPossibly]);
 
   useEffect(() => {
     // for disable browser's default pull to refresh
@@ -31,8 +42,11 @@ const PullToRefresh: React.FC<PullToRefreshProps> = ({
   }, []);
 
   const isBounceSupportedProp = useMemo(() => {
-    return isBounceSupported || (isIos && !isBounceNotSupported);
-  }, []);
+    return (
+      (isBounceSupported || (isIos && !isBounceNotSupported)) &&
+      (hasDefaultPullToRefreshPossibly !== undefined ? !hasDefaultPullToRefresh : true)
+    );
+  }, [isBounceSupported, isIos, isBounceNotSupported, hasDefaultPullToRefreshPossibly]);
 
   return <CommonPullToRefresh {...props} isBounceSupported={isBounceSupportedProp} />;
 };

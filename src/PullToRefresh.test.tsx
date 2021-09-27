@@ -15,6 +15,8 @@ const targetRef = {
 const userAgentIos =
   "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1";
 
+const userAgentIos15 = userAgentIos.replace("OS 13", "OS 15");
+
 const userAgentAos =
   "'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Mobile Safari/537.36'";
 
@@ -68,7 +70,7 @@ describe("PullToRefresh", () => {
   });
 
   describe("in iOS", () => {
-    beforeAll(() => {
+    beforeEach(() => {
       mockUserAgent(userAgentIos);
     });
 
@@ -83,6 +85,25 @@ describe("PullToRefresh", () => {
         setup({ isBounceNotSupported: true });
 
         expect(document.querySelector(".for-no-bounce")).toBeInTheDocument();
+      });
+    });
+
+    describe("hasDefaultPullToRefreshPossibly is true", () => {
+      describe("in iOS under 15", () => {
+        it("should render PullToRefreshForBounce", () => {
+          setup({ hasDefaultPullToRefreshPossibly: true });
+
+          expect(document.querySelector(".for-bounce")).toBeInTheDocument();
+        });
+      });
+
+      describe("in iOS 15", () => {
+        it("should render PullToRefreshForNoBounce", () => {
+          mockUserAgent(userAgentIos15);
+          setup({ hasDefaultPullToRefreshPossibly: true });
+
+          expect(document.querySelector(".for-no-bounce")).toBeInTheDocument();
+        });
       });
     });
 
