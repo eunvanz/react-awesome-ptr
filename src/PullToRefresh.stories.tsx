@@ -181,7 +181,7 @@ export const CustomSpinner = () => {
         completeDelay={500}
       />
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
-        <p>Pull in a mobile browser</p>
+        <p>Pull in a mobile browser (custom spinner)</p>
       </div>
     </>
   );
@@ -208,7 +208,7 @@ export const HiddenSpinnerDuringRefreshing = () => {
         isSpinnerHiddenDuringRefreshing
       />
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
-        <p>Pull in a mobile browser</p>
+        <p>Pull in a mobile browser (hidden spinner during refreshing)</p>
         <p>{isRefreshing ? "Refreshing..." : ""}</p>
       </div>
     </>

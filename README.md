@@ -133,7 +133,7 @@ export const WithHeader = () => {
 import PullToRefresh from "react-awesome-ptr";
 import "react-awesome-ptr/dist/index.css";
 
-export const OnTheTop = () => {
+export const ArtificialBounce = () => {
   const targetRef = useRef<HTMLDivElement>(null);
 
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -218,7 +218,44 @@ export const CustomSpinner = () => {
         completeDelay={500}
       />
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
-        <p>Pull in a mobile browser</p>
+        <p>Pull in a mobile browser (custom spinner)</p>
+      </div>
+    </>
+  );
+};
+```
+
+## [Hidden spinner during refreshing](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--hidden-spinner-during-refreshing&args=&viewMode=story)
+
+[<img src="https://user-images.githubusercontent.com/17351661/134832132-ea454603-d0c2-461c-b408-83324beab2d2.png" width="200" />](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--hidden-spinner-during-refreshing&args=&viewMode=story)
+
+```typescript
+import PullToRefresh from "react-awesome-ptr";
+import "react-awesome-ptr/dist/index.css";
+
+export const HiddenSpinnerDuringRefreshing = () => {
+  const targetRef = useRef<HTMLDivElement>(null);
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true);
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 3000);
+  }, []);
+
+  return (
+    <>
+      <PullToRefresh
+        targetRef={targetRef}
+        onRefresh={onRefresh}
+        isRefreshing={isRefreshing}
+        isSpinnerHiddenDuringRefreshing
+      />
+      <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
+        <p>Pull in a mobile browser (hidden spinner during refreshing)</p>
+        <p>{isRefreshing ? "Refreshing..." : ""}</p>
       </div>
     </>
   );
@@ -227,25 +264,26 @@ export const CustomSpinner = () => {
 
 # Props
 
-| name                 |                 type                  | required | default | description                                                                                                                                    |
-| -------------------- | :-----------------------------------: | :------: | :-----: | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| targetRef            |    `React.RefObject<HTMLElement>`     |    O     |         | Target element to pull                                                                                                                         |
-| originTop            |               `number`                |          |   `0`   | Top of the target where pull-to-refresh starts based on [clientRects](https://developer.mozilla.org/en-US/docs/Web/API/Element/getClientRects) |
-| originMarginTop      |               `number`                |          |   `0`   | Original margin of the target                                                                                                                  |
-| triggerHeight        |               `number`                |          |  `80`   | The height(distance) at which pull-to-refresh is triggered                                                                                     |
-| progressHeight       |               `number`                |          |  `50`   | Height to keep during refresh                                                                                                                  |
-| onRefresh            |            `VoidFunction`             |    O     |         | Callback to refresh                                                                                                                            |
-| refreshDelay         |               `number`                |          |   `0`   | If refresh time is too short to show spinner, use this prop to delay.                                                                          |
-| isRefreshing         |               `boolean`               |    O     |         | Set `true` during refresh.                                                                                                                     |
-| spinnerSize          |               `number`                |          |  `32`   | Size of spinner in pixel                                                                                                                       |
-| tension              |               `number`                |          | `0.82`  | Value of artificial tension. Set under 1, 0 is the most powerful tension. (0.85 ~ 0.75 is appropriate)                                         |
-| isBounceSupported    |               `boolean`               |          |         | Set if native scroll bounce is supported not in iOS.                                                                                           |
-| isBounceNotSupported |               `boolean`               |          |         | Set if native scroll bounce is not supported in iOS.                                                                                           |
-| customSpinner        |           `React.ReactNode`           |          |         | Custom spinner                                                                                                                                 |
-| onPull               |     `(progress: number) => void`      |          |         | Callback passing progress 0 to 1 as a param that is called when user is pulling                                                                |
-| onRelease            |            `VoidFunction`             |          |         | Callback that is called when user releases target                                                                                              |
-| onChangeState        | `(state: PullToRefreshState) => void` |          |         | Callback passing state `idle`, `pulling`, `triggerReady`, `refreshing`, `complete` when state changes                                          |
-| completeDelay        |               `number`                |          |   `0`   | Set milliseconds if you want to show complete message during `complete`                                                                        |
+| name                            |                 type                  | required | default | description                                                                                                                                    |
+| ------------------------------- | :-----------------------------------: | :------: | :-----: | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| targetRef                       |    `React.RefObject<HTMLElement>`     |    O     |         | Target element to pull                                                                                                                         |
+| originTop                       |               `number`                |          |   `0`   | Top of the target where pull-to-refresh starts based on [clientRects](https://developer.mozilla.org/en-US/docs/Web/API/Element/getClientRects) |
+| originMarginTop                 |               `number`                |          |   `0`   | Original margin of the target                                                                                                                  |
+| triggerHeight                   |               `number`                |          |  `80`   | The height(distance) at which pull-to-refresh is triggered                                                                                     |
+| progressHeight                  |               `number`                |          |  `50`   | Height to keep during refresh                                                                                                                  |
+| onRefresh                       |            `VoidFunction`             |    O     |         | Callback to refresh                                                                                                                            |
+| refreshDelay                    |               `number`                |          |   `0`   | If refresh time is too short to show spinner, use this prop to delay.                                                                          |
+| isRefreshing                    |               `boolean`               |    O     |         | Set `true` during refresh.                                                                                                                     |
+| spinnerSize                     |               `number`                |          |  `32`   | Size of spinner in pixel                                                                                                                       |
+| tension                         |               `number`                |          | `0.82`  | Value of artificial tension. Set under 1, 0 is the most powerful tension. (0.85 ~ 0.75 is appropriate)                                         |
+| isBounceSupported               |               `boolean`               |          |         | Set if native scroll bounce is supported not in iOS.                                                                                           |
+| isBounceNotSupported            |               `boolean`               |          |         | Set if native scroll bounce is not supported in iOS.                                                                                           |
+| customSpinner                   |           `React.ReactNode`           |          |         | Custom spinner                                                                                                                                 |
+| onPull                          |     `(progress: number) => void`      |          |         | Callback passing progress 0 to 1 as a param that is called when user is pulling                                                                |
+| onRelease                       |            `VoidFunction`             |          |         | Callback that is called when user releases target                                                                                              |
+| onChangeState                   | `(state: PullToRefreshState) => void` |          |         | Callback passing state `idle`, `pulling`, `triggerReady`, `refreshing`, `complete` when state changes                                          |
+| completeDelay                   |               `number`                |          |   `0`   | Set milliseconds if you want to show complete message during `complete`                                                                        |
+| isHiddenSpinnerDuringRefreshing |               `boolean`               |          |         | Set `true` if you have to hide spinner during refreshing                                                                                       |
 
 # Contributions
 
