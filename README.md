@@ -9,7 +9,7 @@
 - in the others:
   - It makes natural scroll bounce artificially.
 - Suitable for all of mobile browsers and web views (inactivated in desktop).
-- Automatically disable mobile browser's default pull-to-refresh.
+- Automatically disable mobile browser's default pull-to-refresh (only in Android).
 - Customizable spinner.
 - Support Typescript.
 
