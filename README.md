@@ -31,6 +31,7 @@ npm i --save react-awesome-ptr
 
 ```typescript
 import PullToRefresh from "react-awesome-ptr";
+import "react-awesome-ptr/dist/index.css";
 
 // put the PullToRefresh component where the spinner should be shown
 ```
@@ -45,6 +46,7 @@ See examples in a mobile browser, or turn on the browser debugger and toggle dev
 
 ```typescript
 import PullToRefresh from "react-awesome-ptr";
+import "react-awesome-ptr/dist/index.css";
 
 export const OnTheTop = () => {
   const targetRef = useRef<HTMLDivElement>(null);
@@ -79,6 +81,7 @@ export const OnTheTop = () => {
 
 ```typescript
 import PullToRefresh from "react-awesome-ptr";
+import "react-awesome-ptr/dist/index.css";
 
 export const WithHeader = () => {
   const targetRef = useRef<HTMLDivElement>(null);
@@ -130,6 +133,7 @@ export const WithHeader = () => {
 
 ```typescript
 import PullToRefresh from "react-awesome-ptr";
+import "react-awesome-ptr/dist/index.css";
 
 export const ArtificialBounce = () => {
   const targetRef = useRef<HTMLDivElement>(null);
@@ -165,6 +169,7 @@ export const ArtificialBounce = () => {
 
 ```typescript
 import PullToRefresh from "react-awesome-ptr";
+import "react-awesome-ptr/dist/index.css";
 
 export const CustomSpinner = () => {
   const targetRef = useRef<HTMLDivElement>(null);
@@ -228,6 +233,7 @@ export const CustomSpinner = () => {
 
 ```typescript
 import PullToRefresh from "react-awesome-ptr";
+import "react-awesome-ptr/dist/index.css";
 
 export const HiddenSpinnerDuringRefreshing = () => {
   const targetRef = useRef<HTMLDivElement>(null);
