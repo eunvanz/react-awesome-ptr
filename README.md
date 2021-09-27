@@ -15,7 +15,9 @@
 
 > Be sure it's a mobile-only component that works by touch events.
 
-> Not support Safari in iOS 15 currently. I'm working on it!
+> In **default pull to refresh** supported browsers like Safari in iOS 15, it works **only when the browser is not scrolled**. If browser is scrolled, browser's default pull to refresh will be triggered.
+
+> For the webview in a hybrid app, it works with no worries.
 
 ![KakaoTalk_Video_2021-09-27-10-46-08 mp4](https://user-images.githubusercontent.com/17351661/134833837-ad712f07-0a97-43ef-9117-90e214f65032.gif)
 
@@ -278,14 +280,15 @@ export const HiddenSpinnerDuringRefreshing = () => {
 | isRefreshing                    |               `boolean`               |    O     |         | Set `true` during refresh.                                                                                                                     |
 | spinnerSize                     |               `number`                |          |  `32`   | Size of spinner in pixel                                                                                                                       |
 | tension                         |               `number`                |          | `0.82`  | Value of artificial tension. Set under 1, 0 is the most powerful tension. (0.85 ~ 0.75 is appropriate)                                         |
-| isBounceSupported               |               `boolean`               |          |         | Set if native scroll bounce is supported not in iOS.                                                                                           |
-| isBounceNotSupported            |               `boolean`               |          |         | Set if native scroll bounce is not supported in iOS.                                                                                           |
+| isBounceSupported               |               `boolean`               |          |         | Set `true` if native scroll bounce is supported not in iOS.                                                                                    |
+| isBounceNotSupported            |               `boolean`               |          |         | Set `true` if native scroll bounce is not supported in iOS.                                                                                    |
 | customSpinner                   |           `React.ReactNode`           |          |         | Custom spinner                                                                                                                                 |
 | onPull                          |     `(progress: number) => void`      |          |         | Callback passing progress 0 to 1 as a param that is called when user is pulling                                                                |
 | onRelease                       |            `VoidFunction`             |          |         | Callback that is called when user releases target                                                                                              |
 | onChangeState                   | `(state: PullToRefreshState) => void` |          |         | Callback passing state `idle`, `pulling`, `triggerReady`, `refreshing`, `complete` when state changes                                          |
 | completeDelay                   |               `number`                |          |   `0`   | Set milliseconds if you want to show complete message during `complete`                                                                        |
 | isHiddenSpinnerDuringRefreshing |               `boolean`               |          |         | Set `true` if you have to hide spinner during refreshing                                                                                       |
+| hasDefaultPullToRefreshPossibly |               `boolean`               |          |         | Set `true` if your service is possibly served in browsers that has default pull-to-refresh.                                                    |
 
 # Contributions
 
