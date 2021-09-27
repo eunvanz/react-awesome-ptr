@@ -37,7 +37,7 @@ export default [
         include: /node_modules/,
       }),
       postcss({
-        extract: true,
+        extract: false,
         sourceMap: true,
         use: ["sass"],
       }),
