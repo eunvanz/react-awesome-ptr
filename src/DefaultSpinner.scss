@@ -4,7 +4,7 @@
     animation: bump 0.3s 1;
   }
   img.spin {
-    animation: spin 1s steps(10, end) infinite 0.1s;
+    animation: spin 1s steps(12, end) infinite 0.1s;
   }
   @keyframes spin {
     from {
