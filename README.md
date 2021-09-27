@@ -68,6 +68,7 @@ export const OnTheTop = () => {
         targetRef={targetRef}
         onRefresh={onRefresh}
         isRefreshing={isRefreshing}
+        hasDefaultPullToRefreshPossibly
       />
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
         Pull in a mobile browser
@@ -117,6 +118,7 @@ export const WithHeader = () => {
         isRefreshing={isRefreshing}
         originTop={100}
         originMarginTop={100}
+        hasDefaultPullToRefreshPossibly
       />
       <div
         style={{ height: "100vh", background: "pink", padding: 20, marginTop: 100 }}
@@ -220,6 +222,7 @@ export const CustomSpinner = () => {
         onChangeState={onChangeState}
         customSpinner={customSpinner}
         completeDelay={500}
+        hasDefaultPullToRefreshPossibly
       />
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
         <p>Pull in a mobile browser (custom spinner)</p>
@@ -256,6 +259,7 @@ export const HiddenSpinnerDuringRefreshing = () => {
         onRefresh={onRefresh}
         isRefreshing={isRefreshing}
         isSpinnerHiddenDuringRefreshing
+        hasDefaultPullToRefreshPossibly
       />
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
         <p>Pull in a mobile browser (hidden spinner during refreshing)</p>

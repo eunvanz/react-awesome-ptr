@@ -50,6 +50,7 @@ export const OnTheTop: React.FC = () => {
         onPull={onPull}
         onRelease={onRelease}
         onChangeState={onChangeState}
+        hasDefaultPullToRefreshPossibly
       />
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
         <p>Pull in a mobile browser</p>
@@ -94,6 +95,7 @@ export const WithHeader: React.FC = () => {
         isRefreshing={isRefreshing}
         originTop={100}
         originMarginTop={100}
+        hasDefaultPullToRefreshPossibly
       />
       <div
         style={{ height: "100vh", background: "pink", padding: 20, marginTop: 100 }}
@@ -179,6 +181,7 @@ export const CustomSpinner: React.FC = () => {
         onChangeState={onChangeState}
         customSpinner={customSpinner}
         completeDelay={500}
+        hasDefaultPullToRefreshPossibly
       />
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
         <p>Pull in a mobile browser (custom spinner)</p>
@@ -206,6 +209,7 @@ export const HiddenSpinnerDuringRefreshing: React.FC = () => {
         onRefresh={onRefresh}
         isRefreshing={isRefreshing}
         isSpinnerHiddenDuringRefreshing
+        hasDefaultPullToRefreshPossibly
       />
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
         <p>Pull in a mobile browser (hidden spinner during refreshing)</p>
