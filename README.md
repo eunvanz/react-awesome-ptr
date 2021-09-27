@@ -15,6 +15,8 @@
 
 > Be sure it's a mobile-only component that works by touch events.
 
+> Not support Safari in iOS 15 currently. I'm working on it!
+
 ![KakaoTalk_Video_2021-09-27-10-46-08 mp4](https://user-images.githubusercontent.com/17351661/134833837-ad712f07-0a97-43ef-9117-90e214f65032.gif)
 
 # Usage
