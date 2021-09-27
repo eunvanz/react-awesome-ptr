@@ -1,15 +1,15 @@
 import { ComponentMeta } from "@storybook/react";
 import { useCallback, useMemo, useRef, useState } from "react";
+import { PullToRefreshState } from "./CommonPullToRefresh";
 
 import PullToRefresh from "./PullToRefresh";
-import { PullToRefreshState } from "./PullToRefreshForNoBounce";
 
 export default {
   title: "PullToRefresh",
   component: PullToRefresh,
 } as ComponentMeta<typeof PullToRefresh>;
 
-export const OnTheTop = () => {
+export const OnTheTop: React.FC = () => {
   const targetRef = useRef<HTMLDivElement>(null);
 
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -62,7 +62,7 @@ export const OnTheTop = () => {
   );
 };
 
-export const WithHeader = () => {
+export const WithHeader: React.FC = () => {
   const targetRef = useRef<HTMLDivElement>(null);
 
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -105,7 +105,7 @@ export const WithHeader = () => {
   );
 };
 
-export const ArtificialBounce = () => {
+export const ArtificialBounce: React.FC = () => {
   const targetRef = useRef<HTMLDivElement>(null);
 
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -132,7 +132,7 @@ export const ArtificialBounce = () => {
   );
 };
 
-export const CustomSpinner = () => {
+export const CustomSpinner: React.FC = () => {
   const targetRef = useRef<HTMLDivElement>(null);
 
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -187,7 +187,7 @@ export const CustomSpinner = () => {
   );
 };
 
-export const HiddenSpinnerDuringRefreshing = () => {
+export const HiddenSpinnerDuringRefreshing: React.FC = () => {
   const targetRef = useRef<HTMLDivElement>(null);
 
   const [isRefreshing, setIsRefreshing] = useState(false);
