@@ -15,7 +15,7 @@
 
 > Be sure it's a mobile-only component that works by touch events.
 
-![Sep-27-2021 10-37-24](https://user-images.githubusercontent.com/17351661/134833244-77eb25b7-5d4e-4a85-937d-bf50cbf05f92.gif)
+![KakaoTalk_Video_2021-09-27-10-46-08 mp4](https://user-images.githubusercontent.com/17351661/134833837-ad712f07-0a97-43ef-9117-90e214f65032.gif)
 
 # Usage
 
