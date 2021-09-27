@@ -186,3 +186,31 @@ export const CustomSpinner = () => {
     </>
   );
 };
+
+export const HiddenSpinnerDuringRefreshing = () => {
+  const targetRef = useRef<HTMLDivElement>(null);
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true);
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 3000);
+  }, []);
+
+  return (
+    <>
+      <PullToRefresh
+        targetRef={targetRef}
+        onRefresh={onRefresh}
+        isRefreshing={isRefreshing}
+        isSpinnerHiddenDuringRefreshing
+      />
+      <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
+        <p>Pull in a mobile browser</p>
+        <p>{isRefreshing ? "Refreshing..." : ""}</p>
+      </div>
+    </>
+  );
+};
