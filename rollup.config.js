@@ -23,6 +23,12 @@ export default [
         sourcemap: true,
         format: "es",
       },
+      {
+        file: pkg.main,
+        sourcemap: true,
+        format: "cjs",
+        exports: "named",
+      },
     ],
     plugins: [
       peerDepsExternal(),
