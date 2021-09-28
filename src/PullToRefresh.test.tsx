@@ -225,6 +225,7 @@ describe("PullToRefresh", () => {
             }),
           );
 
+          jest.clearAllMocks();
           rerender(
             getTestComponent({
               triggerHeight: 80,
@@ -232,12 +233,14 @@ describe("PullToRefresh", () => {
               isRefreshing: false,
             }),
           );
-          jest.clearAllMocks();
 
           await waitFor(() => {
-            expect(onChangeState).toBeCalledWith("idle");
+            expect(onChangeState).toBeCalledWith("complete");
           });
-          expect(screen.getByTestId("spinner-container").style.opacity).toBe("0");
+
+          await waitFor(() => {
+            expect(screen.getByTestId("spinner-container").style.opacity).toBe("0");
+          });
         });
       });
     });
@@ -380,6 +383,7 @@ describe("PullToRefresh", () => {
             }),
           );
 
+          jest.clearAllMocks();
           rerender(
             getTestComponent({
               triggerHeight: 80,
@@ -387,10 +391,9 @@ describe("PullToRefresh", () => {
               isRefreshing: false,
             }),
           );
-          jest.clearAllMocks();
 
           await waitFor(() => {
-            expect(onChangeState).toBeCalledWith("idle");
+            expect(onChangeState).toBeCalledWith("complete");
           });
           expect(screen.getByTestId("spinner-container").style.opacity).toBe("0");
         });
