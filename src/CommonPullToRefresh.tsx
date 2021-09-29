@@ -237,6 +237,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
         }
         const height = e.touches[0].clientY - touchStartRef.current;
         if (height <= 0 || isNaN(height)) {
+          showSpinner(0);
           return;
         }
         const poweredHeight = Math.pow(height, tension);
