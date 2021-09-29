@@ -218,3 +218,32 @@ export const HiddenSpinnerDuringRefreshing: React.FC = () => {
     </>
   );
 };
+
+export const InitiallyRefreshingWithHiddenSpinner: React.FC = () => {
+  const targetRef = useRef<HTMLDivElement>(null);
+
+  const [isRefreshing, setIsRefreshing] = useState(true);
+
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true);
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 3000);
+  }, []);
+
+  return (
+    <>
+      <PullToRefresh
+        targetRef={targetRef}
+        onRefresh={onRefresh}
+        isRefreshing={isRefreshing}
+        isSpinnerHiddenDuringRefreshing
+        hasDefaultPullToRefreshPossibly
+      />
+      <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
+        <p>Pull in a mobile browser (hidden spinner during refreshing)</p>
+        <p>{isRefreshing ? "Refreshing..." : ""}</p>
+      </div>
+    </>
+  );
+};

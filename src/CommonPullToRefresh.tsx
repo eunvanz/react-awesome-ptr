@@ -311,7 +311,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
     if (!isBounceSupported) {
       const pullToRefreshDOM = wrapperRef.current;
       if (!initialized) {
-        if (isRefreshing) {
+        if (isRefreshing && !isSpinnerHiddenDuringRefreshing) {
           showSpinner(triggerHeight);
           if (pullToRefreshDOM) {
             pullToRefreshDOM.style.height = `${triggerHeight}px`;

@@ -244,6 +244,18 @@ describe("PullToRefresh", () => {
         });
       });
     });
+
+    describe("when initially refreshing with hidden spinner option", () => {
+      it("should hide spinner", () => {
+        setup({
+          isRefreshing: true,
+          isSpinnerHiddenDuringRefreshing: true,
+        });
+
+        expect(screen.getByTestId("spinner-container").style.opacity).toBe("0");
+        expect(targetRef.current.style.marginTop).toBe("0px");
+      });
+    });
   });
 
   describe("in the others", () => {
@@ -397,6 +409,17 @@ describe("PullToRefresh", () => {
           });
           expect(screen.getByTestId("spinner-container").style.opacity).toBe("0");
         });
+      });
+    });
+    describe("when initially refreshing with hidden spinner option", () => {
+      it("should hide spinner", () => {
+        setup({
+          isRefreshing: true,
+          isSpinnerHiddenDuringRefreshing: true,
+        });
+
+        expect(screen.getByTestId("spinner-container").style.opacity).toBe("0");
+        expect(targetRef.current.style.marginTop).toBe("0px");
       });
     });
   });
