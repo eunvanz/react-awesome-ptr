@@ -38,6 +38,8 @@ export interface CommonPullToRefreshProps
   isBounceSupported?: boolean;
   tension?: number;
   isSpinnerHiddenDuringRefreshing?: boolean;
+  isDarkMode?: boolean;
+  spinnerZIndex?: number;
 }
 
 const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
@@ -60,6 +62,8 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
   completeDelay = 0,
   isBounceSupported,
   isSpinnerHiddenDuringRefreshing,
+  isDarkMode,
+  spinnerZIndex,
   ...restProps
 }: CommonPullToRefreshProps) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -356,7 +360,9 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
           style={{
             marginTop: (progressHeight - spinnerSize) / 2,
             width: spinnerSize,
+            zIndex: spinnerZIndex,
           }}
+          isDarkMode={isDarkMode}
         />
       )}
     </div>

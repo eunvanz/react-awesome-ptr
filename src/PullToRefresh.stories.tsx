@@ -1,5 +1,5 @@
 import { ComponentMeta } from "@storybook/react";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { PullToRefreshState } from "./CommonPullToRefresh";
 
 import PullToRefresh from "./PullToRefresh";
@@ -243,6 +243,42 @@ export const InitiallyRefreshingWithHiddenSpinner: React.FC = () => {
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
         <p>Pull in a mobile browser (hidden spinner during refreshing)</p>
         <p>{isRefreshing ? "Refreshing..." : ""}</p>
+      </div>
+    </>
+  );
+};
+
+export const DarkMode: React.FC = () => {
+  const targetRef = useRef<HTMLDivElement>(null);
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true);
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 3000);
+  }, []);
+
+  useEffect(() => {
+    const originBackgroundColor = document.body.style.backgroundColor;
+    document.body.style.backgroundColor = "#000";
+    return () => {
+      document.body.style.backgroundColor = originBackgroundColor;
+    };
+  }, []);
+
+  return (
+    <>
+      <PullToRefresh
+        targetRef={targetRef}
+        onRefresh={onRefresh}
+        isRefreshing={isRefreshing}
+        isDarkMode
+        hasDefaultPullToRefreshPossibly
+      />
+      <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
+        Pull in a mobile browser (dark mode)
       </div>
     </>
   );
