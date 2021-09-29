@@ -270,6 +270,51 @@ export const HiddenSpinnerDuringRefreshing = () => {
 };
 ```
 
+## [Dark mode](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--dark-mode&args=&viewMode=story)
+
+[<img src="https://user-images.githubusercontent.com/17351661/135284175-fa089796-e8ab-4e30-9115-7b505d234015.png" width="200" />](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--dark-mode&args=&viewMode=story)
+
+```typescript
+import PullToRefresh from "react-awesome-ptr";
+import "react-awesome-ptr/dist/index.css";
+
+export const HiddenSpinnerDuringRefreshing = () => {
+  const targetRef = useRef<HTMLDivElement>(null);
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true);
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 3000);
+  }, []);
+
+  useEffect(() => {
+    const originBackgroundColor = document.body.style.backgroundColor;
+    document.body.style.backgroundColor = "#000";
+    return () => {
+      document.body.style.backgroundColor = originBackgroundColor;
+    };
+  }, []);
+
+  return (
+    <>
+      <PullToRefresh
+        targetRef={targetRef}
+        onRefresh={onRefresh}
+        isRefreshing={isRefreshing}
+        isDarkMode
+        hasDefaultPullToRefreshPossibly
+      />
+      <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
+        Pull in a mobile browser (dark mode)
+      </div>
+    </>
+  );
+};
+```
+
 # Props
 
 | name                            |                 type                  | required | default | description                                                                                                                                    |
@@ -293,6 +338,8 @@ export const HiddenSpinnerDuringRefreshing = () => {
 | completeDelay                   |               `number`                |          |   `0`   | Set milliseconds if you want to show complete message during `complete`                                                                        |
 | isHiddenSpinnerDuringRefreshing |               `boolean`               |          |         | Set `true` if you have to hide spinner during refreshing                                                                                       |
 | hasDefaultPullToRefreshPossibly |               `boolean`               |          |         | Set `true` if your service is possibly served in browsers that has default pull-to-refresh.                                                    |
+| isDarkMode                      |               `boolean`               |          |         | Set `true` if default spinner needs to be shown above dark background                                                                          |
+| spinnerZIndex                   |               `number`                |          |  `-1`   |                                                                                                                                                |
 
 # Contributions
 

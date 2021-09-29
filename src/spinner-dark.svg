@@ -1,5 +1,5 @@
 <svg version="1.1" viewBox="-58 -58 116 116" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> 
-<g stroke-linecap="round" stroke-width="10" opacity="0.6">
+<g stroke-linecap="round" stroke-width="10" opacity="0.8">
 <path id="a" d="m0 35 0,14"/>
 <use transform="rotate(210)" xlink:href="#a" stroke="#000"/>
 <use transform="rotate(240)" xlink:href="#a" stroke="#171717"/>
