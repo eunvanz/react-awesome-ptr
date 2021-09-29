@@ -4,7 +4,7 @@ import DefaultSpinner from "./DefaultSpinner";
 import "./CommonPullToRefresh.scss";
 
 const DEFAULT_TARGET_MARGIN_TRANSITION_FOR_NO_BOUNCE =
-  "margin 0.25s cubic-bezier(0, 0, 0, 1)";
+  "transform 0.25s cubic-bezier(0, 0, 0, 1)";
 const DEFAULT_TARGET_MARGIN_TRANSITION_FOR_BOUNCE =
   "margin 0.7s cubic-bezier(0, 0, 0, 1)";
 
@@ -102,10 +102,13 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
       }, TRANSITION_DURATION);
     }
     if (targetDOM) {
-      targetDOM.style.marginTop = `${originMarginTop}px`;
-      targetDOM.style.transition = isBounceSupported
-        ? "margin 0.2s cubic-bezier(0, 0, 0, 1)"
-        : DEFAULT_TARGET_MARGIN_TRANSITION;
+      if (isBounceSupported) {
+        targetDOM.style.marginTop = `${originMarginTop}px`;
+        targetDOM.style.transition = "margin 0.2s cubic-bezier(0, 0, 0, 1)";
+      } else {
+        targetDOM.style.transform = "translateY(0px)";
+        targetDOM.style.transition = DEFAULT_TARGET_MARGIN_TRANSITION;
+      }
       setTimeout(() => {
         targetDOM.style.transition = isBounceSupported
           ? DEFAULT_TARGET_MARGIN_TRANSITION
@@ -119,8 +122,10 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
     if (targetDOM) {
       if (!isBounceSupported) {
         targetDOM.style.transition = DEFAULT_TARGET_MARGIN_TRANSITION;
+        targetDOM.style.transform = `translateY(${progressHeight}px)`;
+      } else {
+        targetDOM.style.marginTop = `${progressHeight + originMarginTop}px`;
       }
-      targetDOM.style.marginTop = `${progressHeight + originMarginTop}px`;
     }
     isRefreshingRef.current = true;
     if (stateRef.current !== "refreshing") {
@@ -178,7 +183,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
 
       if (pullToRefreshDOM) {
         if (targetDOM && !isBounceSupported) {
-          targetDOM.style.marginTop = `${height + originMarginTop}px`;
+          targetDOM.style.transform = `translateY(${height}px)`;
         }
         if (height < triggerHeight) {
           setShouldRefresh(false);
