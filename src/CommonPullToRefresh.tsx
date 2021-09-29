@@ -167,11 +167,12 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
         isDisabledRef.current = window.scrollY - 1 > originTop;
       }
     }
+    return isDisabledRef.current;
   }, [originTop, isBounceSupported]);
 
   const checkConditionAndRun = useCallback(
-    (conditionFn, fn) => {
-      checkOffsetPosition();
+    (conditionFn, fn, hasToCheckOffsetPosition?: boolean) => {
+      hasToCheckOffsetPosition && checkOffsetPosition();
       if (!conditionFn()) {
         fn();
       }
@@ -240,7 +241,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
           e.preventDefault();
         }
         const height = e.touches[0].clientY - touchStartRef.current;
-        if (height < 0 || isNaN(height)) {
+        if (height <= 0 || isNaN(height)) {
           return;
         }
         const poweredHeight = Math.pow(height, tension);
@@ -260,6 +261,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
         checkConditionAndRun(
           () => isRefreshingRef.current || isDisabledRef.current || isRefreshing,
           () => setTouchStart(e),
+          true,
         );
       };
     }
