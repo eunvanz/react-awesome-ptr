@@ -356,7 +356,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
     >
       {customSpinner || (
         <DefaultSpinner
-          className={classNames({ spin: isRefreshing })}
+          className={classNames({ spin: isRefreshing || isRefreshingRef.current })}
           ref={spinnerRef}
           style={{
             marginTop: (progressHeight - spinnerSize) / 2,
