@@ -163,7 +163,7 @@ describe("PullToRefresh", () => {
       });
 
       describe("when release at trigger height", () => {
-        it("works properly", () => {
+        it("works properly", async () => {
           const { rerender } = setup({
             triggerHeight: 80,
             originMarginTop: 100,
@@ -185,11 +185,19 @@ describe("PullToRefresh", () => {
 
           expect(onRefresh).toBeCalledTimes(1);
           expect(onChangeState).toBeCalledWith("refreshing");
+
+          await waitFor(() => {
+            expect(screen.getByTestId("spinner")).toHaveClass("spin");
+          });
+
+          await waitFor(() => {
+            expect(screen.getByTestId("spinner")).not.toHaveClass("spin");
+          });
         });
       });
 
       describe("when release at under trigger height", () => {
-        it("works properly", () => {
+        it("works properly", async () => {
           setup({
             triggerHeight: 80,
             originMarginTop: 100,
@@ -203,6 +211,10 @@ describe("PullToRefresh", () => {
 
           expect(onChangeState).toBeCalledWith("idle");
           expect(onRelease).toBeCalledTimes(1);
+
+          await waitFor(() => {
+            expect(screen.getByTestId("spinner")).not.toHaveClass("spin");
+          });
         });
       });
 
@@ -237,9 +249,15 @@ describe("PullToRefresh", () => {
           await waitFor(() => {
             expect(onChangeState).toBeCalledWith("complete");
           });
+          expect(screen.getByTestId("spinner")).toHaveClass("spin");
 
           await waitFor(() => {
-            expect(screen.getByTestId("spinner-container").style.opacity).toBe("0");
+            expect(onChangeState).toBeCalledWith("idle");
+          });
+          expect(screen.getByTestId("spinner-container").style.opacity).toBe("0");
+
+          await waitFor(() => {
+            expect(screen.getByTestId("spinner")).not.toHaveClass("spin");
           });
         });
       });
@@ -333,7 +351,7 @@ describe("PullToRefresh", () => {
       });
 
       describe("when release at trigger height", () => {
-        it("works properly", () => {
+        it("works properly", async () => {
           const { rerender } = setup({
             triggerHeight: 80,
             originMarginTop: 100,
@@ -355,11 +373,19 @@ describe("PullToRefresh", () => {
 
           expect(onRefresh).toBeCalledTimes(1);
           expect(onChangeState).toBeCalledWith("refreshing");
+
+          await waitFor(() => {
+            expect(screen.getByTestId("spinner")).toHaveClass("spin");
+          });
+
+          await waitFor(() => {
+            expect(screen.getByTestId("spinner")).not.toHaveClass("spin");
+          });
         });
       });
 
       describe("when release at under trigger height", () => {
-        it("works properly", () => {
+        it("works properly", async () => {
           setup({
             triggerHeight: 80,
             originMarginTop: 100,
@@ -373,6 +399,10 @@ describe("PullToRefresh", () => {
 
           expect(onChangeState).toBeCalledWith("idle");
           expect(onRelease).toBeCalledTimes(1);
+
+          await waitFor(() => {
+            expect(screen.getByTestId("spinner")).not.toHaveClass("spin");
+          });
         });
       });
 
@@ -405,9 +435,18 @@ describe("PullToRefresh", () => {
           );
 
           await waitFor(() => {
+            expect(onChangeState).toBeCalledWith("complete");
+          });
+          expect(screen.getByTestId("spinner")).toHaveClass("spin");
+
+          await waitFor(() => {
             expect(onChangeState).toBeCalledWith("idle");
           });
           expect(screen.getByTestId("spinner-container").style.opacity).toBe("0");
+
+          await waitFor(() => {
+            expect(screen.getByTestId("spinner")).not.toHaveClass("spin");
+          });
         });
       });
     });

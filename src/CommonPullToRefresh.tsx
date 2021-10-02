@@ -75,6 +75,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
   const touchMoveFuncRef = useRef<(e: TouchEvent) => void>(() => undefined);
   const touchEndFuncRef = useRef<(e: TouchEvent) => void>(() => undefined);
   const stateRef = useRef<PullToRefreshState>("idle");
+  const [isSpinnerSpinning, setIsSpinnerSpinning] = useState(isRefreshing);
 
   const DEFAULT_TARGET_MARGIN_TRANSITION = useMemo(() => {
     return isBounceSupported
@@ -102,6 +103,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
         if (stateRef.current !== "idle") {
           onChangeState?.("idle");
           stateRef.current = "idle";
+          setIsSpinnerSpinning(false);
         }
       }, TRANSITION_DURATION);
     }
@@ -135,6 +137,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
     if (stateRef.current !== "refreshing") {
       onChangeState?.("refreshing");
       stateRef.current = "refreshing";
+      setIsSpinnerSpinning(true);
     }
     setShouldRefresh(false);
     if (refreshDelay) {
@@ -357,7 +360,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
       {customSpinner || (
         <DefaultSpinner
           className={classNames({
-            spin: isRefreshing || ["refreshing", "complete"].includes(stateRef.current),
+            spin: isSpinnerSpinning,
           })}
           ref={spinnerRef}
           style={{
