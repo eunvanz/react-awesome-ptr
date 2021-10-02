@@ -405,7 +405,7 @@ describe("PullToRefresh", () => {
           );
 
           await waitFor(() => {
-            expect(onChangeState).toBeCalledWith("complete");
+            expect(onChangeState).toBeCalledWith("idle");
           });
           expect(screen.getByTestId("spinner-container").style.opacity).toBe("0");
         });
