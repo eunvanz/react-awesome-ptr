@@ -47,6 +47,10 @@ const touchEnd = () => {
   fireEvent.touchEnd(targetRef.current);
 };
 
+const getSpinner = () => screen.getByTestId("spinner");
+
+const getSpinnerContainer = () => screen.getByTestId("spinner-container");
+
 const getTestComponent = (props?: Partial<PullToRefreshProps>) => (
   <PullToRefresh
     isRefreshing={false}
@@ -77,14 +81,14 @@ describe("PullToRefresh", () => {
     it("should render PullToRefreshForBounce", () => {
       setup();
 
-      expect(document.querySelector(".for-bounce")).toBeInTheDocument();
+      expect(getSpinnerContainer()).toHaveClass("for-bounce");
     });
 
     describe("isBounceNotSupported is true", () => {
       it("should render PullToRefreshForNoBounce", () => {
         setup({ isBounceNotSupported: true });
 
-        expect(document.querySelector(".for-no-bounce")).toBeInTheDocument();
+        expect(getSpinnerContainer).toHaveClass("for-no-bounce");
       });
     });
 
@@ -93,7 +97,7 @@ describe("PullToRefresh", () => {
         it("should render PullToRefreshForBounce", () => {
           setup({ hasDefaultPullToRefreshPossibly: true });
 
-          expect(document.querySelector(".for-bounce")).toBeInTheDocument();
+          expect(getSpinnerContainer()).toHaveClass("for-bounce");
         });
       });
 
@@ -102,7 +106,7 @@ describe("PullToRefresh", () => {
           mockUserAgent(userAgentIos15);
           setup({ hasDefaultPullToRefreshPossibly: true });
 
-          expect(document.querySelector(".for-no-bounce")).toBeInTheDocument();
+          expect(getSpinnerContainer).toHaveClass("for-no-bounce");
         });
       });
     });
@@ -114,8 +118,8 @@ describe("PullToRefresh", () => {
 
           expect(onChangeState).toBeCalledTimes(1);
           expect(onChangeState).toBeCalledWith("idle");
-          expect(screen.getByTestId("spinner-container").style.opacity).toBe("0");
-          expect(screen.getByTestId("spinner").style.transform).toBe("");
+          expect(getSpinnerContainer().style.opacity).toBe("0");
+          expect(getSpinner().style.transform).toBe("");
         });
       });
 
@@ -131,12 +135,8 @@ describe("PullToRefresh", () => {
 
           expect(onChangeState).toBeCalledWith("pulling");
           expect(onPull).toBeCalledWith(79 / 80);
-          expect(screen.getByTestId("spinner-container").style.opacity).toBe(
-            `${79 / 80}`,
-          );
-          expect(screen.getByTestId("spinner").style.transform).toBe(
-            `rotate(${(79 * 360) / 80}deg)`,
-          );
+          expect(getSpinnerContainer().style.opacity).toBe(`${79 / 80}`);
+          expect(getSpinner().style.transform).toBe(`rotate(${(79 * 360) / 80}deg)`);
         });
       });
 
@@ -157,8 +157,8 @@ describe("PullToRefresh", () => {
 
           expect(onChangeState).toBeCalledWith("triggerReady");
           expect(onPull).toBeCalledWith(1);
-          expect(screen.getByTestId("spinner-container").style.opacity).toBe("1");
-          expect(screen.getByTestId("spinner").style.transform).toBe(`rotate(360deg)`);
+          expect(getSpinnerContainer().style.opacity).toBe("1");
+          expect(getSpinner().style.transform).toBe(`rotate(360deg)`);
         });
       });
 
@@ -187,11 +187,11 @@ describe("PullToRefresh", () => {
           expect(onChangeState).toBeCalledWith("refreshing");
 
           await waitFor(() => {
-            expect(screen.getByTestId("spinner")).toHaveClass("spin");
+            expect(getSpinner()).toHaveClass("spin");
           });
 
           await waitFor(() => {
-            expect(screen.getByTestId("spinner")).not.toHaveClass("spin");
+            expect(getSpinner()).not.toHaveClass("spin");
           });
         });
       });
@@ -213,7 +213,7 @@ describe("PullToRefresh", () => {
           expect(onRelease).toBeCalledTimes(1);
 
           await waitFor(() => {
-            expect(screen.getByTestId("spinner")).not.toHaveClass("spin");
+            expect(getSpinner()).not.toHaveClass("spin");
           });
         });
       });
@@ -249,15 +249,15 @@ describe("PullToRefresh", () => {
           await waitFor(() => {
             expect(onChangeState).toBeCalledWith("complete");
           });
-          expect(screen.getByTestId("spinner")).toHaveClass("spin");
+          expect(getSpinner()).toHaveClass("spin");
 
           await waitFor(() => {
             expect(onChangeState).toBeCalledWith("idle");
           });
-          expect(screen.getByTestId("spinner-container").style.opacity).toBe("0");
+          expect(getSpinnerContainer().style.opacity).toBe("0");
 
           await waitFor(() => {
-            expect(screen.getByTestId("spinner")).not.toHaveClass("spin");
+            expect(getSpinner()).not.toHaveClass("spin");
           });
         });
       });
@@ -270,7 +270,7 @@ describe("PullToRefresh", () => {
           isSpinnerHiddenDuringRefreshing: true,
         });
 
-        expect(screen.getByTestId("spinner-container").style.opacity).toBe("0");
+        expect(getSpinnerContainer().style.opacity).toBe("0");
         expect(targetRef.current.style.marginTop).toBe("0px");
       });
     });
@@ -284,14 +284,14 @@ describe("PullToRefresh", () => {
     it("should render PullToRefreshForNoBounce", () => {
       setup();
 
-      expect(document.querySelector(".for-no-bounce")).toBeInTheDocument();
+      expect(getSpinnerContainer).toHaveClass("for-no-bounce");
     });
 
     describe("isBounceSupported is true", () => {
       it("should render PullToRefreshForBounce", () => {
         setup({ isBounceSupported: true });
 
-        expect(document.querySelector(".for-bounce")).toBeInTheDocument();
+        expect(getSpinnerContainer()).toHaveClass("for-bounce");
       });
     });
 
@@ -302,8 +302,8 @@ describe("PullToRefresh", () => {
 
           expect(onChangeState).toBeCalledTimes(1);
           expect(onChangeState).toBeCalledWith("idle");
-          expect(screen.getByTestId("spinner-container").style.opacity).toBe("0");
-          expect(screen.getByTestId("spinner").style.transform).toBe("");
+          expect(getSpinnerContainer().style.opacity).toBe("0");
+          expect(getSpinner().style.transform).toBe("");
         });
       });
 
@@ -319,12 +319,8 @@ describe("PullToRefresh", () => {
 
           expect(onChangeState).toBeCalledWith("pulling");
           expect(onPull).toBeCalledWith(79 / 80);
-          expect(screen.getByTestId("spinner-container").style.opacity).toBe(
-            `${79 / 80}`,
-          );
-          expect(screen.getByTestId("spinner").style.transform).toBe(
-            `rotate(${(79 * 360) / 80}deg)`,
-          );
+          expect(getSpinnerContainer().style.opacity).toBe(`${79 / 80}`);
+          expect(getSpinner().style.transform).toBe(`rotate(${(79 * 360) / 80}deg)`);
         });
       });
 
@@ -345,8 +341,8 @@ describe("PullToRefresh", () => {
 
           expect(onChangeState).toBeCalledWith("triggerReady");
           expect(onPull).toBeCalledWith(1);
-          expect(screen.getByTestId("spinner-container").style.opacity).toBe("1");
-          expect(screen.getByTestId("spinner").style.transform).toBe(`rotate(360deg)`);
+          expect(getSpinnerContainer().style.opacity).toBe("1");
+          expect(getSpinner().style.transform).toBe(`rotate(360deg)`);
         });
       });
 
@@ -375,11 +371,11 @@ describe("PullToRefresh", () => {
           expect(onChangeState).toBeCalledWith("refreshing");
 
           await waitFor(() => {
-            expect(screen.getByTestId("spinner")).toHaveClass("spin");
+            expect(getSpinner()).toHaveClass("spin");
           });
 
           await waitFor(() => {
-            expect(screen.getByTestId("spinner")).not.toHaveClass("spin");
+            expect(getSpinner()).not.toHaveClass("spin");
           });
         });
       });
@@ -401,7 +397,7 @@ describe("PullToRefresh", () => {
           expect(onRelease).toBeCalledTimes(1);
 
           await waitFor(() => {
-            expect(screen.getByTestId("spinner")).not.toHaveClass("spin");
+            expect(getSpinner()).not.toHaveClass("spin");
           });
         });
       });
@@ -437,15 +433,15 @@ describe("PullToRefresh", () => {
           await waitFor(() => {
             expect(onChangeState).toBeCalledWith("complete");
           });
-          expect(screen.getByTestId("spinner")).toHaveClass("spin");
+          expect(getSpinner()).toHaveClass("spin");
 
           await waitFor(() => {
             expect(onChangeState).toBeCalledWith("idle");
           });
-          expect(screen.getByTestId("spinner-container").style.opacity).toBe("0");
+          expect(getSpinnerContainer().style.opacity).toBe("0");
 
           await waitFor(() => {
-            expect(screen.getByTestId("spinner")).not.toHaveClass("spin");
+            expect(getSpinner()).not.toHaveClass("spin");
           });
         });
       });
@@ -457,7 +453,7 @@ describe("PullToRefresh", () => {
           isSpinnerHiddenDuringRefreshing: true,
         });
 
-        expect(screen.getByTestId("spinner-container").style.opacity).toBe("0");
+        expect(getSpinnerContainer().style.opacity).toBe("0");
         expect(targetRef.current.style.marginTop).toBe("0px");
       });
     });
