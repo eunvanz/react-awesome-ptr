@@ -38,6 +38,7 @@ export interface CommonPullToRefreshProps
   isBounceSupported?: boolean;
   tension?: number;
   isSpinnerHiddenDuringRefreshing?: boolean;
+  hideDelay?: number;
   isDarkMode?: boolean;
   spinnerZIndex?: number;
 }
@@ -62,6 +63,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
   completeDelay = 0,
   isBounceSupported,
   isSpinnerHiddenDuringRefreshing,
+  hideDelay,
   isDarkMode,
   spinnerZIndex,
   ...restProps
@@ -317,7 +319,11 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
   useEffect(() => {
     isRefreshingRef.current = isRefreshing;
     if (!isRefreshing || (isRefreshing && isSpinnerHiddenDuringRefreshing)) {
-      resetHeightToDOM();
+      if (hideDelay) {
+        setTimeout(resetHeightToDOM, hideDelay);
+      } else {
+        resetHeightToDOM();
+      }
     }
   }, [isRefreshing, resetHeightToDOM, isSpinnerHiddenDuringRefreshing]);
 

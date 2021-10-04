@@ -88,7 +88,7 @@ describe("PullToRefresh", () => {
       it("should render PullToRefreshForNoBounce", () => {
         setup({ isBounceNotSupported: true });
 
-        expect(getSpinnerContainer).toHaveClass("for-no-bounce");
+        expect(getSpinnerContainer()).toHaveClass("for-no-bounce");
       });
     });
 
@@ -106,7 +106,7 @@ describe("PullToRefresh", () => {
           mockUserAgent(userAgentIos15);
           setup({ hasDefaultPullToRefreshPossibly: true });
 
-          expect(getSpinnerContainer).toHaveClass("for-no-bounce");
+          expect(getSpinnerContainer()).toHaveClass("for-no-bounce");
         });
       });
     });
@@ -284,7 +284,7 @@ describe("PullToRefresh", () => {
     it("should render PullToRefreshForNoBounce", () => {
       setup();
 
-      expect(getSpinnerContainer).toHaveClass("for-no-bounce");
+      expect(getSpinnerContainer()).toHaveClass("for-no-bounce");
     });
 
     describe("isBounceSupported is true", () => {
