@@ -105,8 +105,8 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
         if (stateRef.current !== "idle") {
           onChangeState?.("idle");
           stateRef.current = "idle";
-          setIsSpinnerSpinning(false);
         }
+        setIsSpinnerSpinning(false);
       }, TRANSITION_DURATION);
     }
     if (targetDOM) {

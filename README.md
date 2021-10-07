@@ -17,7 +17,7 @@
 
 > In **default pull to refresh** supported browsers like Safari in iOS 15, it works **only when the browser is not scrolled**. If browser is scrolled, browser's default pull to refresh will be triggered.
 
-> For the webview in a hybrid app, it works with no worries.
+> For the webviews in hybrid apps, it works with no worries.
 
 ![KakaoTalk_Video_2021-09-27-10-46-08 mp4](https://user-images.githubusercontent.com/17351661/134833837-ad712f07-0a97-43ef-9117-90e214f65032.gif)
 
