@@ -42,6 +42,8 @@ import "react-awesome-ptr/dist/index.css";
 
 See examples in a mobile browser, or turn on the browser debugger and toggle device toolbar. You can conveniently open example pages on your mobile by scanning QR codes.
 
+> If you see examples in desktop browser, be sure set the device as any android device.
+
 ## [On the top](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--on-the-top&args=&viewMode=story)
 
 [<img src="https://user-images.githubusercontent.com/17351661/134727991-29d51d18-a928-4236-9aac-97724de3dd6c.png" width="200" />](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--on-the-top&args=&viewMode=story)
