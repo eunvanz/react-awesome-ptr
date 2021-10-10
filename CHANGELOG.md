@@ -1,3 +1,7 @@
+# 1.0.33 (2021-10-10)
+
+- fixed not working `e.preventDefault` due to `requestAnimationFrame`
+
 # 1.0.32 (2021-10-10)
 
 - applied `requestAnimationFrame` to `touchmove` callback function for performance
