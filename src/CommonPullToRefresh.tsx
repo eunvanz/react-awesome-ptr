@@ -232,26 +232,28 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
 
   const handleOnTouchMove = useCallback(
     (e) => {
-      if (isBounceSupported) {
-        const targetDOM = targetRef.current;
-        if (targetDOM) {
-          const height = targetDOM.getClientRects()[0].top - originTop;
+      requestAnimationFrame(() => {
+        if (isBounceSupported) {
+          const targetDOM = targetRef.current;
+          if (targetDOM) {
+            const height = targetDOM.getClientRects()[0].top - originTop;
+            if (height <= 0 || isNaN(height)) {
+              return;
+            }
+            showSpinner(height);
+          }
+        } else {
+          if (stateRef.current !== "idle") {
+            e.preventDefault();
+          }
+          const height = e.touches[0].clientY - touchStartRef.current;
           if (height <= 0 || isNaN(height)) {
             return;
           }
-          showSpinner(height);
+          const poweredHeight = Math.pow(height, tension);
+          showSpinner(poweredHeight);
         }
-      } else {
-        if (stateRef.current !== "idle") {
-          e.preventDefault();
-        }
-        const height = e.touches[0].clientY - touchStartRef.current;
-        if (height <= 0 || isNaN(height)) {
-          return;
-        }
-        const poweredHeight = Math.pow(height, tension);
-        showSpinner(poweredHeight);
-      }
+      });
     },
     [showSpinner, tension, isBounceSupported, originTop, targetRef],
   );

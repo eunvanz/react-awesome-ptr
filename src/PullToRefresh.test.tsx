@@ -69,6 +69,11 @@ describe("PullToRefresh", () => {
     return render(getTestComponent(props));
   };
 
+  beforeEach(() => {
+    // @ts-ignore
+    jest.spyOn(window, "requestAnimationFrame").mockImplementation((cb) => cb());
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
