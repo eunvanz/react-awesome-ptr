@@ -1,3 +1,7 @@
+# 1.0.32 (2021-10-10)
+
+- applied `requestAnimationFrame` to `touchmove` callback function for performance
+
 # 1.0.31 (2021-10-07)
 
 - changed position from `absolute` to `fixed` in for-no-bounce case, same as for-bounce case
