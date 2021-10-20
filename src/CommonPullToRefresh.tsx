@@ -41,6 +41,7 @@ export interface CommonPullToRefreshProps
   hideDelay?: number;
   isDarkMode?: boolean;
   spinnerZIndex?: number;
+  isDisabled?: boolean;
 }
 
 const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
@@ -66,6 +67,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
   hideDelay,
   isDarkMode,
   spinnerZIndex,
+  isDisabled,
   ...restProps
 }: CommonPullToRefreshProps) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -292,7 +294,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
       }
     };
     const targetDOM = targetRef.current;
-    if (targetDOM) {
+    if (targetDOM && !isDisabled) {
       !isBounceSupported &&
         targetDOM.addEventListener("touchstart", touchStartFuncRef.current);
 
@@ -304,6 +306,8 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
         targetDOM.removeEventListener("touchmove", touchMoveFuncRef.current);
         targetDOM.removeEventListener("touchend", touchEndFuncRef.current);
       };
+    } else {
+      resetHeightToDOM();
     }
   }, [
     checkConditionAndRun,
@@ -318,6 +322,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
     onPull,
     setTouchStart,
     isBounceSupported,
+    isDisabled,
   ]);
 
   useEffect(() => {
