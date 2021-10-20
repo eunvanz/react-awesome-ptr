@@ -344,6 +344,7 @@ export const HiddenSpinnerDuringRefreshing = () => {
 | hasDefaultPullToRefreshPossibly |               `boolean`               |          |         | Set `true` if your service is possibly served in browsers that has default pull-to-refresh.                                                    |
 | isDarkMode                      |               `boolean`               |          |         | Set `true` if default spinner needs to be shown above dark background                                                                          |
 | spinnerZIndex                   |               `number`                |          |  `-1`   |                                                                                                                                                |
+| isDisabled                      |               `boolean`               |          |         | Set `true` to disable pull to refresh                                                                                                          |
 
 # Contributions
 

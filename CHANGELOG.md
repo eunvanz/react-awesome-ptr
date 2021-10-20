@@ -1,3 +1,7 @@
+# 1.0.34 (2021-10-20)
+
+- added `isDisabled` prop
+
 # 1.0.33 (2021-10-10)
 
 - fixed not working `e.preventDefault` due to `requestAnimationFrame`
