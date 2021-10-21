@@ -1,3 +1,7 @@
+# 1.0.35 (2021-10-21)
+
+- make artificial bounce more natural
+
 # 1.0.34 (2021-10-20)
 
 - added `isDisabled` prop
