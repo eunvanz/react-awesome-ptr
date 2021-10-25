@@ -1,3 +1,8 @@
+# 1.0.38 (2021-10-25)
+
+- tuned some numbers related to motion
+- refactored internal function
+
 # 1.0.37 (2021-10-25)
 
 - fixed `spinnerZIndex` prop passing to wrong element
