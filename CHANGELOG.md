@@ -1,3 +1,7 @@
+# 1.0.35 (2021-10-25)
+
+- fixed `spinnerZIndex` prop passing to wrong element
+
 # 1.0.34 (2021-10-20)
 
 - added `isDisabled` prop
