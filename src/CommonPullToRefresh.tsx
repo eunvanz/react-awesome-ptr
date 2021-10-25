@@ -9,7 +9,7 @@ const DEFAULT_TARGET_MARGIN_TRANSITION_FOR_BOUNCE =
   "margin 0.7s cubic-bezier(0, 0, 0, 1)";
 
 const SPINNER_SIZE = 32;
-const TRANSITION_DURATION = 250;
+const TRANSITION_DURATION = 350;
 const SPINNER_SPIN_DEGREE = 360;
 
 export type PullToRefreshState =
@@ -54,7 +54,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
   refreshDelay = 0,
   isRefreshing,
   style,
-  tension = 0.82,
+  tension = 0.8,
   className,
   spinnerSize = SPINNER_SIZE,
   customSpinner,
@@ -178,9 +178,9 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
   }, [originTop, isBounceSupported]);
 
   const checkConditionAndRun = useCallback(
-    (conditionFn, fn, hasToCheckOffsetPosition?: boolean) => {
+    (fn, hasToCheckOffsetPosition?: boolean) => {
       hasToCheckOffsetPosition && checkOffsetPosition();
-      if (!conditionFn()) {
+      if (!(isRefreshingRef.current || isDisabledRef.current || isRefreshing)) {
         fn();
       }
     },
@@ -269,18 +269,11 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
   useEffect(() => {
     if (!isBounceSupported) {
       touchStartFuncRef.current = (e) => {
-        checkConditionAndRun(
-          () => isRefreshingRef.current || isDisabledRef.current || isRefreshing,
-          () => setTouchStart(e),
-          true,
-        );
+        checkConditionAndRun(() => setTouchStart(e), true);
       };
     }
     touchMoveFuncRef.current = (e) => {
-      checkConditionAndRun(
-        () => isDisabledRef.current || isRefreshing || isRefreshingRef.current,
-        () => handleOnTouchMove(e),
-      );
+      checkConditionAndRun(() => handleOnTouchMove(e));
     };
     touchEndFuncRef.current = () => {
       if (shouldRefresh && !isRefreshingRef.current) {
@@ -297,7 +290,6 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
     if (targetDOM && !isDisabled) {
       !isBounceSupported &&
         targetDOM.addEventListener("touchstart", touchStartFuncRef.current);
-
       targetDOM.addEventListener("touchmove", touchMoveFuncRef.current);
       targetDOM.addEventListener("touchend", touchEndFuncRef.current);
       return () => {
