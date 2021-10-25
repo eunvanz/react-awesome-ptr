@@ -370,7 +370,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
       )}
       ref={wrapperRef}
       {...restProps}
-      style={{ ...style, top: originTop }}
+      style={{ ...style, top: originTop, zIndex: spinnerZIndex }}
     >
       {customSpinner || (
         <DefaultSpinner
@@ -381,7 +381,6 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
           style={{
             marginTop: (progressHeight - spinnerSize) / 2,
             width: spinnerSize,
-            zIndex: spinnerZIndex,
           }}
           isDarkMode={isDarkMode}
         />
