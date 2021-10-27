@@ -79,6 +79,8 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
   const touchMoveFuncRef = useRef<(e: TouchEvent) => void>(() => undefined);
   const touchEndFuncRef = useRef<(e: TouchEvent) => void>(() => undefined);
   const stateRef = useRef<PullToRefreshState>("idle");
+  const pullToRefreshTimerRef = useRef<number | null>(null);
+  const targetTimerRef = useRef<number | null>(null);
   const [isSpinnerSpinning, setIsSpinnerSpinning] = useState(isRefreshing);
 
   const DEFAULT_TARGET_MARGIN_TRANSITION = useMemo(() => {
@@ -101,14 +103,14 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
         (await new Promise((resolve) => setTimeout(resolve, completeDelay)));
       pullToRefreshDOM.classList.add("transition-enabled");
       pullToRefreshDOM.style.opacity = "0";
-      setTimeout(() => {
+      pullToRefreshTimerRef.current = window.setTimeout(() => {
         pullToRefreshDOM.classList.remove("transition-enabled");
         isRefreshingRef.current = isRefreshing;
         if (stateRef.current !== "idle") {
           onChangeState?.("idle");
           stateRef.current = "idle";
+          setIsSpinnerSpinning(false);
         }
-        setIsSpinnerSpinning(false);
       }, TRANSITION_DURATION);
     }
     if (targetDOM) {
@@ -119,7 +121,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
         targetDOM.style.transform = "translateY(0px)";
         targetDOM.style.transition = DEFAULT_TARGET_MARGIN_TRANSITION;
       }
-      setTimeout(() => {
+      targetTimerRef.current = window.setTimeout(() => {
         targetDOM.style.transition = isBounceSupported
           ? DEFAULT_TARGET_MARGIN_TRANSITION
           : "none";
@@ -351,6 +353,13 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
       }
     }
   }, [targetRef, isBounceSupported]);
+
+  useEffect(() => {
+    return () => {
+      pullToRefreshTimerRef.current && clearTimeout(pullToRefreshTimerRef.current);
+      targetTimerRef.current && clearTimeout(targetTimerRef.current);
+    };
+  }, [resetHeightToDOM]);
 
   return (
     <div

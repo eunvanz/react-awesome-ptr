@@ -194,10 +194,6 @@ describe("PullToRefresh", () => {
           await waitFor(() => {
             expect(getSpinner()).toHaveClass("spin");
           });
-
-          await waitFor(() => {
-            expect(getSpinner()).not.toHaveClass("spin");
-          });
         });
       });
 
@@ -377,10 +373,6 @@ describe("PullToRefresh", () => {
 
           await waitFor(() => {
             expect(getSpinner()).toHaveClass("spin");
-          });
-
-          await waitFor(() => {
-            expect(getSpinner()).not.toHaveClass("spin");
           });
         });
       });
