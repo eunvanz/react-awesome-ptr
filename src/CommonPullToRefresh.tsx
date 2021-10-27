@@ -194,7 +194,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
       const spinnerDOM = spinnerRef.current;
 
       if (pullToRefreshDOM) {
-        if (targetDOM && !isBounceSupported) {
+        if (targetDOM && !isBounceSupported && !isRefreshingRef.current) {
           targetDOM.style.transform = `translateY(${height}px)`;
         }
         if (height < triggerHeight) {
