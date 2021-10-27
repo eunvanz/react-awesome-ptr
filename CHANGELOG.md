@@ -1,3 +1,7 @@
+# 1.0.40 (2021-10-27)
+
+- fix bugs caused by invalid timeout
+
 # 1.0.39 (2021-10-27)
 
 - fix bug not returning to progress height after pulling
