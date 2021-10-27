@@ -1,3 +1,7 @@
+# 1.0.39 (2021-10-27)
+
+- fix bug not returning to progress height after pulling
+
 # 1.0.38 (2021-10-25)
 
 - tuned some numbers related to motion
