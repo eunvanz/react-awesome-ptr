@@ -1,3 +1,7 @@
+# 1.0.41 (2021-11-01)
+
+- make overriding spinner style to be possible
+
 # 1.0.40 (2021-10-27)
 
 - fix bugs caused by invalid timeout
