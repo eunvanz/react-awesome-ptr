@@ -371,7 +371,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
       )}
       ref={wrapperRef}
       {...restProps}
-      style={{ ...style, top: originTop, zIndex: spinnerZIndex }}
+      style={{ top: originTop, zIndex: spinnerZIndex, ...style }}
     >
       {customSpinner || (
         <DefaultSpinner
