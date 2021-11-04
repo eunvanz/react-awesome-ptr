@@ -127,7 +127,15 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
           : "none";
       }, TRANSITION_DURATION);
     }
-  }, [isRefreshing, originMarginTop, targetRef, onChangeState, completeDelay]);
+  }, [
+    onChangeState,
+    targetRef,
+    completeDelay,
+    isRefreshing,
+    isBounceSupported,
+    originMarginTop,
+    DEFAULT_TARGET_MARGIN_TRANSITION,
+  ]);
 
   const refresh = useCallback(() => {
     const targetDOM = targetRef.current;
@@ -155,12 +163,13 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
     }
   }, [
     targetRef,
+    refreshDelay,
+    isBounceSupported,
+    DEFAULT_TARGET_MARGIN_TRANSITION,
     progressHeight,
     originMarginTop,
-    onRefresh,
-    refreshDelay,
     onChangeState,
-    isBounceSupported,
+    onRefresh,
   ]);
 
   const checkOffsetPosition = useCallback(() => {
@@ -177,7 +186,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
       }
     }
     return isDisabledRef.current;
-  }, [originTop, isBounceSupported]);
+  }, [isBounceSupported, targetRef, originTop]);
 
   const checkConditionAndRun = useCallback(
     (fn, hasToCheckOffsetPosition?: boolean) => {
@@ -186,7 +195,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
         fn();
       }
     },
-    [checkOffsetPosition],
+    [checkOffsetPosition, isRefreshing],
   );
 
   const showSpinner = useCallback(
@@ -231,7 +240,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
         }
       }
     },
-    [originMarginTop, targetRef, triggerHeight, onChangeState, onPull, isBounceSupported],
+    [targetRef, triggerHeight, onChangeState, onPull, isBounceSupported],
   );
 
   const handleOnTouchMove = useCallback(
@@ -243,9 +252,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
           if (height <= 0 || isNaN(height)) {
             return;
           }
-          requestAnimationFrame(() => {
-            showSpinner(height);
-          });
+          showSpinner(height);
         }
       } else {
         if (stateRef.current !== "idle") {
@@ -256,9 +263,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
           return;
         }
         const poweredHeight = Math.pow(height, tension);
-        requestAnimationFrame(() => {
-          showSpinner(poweredHeight);
-        });
+        showSpinner(poweredHeight);
       }
     },
     [showSpinner, tension, isBounceSupported, originTop, targetRef],
@@ -271,21 +276,25 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
   useEffect(() => {
     if (!isBounceSupported) {
       touchStartFuncRef.current = (e) => {
-        checkConditionAndRun(() => setTouchStart(e), true);
+        requestAnimationFrame(() => {
+          checkConditionAndRun(() => setTouchStart(e), true);
+        });
       };
     }
     touchMoveFuncRef.current = (e) => {
-      checkConditionAndRun(() => handleOnTouchMove(e));
+      requestAnimationFrame(() => {
+        checkConditionAndRun(() => handleOnTouchMove(e));
+      });
     };
     touchEndFuncRef.current = () => {
       if (shouldRefresh && !isRefreshingRef.current) {
         onRelease?.();
         onPull?.(0);
-        refresh();
+        requestAnimationFrame(refresh);
       } else if (!isRefreshing) {
         onRelease?.();
         onPull?.(0);
-        resetHeightToDOM();
+        requestAnimationFrame(resetHeightToDOM);
       }
     };
     const targetDOM = targetRef.current;
@@ -328,7 +337,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
         resetHeightToDOM();
       }
     }
-  }, [isRefreshing, resetHeightToDOM, isSpinnerHiddenDuringRefreshing]);
+  }, [isRefreshing, resetHeightToDOM, isSpinnerHiddenDuringRefreshing, hideDelay]);
 
   useEffect(() => {
     if (!isBounceSupported) {
@@ -343,7 +352,14 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
         setInitialized(true);
       }
     }
-  }, [initialized, isRefreshing, triggerHeight, showSpinner, isBounceSupported]);
+  }, [
+    initialized,
+    isRefreshing,
+    triggerHeight,
+    showSpinner,
+    isBounceSupported,
+    isSpinnerHiddenDuringRefreshing,
+  ]);
 
   useEffect(() => {
     if (isBounceSupported) {
@@ -352,7 +368,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
         targetDOM.style.transition = DEFAULT_TARGET_MARGIN_TRANSITION;
       }
     }
-  }, [targetRef, isBounceSupported]);
+  }, [targetRef, isBounceSupported, DEFAULT_TARGET_MARGIN_TRANSITION]);
 
   useEffect(() => {
     return () => {
