@@ -310,7 +310,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
         targetDOM.removeEventListener("touchend", touchEndFuncRef.current);
       };
     } else {
-      resetHeightToDOM();
+      !isRefreshing && resetHeightToDOM();
     }
   }, [
     checkConditionAndRun,
