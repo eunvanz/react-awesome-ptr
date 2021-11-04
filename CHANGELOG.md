@@ -1,3 +1,7 @@
+# 1.0.42 (2021-11-04)
+
+- fix touch event callbacks timing issue
+
 # 1.0.41 (2021-11-01)
 
 - make overriding spinner style to be possible
