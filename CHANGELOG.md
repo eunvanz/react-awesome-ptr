@@ -1,3 +1,7 @@
+# 1.0.43 (2021-11-04)
+
+- fix `hideDelay` option to be work properly
+
 # 1.0.42 (2021-11-04)
 
 - fix touch event callbacks timing issue
