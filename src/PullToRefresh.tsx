@@ -46,7 +46,13 @@ const PullToRefresh: React.FC<PullToRefreshProps> = ({
       (isBounceSupported || (isIos && !isBounceNotSupported)) &&
       (hasDefaultPullToRefreshPossibly !== undefined ? !hasDefaultPullToRefresh : true)
     );
-  }, [isBounceSupported, isIos, isBounceNotSupported, hasDefaultPullToRefreshPossibly]);
+  }, [
+    isBounceSupported,
+    isIos,
+    isBounceNotSupported,
+    hasDefaultPullToRefreshPossibly,
+    hasDefaultPullToRefresh,
+  ]);
 
   return <CommonPullToRefresh {...props} isBounceSupported={isBounceSupportedProp} />;
 };
