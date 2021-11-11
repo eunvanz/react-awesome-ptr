@@ -4,7 +4,7 @@ import DefaultSpinner from "./DefaultSpinner";
 import "./CommonPullToRefresh.scss";
 
 const DEFAULT_TARGET_MARGIN_TRANSITION_FOR_NO_BOUNCE =
-  "transform 0.35s cubic-bezier(0, 0, 0, 1)";
+  "transform 0.35s cubic-bezier(.23, 1, .32, 1)";
 const DEFAULT_TARGET_MARGIN_TRANSITION_FOR_BOUNCE =
   "margin 0.7s cubic-bezier(0, 0, 0, 1)";
 
