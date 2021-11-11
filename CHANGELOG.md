@@ -1,3 +1,7 @@
+# 1.0.44 (2021-11-11)
+
+- modify cubic-bezier for virtual bounce animation
+
 # 1.0.43 (2021-11-04)
 
 - fix `hideDelay` option to be work properly
