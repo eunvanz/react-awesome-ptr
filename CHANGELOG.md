@@ -1,3 +1,7 @@
+# 1.0.45 (2021-11-21)
+
+- support SSR
+
 # 1.0.44 (2021-11-11)
 
 - modify cubic-bezier for virtual bounce animation
