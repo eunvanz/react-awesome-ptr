@@ -14,10 +14,12 @@ const PullToRefresh: React.FC<PullToRefreshProps> = ({
   hasDefaultPullToRefreshPossibly,
   ...props
 }: PullToRefreshProps) => {
-  const isIos = useMemo(() => {
-    return (
-      typeof window !== "undefined" && /iPhone|iPad|iPod|Io\//i.test(navigator.userAgent)
-    );
+  const { isSSR, isIos } = useMemo(() => {
+    const isSSR = typeof window === "undefined";
+    return {
+      isSSR,
+      isIos: !isSSR && /iPhone|iPad|iPod|Io\//i.test(navigator.userAgent),
+    };
   }, []);
 
   const hasDefaultPullToRefresh = useMemo(() => {
@@ -31,7 +33,7 @@ const PullToRefresh: React.FC<PullToRefreshProps> = ({
 
   useEffect(() => {
     // for disable browser's default pull to refresh
-    if (typeof document !== "undefined") {
+    if (!isSSR) {
       const originValue = document.body.style.overscrollBehaviorY;
       document.body.style.overscrollBehaviorY = "contain";
 
@@ -39,7 +41,7 @@ const PullToRefresh: React.FC<PullToRefreshProps> = ({
         document.body.style.overscrollBehaviorY = originValue;
       };
     }
-  }, []);
+  }, [isSSR]);
 
   const isBounceSupportedProp = useMemo(() => {
     return (
@@ -54,7 +56,9 @@ const PullToRefresh: React.FC<PullToRefreshProps> = ({
     hasDefaultPullToRefresh,
   ]);
 
-  return <CommonPullToRefresh {...props} isBounceSupported={isBounceSupportedProp} />;
+  return isSSR ? null : (
+    <CommonPullToRefresh {...props} isBounceSupported={isBounceSupportedProp} />
+  );
 };
 
 export default PullToRefresh;
