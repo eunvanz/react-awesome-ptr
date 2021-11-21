@@ -6,9 +6,11 @@ module.exports = {
     es2021: true,
   },
   extends: [
+    "react-app",
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {

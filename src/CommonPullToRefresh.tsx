@@ -70,20 +70,17 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
   isDisabled,
   ...restProps
 }: CommonPullToRefreshProps) => {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const $pullToRefresh = wrapperRef.current;
-  const spinnerRef = useRef<HTMLImageElement>(null);
-  const $spinner = spinnerRef.current;
-  const $target = targetRef.current;
-  let touchStartY = useRef<number>(0).current;
-  let isDisabledInternally = useRef<boolean>(false).current;
-  let isRefreshingInternally = useRef<boolean>(false).current;
-  let touchStartFunc = useRef<(e: TouchEvent) => void>(() => undefined).current;
-  let touchMoveFunc = useRef<(e: TouchEvent) => void>(() => undefined).current;
-  let touchEndFunc = useRef<(e: TouchEvent) => void>(() => undefined).current;
-  let state = useRef<PullToRefreshState>("idle").current;
-  let pullToRefreshTimer = useRef<number>(null).current;
-  let targetTimer = useRef<number>(null).current;
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const spinnerRef = useRef<HTMLImageElement | null>(null);
+  const touchStartRef = useRef<number>(0);
+  const isDisabledRef = useRef<boolean>(false);
+  const isRefreshingRef = useRef<boolean>(false);
+  const touchStartFuncRef = useRef<(e: TouchEvent) => void>(() => undefined);
+  const touchMoveFuncRef = useRef<(e: TouchEvent) => void>(() => undefined);
+  const touchEndFuncRef = useRef<(e: TouchEvent) => void>(() => undefined);
+  const stateRef = useRef<PullToRefreshState>("idle");
+  const pullToRefreshTimerRef = useRef<number | null>(null);
+  const targetTimerRef = useRef<number | null>(null);
   const [isSpinnerSpinning, setIsSpinnerSpinning] = useState(isRefreshing);
 
   const DEFAULT_TARGET_MARGIN_TRANSITION = useMemo(() => {
@@ -95,21 +92,23 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
   const [initialized, setInitialized] = useState(false);
   const [shouldRefresh, setShouldRefresh] = useState(false);
 
-  const resetHeightToDOM = useCallback(async () => {
-    const nextState = state === "refreshing" ? "complete" : "idle";
+  const resetHeight = useCallback(async () => {
+    const nextState = stateRef.current === "refreshing" ? "complete" : "idle";
     onChangeState?.(nextState);
-    state = nextState;
-    if ($pullToRefresh) {
+    stateRef.current = nextState;
+    const $target = targetRef.current;
+    const $wrapper = wrapperRef.current;
+    if ($wrapper) {
       nextState === "complete" &&
         (await new Promise((resolve) => setTimeout(resolve, completeDelay)));
-      $pullToRefresh.classList.add("transition-enabled");
-      $pullToRefresh.style.opacity = "0";
-      pullToRefreshTimer = window.setTimeout(() => {
-        $pullToRefresh.classList.remove("transition-enabled");
-        isRefreshingInternally = isRefreshing;
-        if (state !== "idle") {
+      $wrapper.classList.add("transition-enabled");
+      $wrapper.style.opacity = "0";
+      pullToRefreshTimerRef.current = window.setTimeout(() => {
+        $wrapper.classList.remove("transition-enabled");
+        isRefreshingRef.current = isRefreshing;
+        if (stateRef.current !== "idle") {
           onChangeState?.("idle");
-          state = "idle";
+          stateRef.current = "idle";
           setIsSpinnerSpinning(false);
         }
       }, TRANSITION_DURATION);
@@ -122,7 +121,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
         $target.style.transform = "translateY(0px)";
         $target.style.transition = DEFAULT_TARGET_MARGIN_TRANSITION;
       }
-      targetTimer = window.setTimeout(() => {
+      targetTimerRef.current = window.setTimeout(() => {
         $target.style.transition = isBounceSupported
           ? DEFAULT_TARGET_MARGIN_TRANSITION
           : "none";
@@ -139,6 +138,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
   ]);
 
   const refresh = useCallback(() => {
+    const $target = targetRef.current;
     if ($target) {
       if (!isBounceSupported) {
         $target.style.transition = DEFAULT_TARGET_MARGIN_TRANSITION;
@@ -147,10 +147,10 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
         $target.style.marginTop = `${progressHeight + originMarginTop}px`;
       }
     }
-    isRefreshingInternally = true;
-    if (state !== "refreshing") {
+    isRefreshingRef.current = true;
+    if (stateRef.current !== "refreshing") {
       onChangeState?.("refreshing");
-      state = "refreshing";
+      stateRef.current = "refreshing";
       setIsSpinnerSpinning(true);
     }
     setShouldRefresh(false);
@@ -174,23 +174,24 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
 
   const checkOffsetPosition = useCallback(() => {
     if (isBounceSupported) {
+      const $target = targetRef.current;
       if ($target) {
-        isDisabledInternally = $target.getClientRects()[0].top < originTop;
+        isDisabledRef.current = $target.getClientRects()[0].top < originTop;
       }
     } else {
       // -1 is for some android mobile browser like firefox.
       // It sometimes calculate scrollY on the top as like 0.788968612
-      if (state === "idle") {
-        isDisabledInternally = window.scrollY - 1 > originTop;
+      if (stateRef.current === "idle") {
+        isDisabledRef.current = window.scrollY - 1 > originTop;
       }
     }
-    return isDisabledInternally;
+    return isDisabledRef.current;
   }, [isBounceSupported, targetRef, originTop]);
 
   const checkConditionAndRun = useCallback(
     (fn, hasToCheckOffsetPosition?: boolean) => {
       hasToCheckOffsetPosition && checkOffsetPosition();
-      if (!(isRefreshingInternally || isDisabledInternally || isRefreshing)) {
+      if (!(isRefreshingRef.current || isDisabledRef.current || isRefreshing)) {
         fn();
       }
     },
@@ -199,19 +200,23 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
 
   const showSpinner = useCallback(
     (height: number) => {
-      if ($pullToRefresh) {
-        if ($target && !isBounceSupported && !isRefreshingInternally) {
+      const $wrapper = wrapperRef.current;
+      const $target = targetRef.current;
+      const $spinner = spinnerRef.current;
+
+      if ($wrapper) {
+        if ($target && !isBounceSupported && !isRefreshingRef.current) {
           $target.style.transform = `translateY(${height}px)`;
         }
         if (height < triggerHeight) {
           setShouldRefresh(false);
           const progress = height / triggerHeight;
           onPull?.(progress);
-          if (state !== "pulling") {
+          if (stateRef.current !== "pulling") {
             onChangeState?.("pulling");
-            state = "pulling";
+            stateRef.current = "pulling";
           }
-          $pullToRefresh.style.opacity = `${height / triggerHeight}`;
+          $wrapper.style.opacity = `${height / triggerHeight}`;
           if ($spinner) {
             const rotate = `rotate(${(height / triggerHeight) * SPINNER_SPIN_DEGREE}deg)`;
             $spinner.style.webkitTransform = rotate;
@@ -220,10 +225,10 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
           }
         } else {
           onPull?.(1);
-          $pullToRefresh.style.opacity = "1";
-          if (state !== "triggerReady") {
+          $wrapper.style.opacity = "1";
+          if (stateRef.current !== "triggerReady") {
             onChangeState?.("triggerReady");
-            state = "triggerReady";
+            stateRef.current = "triggerReady";
           }
           setShouldRefresh(true);
           if ($spinner) {
@@ -250,10 +255,10 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
           showSpinner(height);
         }
       } else {
-        if (state !== "idle") {
+        if (stateRef.current !== "idle") {
           e.preventDefault();
         }
-        const height = e.touches[0].clientY - touchStartY;
+        const height = e.touches[0].clientY - touchStartRef.current;
         if (height <= 0 || isNaN(height)) {
           return;
         }
@@ -265,49 +270,51 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
   );
 
   const setTouchStart = useCallback((e: TouchEvent) => {
-    touchStartY = e.touches[0].clientY;
+    touchStartRef.current = e.touches[0].clientY;
   }, []);
 
   useEffect(() => {
     if (!isBounceSupported) {
-      touchStartFunc = (e) => {
+      touchStartFuncRef.current = (e) => {
         requestAnimationFrame(() => {
           checkConditionAndRun(() => setTouchStart(e), true);
         });
       };
     }
-    touchMoveFunc = (e) => {
+    touchMoveFuncRef.current = (e) => {
       requestAnimationFrame(() => {
         checkConditionAndRun(() => handleOnTouchMove(e));
       });
     };
-    touchEndFunc = () => {
-      if (shouldRefresh && !isRefreshingInternally) {
+    touchEndFuncRef.current = () => {
+      if (shouldRefresh && !isRefreshingRef.current) {
         onRelease?.();
         onPull?.(0);
         requestAnimationFrame(refresh);
       } else if (!isRefreshing) {
         onRelease?.();
         onPull?.(0);
-        requestAnimationFrame(resetHeightToDOM);
+        requestAnimationFrame(resetHeight);
       }
     };
     const $target = targetRef.current;
     if ($target && !isDisabled) {
-      !isBounceSupported && $target.addEventListener("touchstart", touchStartFunc);
-      $target.addEventListener("touchmove", touchMoveFunc);
-      $target.addEventListener("touchend", touchEndFunc);
+      !isBounceSupported &&
+        $target.addEventListener("touchstart", touchStartFuncRef.current);
+      $target.addEventListener("touchmove", touchMoveFuncRef.current);
+      $target.addEventListener("touchend", touchEndFuncRef.current);
       return () => {
-        !isBounceSupported && $target.removeEventListener("touchstart", touchStartFunc);
-        $target.removeEventListener("touchmove", touchMoveFunc);
-        $target.removeEventListener("touchend", touchEndFunc);
+        !isBounceSupported &&
+          $target.removeEventListener("touchstart", touchStartFuncRef.current);
+        $target.removeEventListener("touchmove", touchMoveFuncRef.current);
+        $target.removeEventListener("touchend", touchEndFuncRef.current);
       };
     } else {
-      !isRefreshing && resetHeightToDOM();
+      !isRefreshing && resetHeight();
     }
   }, [
     checkConditionAndRun,
-    resetHeightToDOM,
+    resetHeight,
     showSpinner,
     handleOnTouchMove,
     shouldRefresh,
@@ -322,23 +329,24 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
   ]);
 
   useEffect(() => {
-    isRefreshingInternally = isRefreshing;
+    isRefreshingRef.current = isRefreshing;
     if (!isRefreshing || (isRefreshing && isSpinnerHiddenDuringRefreshing)) {
       if (hideDelay) {
-        setTimeout(resetHeightToDOM, hideDelay);
+        setTimeout(resetHeight, hideDelay);
       } else {
-        resetHeightToDOM();
+        resetHeight();
       }
     }
-  }, [isRefreshing, resetHeightToDOM, isSpinnerHiddenDuringRefreshing, hideDelay]);
+  }, [isRefreshing, resetHeight, isSpinnerHiddenDuringRefreshing, hideDelay]);
 
   useEffect(() => {
     if (!isBounceSupported) {
+      const $wrapper = wrapperRef.current;
       if (!initialized) {
         if (isRefreshing && !isSpinnerHiddenDuringRefreshing) {
           showSpinner(triggerHeight);
-          if ($pullToRefresh) {
-            $pullToRefresh.style.height = `${triggerHeight}px`;
+          if ($wrapper) {
+            $wrapper.style.height = `${triggerHeight}px`;
           }
         }
         setInitialized(true);
@@ -364,10 +372,10 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
 
   useEffect(() => {
     return () => {
-      pullToRefreshTimer && clearTimeout(pullToRefreshTimer);
-      targetTimer && clearTimeout(targetTimer);
+      pullToRefreshTimerRef.current && clearTimeout(pullToRefreshTimerRef.current);
+      targetTimerRef.current && clearTimeout(targetTimerRef.current);
     };
-  }, [resetHeightToDOM]);
+  }, [resetHeight]);
 
   return (
     <div
