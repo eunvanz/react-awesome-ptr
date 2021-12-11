@@ -221,16 +221,18 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
             const rotate = `rotate(${(height / triggerHeight) * SPINNER_SPIN_DEGREE}deg)`;
             $spinner.style.webkitTransform = rotate;
             $spinner.style.transform = rotate;
-            $spinner.classList.remove("bump");
+            if ($spinner.classList.contains("bump")) {
+              $spinner.classList.remove("bump");
+            }
           }
         } else {
           onPull?.(1);
           $wrapper.style.opacity = "1";
+          setShouldRefresh(true);
           if (stateRef.current !== "triggerReady") {
             onChangeState?.("triggerReady");
             stateRef.current = "triggerReady";
           }
-          setShouldRefresh(true);
           if ($spinner) {
             const rotate = `rotate(${SPINNER_SPIN_DEGREE}deg)`;
             $spinner.style.webkitTransform = rotate;
@@ -255,9 +257,6 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
           showSpinner(height);
         }
       } else {
-        if (stateRef.current !== "idle") {
-          e.preventDefault();
-        }
         const height = e.touches[0].clientY - touchStartRef.current;
         if (height <= 0 || isNaN(height)) {
           return;
@@ -282,6 +281,9 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
       };
     }
     touchMoveFuncRef.current = (e) => {
+      if (!isBounceSupported && stateRef.current !== "idle") {
+        e.preventDefault();
+      }
       requestAnimationFrame(() => {
         checkConditionAndRun(() => handleOnTouchMove(e));
       });
