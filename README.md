@@ -13,7 +13,7 @@
 - Customizable spinner.
 - Support Typescript.
 
-> Be sure it's a mobile-only component that works by touch events.
+> Make sure it's a mobile-only component that works by touch events.
 
 > In **default pull to refresh** supported browsers like Safari in iOS 15, it works **only when the browser is not scrolled**. If browser is scrolled, browser's default pull to refresh will be triggered.
 
@@ -42,7 +42,7 @@ import "react-awesome-ptr/dist/index.css";
 
 See examples in a mobile browser, or turn on the browser debugger and toggle device toolbar. You can conveniently open example pages on your mobile by scanning QR codes.
 
-> If you see examples in desktop browser, be sure set the device as any android device.
+> If you see examples in desktop browser, make sure to set the device as any android device.
 
 ## [On the top](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--on-the-top&args=&viewMode=story)
 
