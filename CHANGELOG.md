@@ -1,3 +1,7 @@
+# 1.0.46 (2021-12-11)
+
+- fix to prevent default event on `touchmove` properly
+
 # 1.0.45 (2021-11-21)
 
 - support SSR
