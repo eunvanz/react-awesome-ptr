@@ -5,7 +5,7 @@
     animation: bump 0.3s 1;
   }
   .spin > svg {
-    animation: spin 1s infinite 0.1s linear;
+    animation: spin 1.5s infinite linear;
   }
   @keyframes spin {
     from {

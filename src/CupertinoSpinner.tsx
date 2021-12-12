@@ -61,9 +61,9 @@ const CupertinoSpinner = forwardRef<HTMLImageElement, CupertinoSpinnerProps>(
                     initAngle = 0;
                     exitAngle = revisedStepUnit;
                   } else {
-                    revisedStepUnit = (360 - 180) / (STEP_COUNT - 1);
-                    initAngle = 180 + (index - 2) * revisedStepUnit;
-                    exitAngle = 180 + index * revisedStepUnit;
+                    revisedStepUnit = (360 - 150) / (STEP_COUNT - 1);
+                    initAngle = 150 + (index - 2) * revisedStepUnit;
+                    exitAngle = 150 + index * revisedStepUnit;
                   }
                   opacity =
                     initAngle >= progressAngle
