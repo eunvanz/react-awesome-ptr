@@ -413,6 +413,8 @@ export const HiddenSpinnerDuringRefreshing = () => {
 | isDarkMode                      |               `boolean`               |          |         | Set `true` if default spinner needs to be shown above dark background                                                                          |
 | spinnerZIndex                   |               `number`                |          |  `-1`   |                                                                                                                                                |
 | isDisabled                      |               `boolean`               |          |         | Set `true` to disable pull to refresh                                                                                                          |
+| isOpacityChangeOnPullDisabled   |               `boolean`               |          |         | Set `true` if you don't want to change spinner's opacity on pull                                                                               |
+| isRotationSpinnerOnPullDisabled |               `boolean`               |          |         | Set `true` if you don't want to rotate spinner on pull                                                                                         |
 
 # Contributions
 
