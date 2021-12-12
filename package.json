@@ -55,7 +55,6 @@
     "babel-jest": "^27.2.2",
     "babel-loader": "^8.2.2",
     "babel-preset-react-app": "^10.0.0",
-    "classnames": "^2.3.1",
     "css-loader": "^5.2.7",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.24.2",
@@ -86,5 +85,7 @@
     "react": ">=16.8",
     "react-dom": ">=16.8"
   },
-  "dependencies": {}
+  "dependencies": {
+    "classnames": "^2.3.1"
+  }
 }
