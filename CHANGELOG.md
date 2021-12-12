@@ -1,3 +1,7 @@
+# 1.0.48 (2021-12-12)
+
+- add `classnames` to dependencies
+
 # 1.0.47 (2021-12-12)
 
 - add `isOpacityChangeOnPullDisabled`, `isRotationSpinnerOnPullDisabled` props
