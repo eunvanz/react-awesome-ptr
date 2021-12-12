@@ -183,7 +183,7 @@ export const ArtificialBounce = () => {
 [<img src="https://user-images.githubusercontent.com/17351661/145702945-508c1434-6c3c-4406-9b80-138f7c55d3be.png" width="200" />](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--cupertino-spinner-as-custom-spinner&args=&viewMode=story)
 
 ```typescript
-import PullToRefresh from "react-awesome-ptr";
+import PullToRefresh, { CupertinoSpinner } from "react-awesome-ptr";
 import "react-awesome-ptr/dist/index.css";
 
 export const CupertinoSpinnerAsCustomSpinner = () => {
