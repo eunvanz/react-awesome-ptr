@@ -1,3 +1,8 @@
+# 1.0.47 (2021-12-12)
+
+- add `isOpacityChangeOnPullDisabled`, `isRotationSpinnerOnPullDisabled` props
+- add `CupertinoSpinner` component
+
 # 1.0.46 (2021-12-11)
 
 - fix to prevent default event on `touchmove` properly

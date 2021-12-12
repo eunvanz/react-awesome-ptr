@@ -19,7 +19,15 @@
 
 > For the webviews in hybrid apps, it works with no worries.
 
-![KakaoTalk_Video_2021-09-27-10-46-08 mp4](https://user-images.githubusercontent.com/17351661/134833837-ad712f07-0a97-43ef-9117-90e214f65032.gif)
+> A complementary custom spinner component `CupertinoSpinner` is included. Feel free to use this component to enhance UX like iOS, but keep in mind that the default spinner shows better performance.
+
+#### Default Spinner example
+
+![<img src="https://user-images.githubusercontent.com/17351661/134833837-ad712f07-0a97-43ef-9117-90e214f65032.gif" width="300" />](https://user-images.githubusercontent.com/17351661/134833837-ad712f07-0a97-43ef-9117-90e214f65032.gif)
+
+#### CupertinoSpinner example
+
+![<img src="https://user-images.githubusercontent.com/17351661/145703344-7d925df3-8283-4fe9-be61-9808179a404b.gif" width="300" />](https://user-images.githubusercontent.com/17351661/145703344-7d925df3-8283-4fe9-be61-9808179a404b.gif)
 
 # Usage
 
