@@ -1,4 +1,7 @@
 .react-awesome-ptr {
+  &.fixed-opacity {
+    opacity: 1 !important;
+  }
   &.for-bounce {
     &.transition-enabled {
       transition: height 0.2s cubic-bezier(0, 0, 0, 1), opacity 0.2s;

@@ -1,17 +1,23 @@
 import { forwardRef, useMemo } from "react";
+import { PullToRefreshState } from ".";
+import cx from "classnames";
 import "./CupertinoSpinner.scss";
 
 export interface CupertinoSpinnerProps
   extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   isDarkMode?: boolean;
   progress: number;
+  pullToRefreshState: PullToRefreshState;
 }
 
 const STEP_COUNT = 8;
 const STROKE_WIDTH = 12;
 
 const CupertinoSpinner = forwardRef<HTMLImageElement, CupertinoSpinnerProps>(
-  ({ style, className, isDarkMode, progress }: CupertinoSpinnerProps, ref) => {
+  (
+    { style, className, isDarkMode, progress, pullToRefreshState }: CupertinoSpinnerProps,
+    ref,
+  ) => {
     const stepUnit = useMemo(() => {
       return 360 / STEP_COUNT;
     }, []);
@@ -22,7 +28,13 @@ const CupertinoSpinner = forwardRef<HTMLImageElement, CupertinoSpinnerProps>(
 
     return (
       <div className="rap-cupertino-spinner" style={style}>
-        <div className={className} ref={ref}>
+        <div
+          className={cx(className, {
+            spin: pullToRefreshState === "refreshing",
+            bump: pullToRefreshState === "triggerReady",
+          })}
+          ref={ref}
+        >
           <svg
             version="1.1"
             viewBox="-54 -54 108 108"
@@ -32,25 +44,29 @@ const CupertinoSpinner = forwardRef<HTMLImageElement, CupertinoSpinnerProps>(
             <g strokeLinecap="round" strokeWidth={STROKE_WIDTH} opacity="0.8">
               <path id="a" d="m0 20 0,18" />
               {Array.from({ length: STEP_COUNT }).map((_, index) => {
-                let revisedStepUnit = 0;
-                let initAngle = 0;
-                let exitAngle = 0;
-                if (index === 0) {
-                  revisedStepUnit = 180;
-                  initAngle = 0;
-                  exitAngle = revisedStepUnit;
-                } else {
-                  revisedStepUnit = (360 - 180) / (STEP_COUNT - 1);
-                  initAngle = 180 + (index - 2) * revisedStepUnit;
-                  exitAngle = 180 + index * revisedStepUnit;
+                const isSpinning = pullToRefreshState === "refreshing";
+                let opacity = 100;
+                if (!isSpinning) {
+                  let revisedStepUnit = 0;
+                  let initAngle = 0;
+                  let exitAngle = 0;
+                  if (index === 0) {
+                    revisedStepUnit = 180;
+                    initAngle = 0;
+                    exitAngle = revisedStepUnit;
+                  } else {
+                    revisedStepUnit = (360 - 180) / (STEP_COUNT - 1);
+                    initAngle = 180 + (index - 2) * revisedStepUnit;
+                    exitAngle = 180 + index * revisedStepUnit;
+                  }
+                  opacity =
+                    initAngle >= progressAngle
+                      ? 0
+                      : Math.min(
+                          ((progressAngle - initAngle) * 100) / (exitAngle - initAngle),
+                          100,
+                        );
                 }
-                const opacity =
-                  initAngle >= progressAngle
-                    ? 0
-                    : Math.min(
-                        ((progressAngle - initAngle) * 100) / (exitAngle - initAngle),
-                        100,
-                      );
                 return (
                   <use
                     transform={`rotate(${

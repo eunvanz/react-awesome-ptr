@@ -106,7 +106,9 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
       nextState === "complete" &&
         (await new Promise((resolve) => setTimeout(resolve, completeDelay)));
       $wrapper.classList.add("transition-enabled");
-      $wrapper.style.opacity = "0";
+      if (!isOpacityChangeOnPullDisabled) {
+        $wrapper.style.opacity = "0";
+      }
       pullToRefreshTimerRef.current = window.setTimeout(() => {
         $wrapper.classList.remove("transition-enabled");
         isRefreshingRef.current = isRefreshing;
@@ -139,6 +141,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
     isBounceSupported,
     originMarginTop,
     DEFAULT_TARGET_MARGIN_TRANSITION,
+    isOpacityChangeOnPullDisabled,
   ]);
 
   const refresh = useCallback(() => {
@@ -256,7 +259,15 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
         }
       }
     },
-    [targetRef, triggerHeight, onChangeState, onPull, isBounceSupported],
+    [
+      targetRef,
+      triggerHeight,
+      onChangeState,
+      onPull,
+      isBounceSupported,
+      isOpacityChangeOnPullDisabled,
+      isRotationSpinnerOnPullDisabled,
+    ],
   );
 
   const handleOnTouchMove = useCallback(
@@ -399,6 +410,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
       className={classNames(
         "react-awesome-ptr",
         isBounceSupported ? "for-bounce" : "for-no-bounce",
+        isOpacityChangeOnPullDisabled ? "fixed-opacity" : undefined,
         className,
       )}
       ref={wrapperRef}

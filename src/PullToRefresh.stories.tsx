@@ -1,6 +1,7 @@
 import { ComponentMeta } from "@storybook/react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { PullToRefreshState } from "./CommonPullToRefresh";
+import CupertinoSpinner from "./CupertinoSpinner";
 
 import PullToRefresh from "./PullToRefresh";
 
@@ -186,6 +187,57 @@ export const CustomSpinner: React.FC = () => {
       />
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
         <p>Pull in a mobile browser (custom spinner)</p>
+      </div>
+    </>
+  );
+};
+
+export const CupertinoSpinnerAsCustomSpinner: React.FC = () => {
+  const targetRef = useRef<HTMLDivElement>(null);
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const [progress, setProgress] = useState(0);
+  const [pullToRefreshState, setPullToRefreshState] = useState<PullToRefreshState>(
+    "idle",
+  );
+
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true);
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 3000);
+  }, []);
+
+  const onPull = useCallback((progress: number) => {
+    setProgress(progress);
+  }, []);
+
+  const onChangeState = useCallback((state: PullToRefreshState) => {
+    setPullToRefreshState(state);
+  }, []);
+
+  const customSpinner = useMemo(() => {
+    return (
+      <CupertinoSpinner progress={progress} pullToRefreshState={pullToRefreshState} />
+    );
+  }, [pullToRefreshState, isRefreshing, progress]);
+
+  return (
+    <>
+      <PullToRefresh
+        targetRef={targetRef}
+        onRefresh={onRefresh}
+        isRefreshing={isRefreshing}
+        onPull={onPull}
+        onChangeState={onChangeState}
+        customSpinner={customSpinner}
+        hasDefaultPullToRefreshPossibly
+        isOpacityChangeOnPullDisabled
+        isRotationSpinnerOnPullDisabled
+      />
+      <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
+        <p>Pull in a mobile browser (CupertinoSpinner as custom spinner)</p>
       </div>
     </>
   );
