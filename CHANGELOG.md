@@ -1,3 +1,7 @@
+# 1.0.49 (2021-12-12)
+
+- tune `CupertinoSpinner` component
+
 # 1.0.48 (2021-12-12)
 
 - add `classnames` to dependencies
