@@ -202,6 +202,10 @@ export const CupertinoSpinnerAsCustomSpinner: React.FC = () => {
     "idle",
   );
 
+  const isTriggerReady = useMemo(() => {
+    return pullToRefreshState === "triggerReady";
+  }, [pullToRefreshState]);
+
   const onRefresh = useCallback(() => {
     setIsRefreshing(true);
     setTimeout(() => {
@@ -219,9 +223,13 @@ export const CupertinoSpinnerAsCustomSpinner: React.FC = () => {
 
   const customSpinner = useMemo(() => {
     return (
-      <CupertinoSpinner progress={progress} pullToRefreshState={pullToRefreshState} />
+      <CupertinoSpinner
+        progress={progress}
+        isRefreshing={isRefreshing}
+        isTriggerReady={isTriggerReady}
+      />
     );
-  }, [pullToRefreshState, isRefreshing, progress]);
+  }, [pullToRefreshState, progress, isRefreshing, isTriggerReady]);
 
   return (
     <>

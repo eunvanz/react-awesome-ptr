@@ -170,6 +170,74 @@ export const ArtificialBounce = () => {
 };
 ```
 
+## [CupertinoSpinner as Custom spinner](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--cupertino-spinner-as-custom-spinner&args=&viewMode=story)
+
+[<img src="https://user-images.githubusercontent.com/17351661/145702945-508c1434-6c3c-4406-9b80-138f7c55d3be.png" width="200" />](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--cupertino-spinner-as-custom-spinner&args=&viewMode=story)
+
+```typescript
+import PullToRefresh from "react-awesome-ptr";
+import "react-awesome-ptr/dist/index.css";
+
+export const CupertinoSpinnerAsCustomSpinner = () => {
+  const targetRef = useRef<HTMLDivElement>(null);
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const [progress, setProgress] = useState(0);
+  const [pullToRefreshState, setPullToRefreshState] = useState<PullToRefreshState>(
+    "idle",
+  );
+
+  const isTriggerReady = useMemo(() => {
+    return pullToRefreshState === "triggerReady";
+  }, [pullToRefreshState]);
+
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true);
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 3000);
+  }, []);
+
+  const onPull = useCallback((progress: number) => {
+    setProgress(progress);
+  }, []);
+
+  const onChangeState = useCallback((state: PullToRefreshState) => {
+    setPullToRefreshState(state);
+  }, []);
+
+  const customSpinner = useMemo(() => {
+    return (
+      <CupertinoSpinner
+        progress={progress}
+        isRefreshing={isRefreshing}
+        isTriggerReady={isTriggerReady}
+      />
+    );
+  }, [pullToRefreshState, progress, isRefreshing, isTriggerReady]);
+
+  return (
+    <>
+      <PullToRefresh
+        targetRef={targetRef}
+        onRefresh={onRefresh}
+        isRefreshing={isRefreshing}
+        onPull={onPull}
+        onChangeState={onChangeState}
+        customSpinner={customSpinner}
+        hasDefaultPullToRefreshPossibly
+        isOpacityChangeOnPullDisabled
+        isRotationSpinnerOnPullDisabled
+      />
+      <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
+        <p>Pull in a mobile browser (CupertinoSpinner as custom spinner)</p>
+      </div>
+    </>
+  );
+};
+```
+
 ## [Custom spinner](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--custom-spinner&args=&viewMode=story)
 
 [<img src="https://user-images.githubusercontent.com/17351661/134729756-1b8a1d5d-66e1-414e-b14c-0283a5bd027a.png" width="200" />](https://eunvanz.github.io/react-awesome-ptr/iframe.html?id=pulltorefresh--custom-spinner&args=&viewMode=story)

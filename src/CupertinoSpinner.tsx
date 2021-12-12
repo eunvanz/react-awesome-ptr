@@ -1,5 +1,4 @@
 import { forwardRef, useMemo } from "react";
-import { PullToRefreshState } from ".";
 import cx from "classnames";
 import "./CupertinoSpinner.scss";
 
@@ -7,7 +6,8 @@ export interface CupertinoSpinnerProps
   extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   isDarkMode?: boolean;
   progress: number;
-  pullToRefreshState: PullToRefreshState;
+  isRefreshing: boolean;
+  isTriggerReady: boolean;
 }
 
 const STEP_COUNT = 8;
@@ -15,7 +15,14 @@ const STROKE_WIDTH = 12;
 
 const CupertinoSpinner = forwardRef<HTMLImageElement, CupertinoSpinnerProps>(
   (
-    { style, className, isDarkMode, progress, pullToRefreshState }: CupertinoSpinnerProps,
+    {
+      style,
+      className,
+      isDarkMode,
+      progress,
+      isRefreshing,
+      isTriggerReady,
+    }: CupertinoSpinnerProps,
     ref,
   ) => {
     const stepUnit = useMemo(() => {
@@ -30,8 +37,8 @@ const CupertinoSpinner = forwardRef<HTMLImageElement, CupertinoSpinnerProps>(
       <div className="rap-cupertino-spinner" style={style}>
         <div
           className={cx(className, {
-            spin: pullToRefreshState === "refreshing",
-            bump: pullToRefreshState === "triggerReady",
+            spin: isRefreshing,
+            bump: isTriggerReady,
           })}
           ref={ref}
         >
@@ -44,9 +51,8 @@ const CupertinoSpinner = forwardRef<HTMLImageElement, CupertinoSpinnerProps>(
             <g strokeLinecap="round" strokeWidth={STROKE_WIDTH} opacity="0.8">
               <path id="a" d="m0 20 0,18" />
               {Array.from({ length: STEP_COUNT }).map((_, index) => {
-                const isSpinning = pullToRefreshState === "refreshing";
                 let opacity = 100;
-                if (!isSpinning) {
+                if (!isRefreshing) {
                   let revisedStepUnit = 0;
                   let initAngle = 0;
                   let exitAngle = 0;
