@@ -42,6 +42,8 @@ export interface CommonPullToRefreshProps
   isDarkMode?: boolean;
   spinnerZIndex?: number;
   isDisabled?: boolean;
+  isOpacityChangeOnPullDisabled?: boolean;
+  isRotationSpinnerOnPullDisabled?: boolean;
 }
 
 const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
@@ -68,6 +70,8 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
   isDarkMode,
   spinnerZIndex,
   isDisabled,
+  isOpacityChangeOnPullDisabled,
+  isRotationSpinnerOnPullDisabled,
   ...restProps
 }: CommonPullToRefreshProps) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -216,27 +220,37 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
             onChangeState?.("pulling");
             stateRef.current = "pulling";
           }
-          $wrapper.style.opacity = `${height / triggerHeight}`;
+          if (!isOpacityChangeOnPullDisabled) {
+            $wrapper.style.opacity = `${height / triggerHeight}`;
+          }
           if ($spinner) {
-            const rotate = `rotate(${(height / triggerHeight) * SPINNER_SPIN_DEGREE}deg)`;
-            $spinner.style.webkitTransform = rotate;
-            $spinner.style.transform = rotate;
+            if (!isRotationSpinnerOnPullDisabled) {
+              const rotate = `rotate(${
+                (height / triggerHeight) * SPINNER_SPIN_DEGREE
+              }deg)`;
+              $spinner.style.webkitTransform = rotate;
+              $spinner.style.transform = rotate;
+            }
             if ($spinner.classList.contains("bump")) {
               $spinner.classList.remove("bump");
             }
           }
         } else {
           onPull?.(1);
-          $wrapper.style.opacity = "1";
+          if (!isOpacityChangeOnPullDisabled) {
+            $wrapper.style.opacity = "1";
+          }
           setShouldRefresh(true);
           if (stateRef.current !== "triggerReady") {
             onChangeState?.("triggerReady");
             stateRef.current = "triggerReady";
           }
           if ($spinner) {
-            const rotate = `rotate(${SPINNER_SPIN_DEGREE}deg)`;
-            $spinner.style.webkitTransform = rotate;
-            $spinner.style.transform = rotate;
+            if (!isRotationSpinnerOnPullDisabled) {
+              const rotate = `rotate(${SPINNER_SPIN_DEGREE}deg)`;
+              $spinner.style.webkitTransform = rotate;
+              $spinner.style.transform = rotate;
+            }
             $spinner.classList.add("bump");
           }
         }
