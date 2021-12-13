@@ -1,3 +1,7 @@
+# 1.0.51 (2021-12-14)
+
+- enhance `CupertinoSpinner`
+
 # 1.0.50 (2021-12-13)
 
 - fix README
