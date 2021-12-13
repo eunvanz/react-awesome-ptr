@@ -8,6 +8,7 @@ export interface CupertinoSpinnerProps
   progress: number;
   isRefreshing: boolean;
   isTriggerReady: boolean;
+  isComplete: boolean;
 }
 
 const STEP_COUNT = 8;
@@ -22,16 +23,21 @@ const CupertinoSpinner = forwardRef<HTMLImageElement, CupertinoSpinnerProps>(
       progress,
       isRefreshing,
       isTriggerReady,
+      isComplete,
     }: CupertinoSpinnerProps,
     ref,
   ) => {
+    const revisedProgress = useMemo(() => {
+      return isComplete ? 1 : progress;
+    }, [isComplete, progress]);
+
     const stepUnit = useMemo(() => {
       return 360 / STEP_COUNT;
     }, []);
 
     const progressAngle = useMemo(() => {
-      return progress * 360;
-    }, [progress]);
+      return revisedProgress * 360;
+    }, [revisedProgress]);
 
     return (
       <div className="rap-cupertino-spinner" style={style}>
@@ -39,6 +45,7 @@ const CupertinoSpinner = forwardRef<HTMLImageElement, CupertinoSpinnerProps>(
           className={cx(className, {
             spin: isRefreshing,
             bump: isTriggerReady,
+            complete: isComplete,
           })}
           ref={ref}
         >

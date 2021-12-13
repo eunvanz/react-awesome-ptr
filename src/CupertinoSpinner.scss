@@ -7,6 +7,9 @@
   .spin > svg {
     animation: spin 1.5s infinite linear;
   }
+  .complete > svg {
+    animation: shrink 200ms 1;
+  }
   @keyframes spin {
     from {
       transform: rotate(0deg);
@@ -21,6 +24,14 @@
     }
     to {
       transform: scale(1);
+    }
+  }
+  @keyframes shrink {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(180deg) scale(0);
     }
   }
 }
