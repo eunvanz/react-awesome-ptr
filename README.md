@@ -27,7 +27,7 @@
 
 #### CupertinoSpinner example
 
-![<img src="https://user-images.githubusercontent.com/17351661/145703344-7d925df3-8283-4fe9-be61-9808179a404b.gif" width="300" />](https://user-images.githubusercontent.com/17351661/145703344-7d925df3-8283-4fe9-be61-9808179a404b.gif)
+![<img src="https://user-images.githubusercontent.com/17351661/145903534-bb3397b8-73a1-4342-9ff1-6b8d57536a70.gif" width="300" />](https://user-images.githubusercontent.com/17351661/145903534-bb3397b8-73a1-4342-9ff1-6b8d57536a70.gif)
 
 # Usage
 
