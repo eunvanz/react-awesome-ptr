@@ -1,3 +1,7 @@
+# 1.0.50 (2021-12-13)
+
+- fix README
+
 # 1.0.49 (2021-12-12)
 
 - tune `CupertinoSpinner` component
