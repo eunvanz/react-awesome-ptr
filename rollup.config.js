@@ -50,6 +50,6 @@ export default [
       svgr(),
       terser(),
     ],
-    external: [/@babel\/runtime/],
+    external: [/@babel\/runtime/, "classnames"],
   },
 ];
