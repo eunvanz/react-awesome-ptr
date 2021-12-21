@@ -1,7 +1,7 @@
 /* global process */
 
 import pkg from "./package.json";
-import babel from "@rollup/plugin-babel";
+import babel from "rollup-plugin-babel";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import postcss from "rollup-plugin-postcss";
 import resolve from "@rollup/plugin-node-resolve";
@@ -36,20 +36,20 @@ export default [
         sourceMap: true,
         use: ["sass"],
       }),
-      babel({
-        extensions,
-        include: "src/**/*",
-        babelHelpers: "runtime",
-      }),
-      peerDepsExternal(),
       resolve({ extensions }),
       commonjs({
         include: /node_modules/,
       }),
+      babel({
+        extensions,
+        include: "src/**/*",
+        runtimeHelpers: true,
+      }),
+      peerDepsExternal(),
       url(),
       svgr(),
       terser(),
     ],
-    external: [/@babel\/runtime/, "classnames"],
+    external: [...Object.keys(pkg.dependencies)],
   },
 ];

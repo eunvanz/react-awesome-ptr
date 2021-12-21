@@ -1,6 +1,5 @@
 {
   "presets": [
     ["react-app", { "flow": false, "typescript": true, "runtime": "automatic" }]
-  ],
-  "plugins": ["@babel/plugin-transform-runtime"]
+  ]
 }
