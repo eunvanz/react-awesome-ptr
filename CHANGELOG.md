@@ -1,4 +1,4 @@
-# 1.0.52 (2021-12-22)
+# 1.0.53 (2021-12-22)
 
 - reduce bundle size by adding `@babel/runtime` as a dependency
 
