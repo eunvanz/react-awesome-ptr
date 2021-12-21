@@ -1,3 +1,7 @@
+# 1.0.52 (2021-12-22)
+
+- reduce bundle size by adding `@babel/runtime` as a dependency
+
 # 1.0.51 (2021-12-14)
 
 - enhance `CupertinoSpinner`
