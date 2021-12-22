@@ -1,3 +1,7 @@
+# 1.0.55 (2021-12-22)
+
+- remove dependencies
+
 # 1.0.54 (2021-12-22)
 
 - remove `@babel/runtime` from dependency
