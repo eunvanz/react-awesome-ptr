@@ -1,3 +1,7 @@
+# 1.0.56 (2021-12-23)
+
+- migrate to `@rollup/plugin-babel`
+
 # 1.0.55 (2021-12-22)
 
 - remove dependencies
