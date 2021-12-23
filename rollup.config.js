@@ -1,7 +1,7 @@
 /* global process */
 
 import pkg from "./package.json";
-import babel from "rollup-plugin-babel";
+import babel from "@rollup/plugin-babel";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import postcss from "rollup-plugin-postcss";
 import resolve from "@rollup/plugin-node-resolve";
@@ -11,8 +11,6 @@ import svgr from "@svgr/rollup";
 import url from "rollup-plugin-url";
 
 const extensions = [".js", ".jsx", ".ts", ".tsx", ".scss"];
-
-process.env.BABEL_ENV = "production";
 
 export default [
   {
@@ -43,13 +41,13 @@ export default [
       babel({
         extensions,
         include: "src/**/*",
-        runtimeHelpers: true,
+        babelHelpers: "runtime",
       }),
       peerDepsExternal(),
       url(),
       svgr(),
       terser(),
     ],
-    external: [...Object.keys(pkg.dependencies)],
+    external: [...Object.keys(pkg.dependencies), /@babel\/runtime/],
   },
 ];
