@@ -237,6 +237,7 @@ export const CupertinoSpinnerAsCustomSpinner = () => {
         hasDefaultPullToRefreshPossibly
         isOpacityChangeOnPullDisabled
         isRotationSpinnerOnPullDisabled
+        completeDelay={200}
       />
       <div style={{ height: "100vh", background: "pink", padding: 20 }} ref={targetRef}>
         <p>Pull in a mobile browser (CupertinoSpinner as custom spinner)</p>
