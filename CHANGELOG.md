@@ -1,3 +1,8 @@
+# 1.0.57 (2021-12-28)
+
+- not minify build result
+- improve `CupertinoSpinner` and example
+
 # 1.0.56 (2021-12-23)
 
 - migrate to `@rollup/plugin-babel`
