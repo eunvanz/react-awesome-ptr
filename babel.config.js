@@ -1,5 +1,3 @@
-console.log(process.env.BABEL_ENV);
-
 module.exports = {
   presets: [
     "@babel/preset-env",

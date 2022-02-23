@@ -76,7 +76,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
 }: CommonPullToRefreshProps) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const spinnerRef = useRef<HTMLImageElement | null>(null);
-  const touchStartRef = useRef<number>(0);
+  const touchStartRef = useRef<number | null>(null);
   const isDisabledRef = useRef<boolean>(false);
   const isRefreshingRef = useRef<boolean>(false);
   const touchStartFuncRef = useRef<(e: TouchEvent) => void>(() => undefined);
@@ -126,6 +126,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
       } else {
         $target.style.transform = "translateY(0px)";
         $target.style.transition = DEFAULT_TARGET_MARGIN_TRANSITION;
+        touchStartRef.current = null;
       }
       targetTimerRef.current = window.setTimeout(() => {
         $target.style.transition = isBounceSupported
@@ -272,8 +273,8 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
 
   const handleOnTouchMove = useCallback(
     (e) => {
+      const $target = targetRef.current;
       if (isBounceSupported) {
-        const $target = targetRef.current;
         if ($target) {
           const height = $target.getClientRects()[0].top - originTop;
           if (height <= 0 || isNaN(height)) {
@@ -281,21 +282,29 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
           }
           showSpinner(height);
         }
-      } else {
-        const height = e.touches[0].clientY - touchStartRef.current;
-        if (height <= 0 || isNaN(height)) {
-          return;
+      } else if ($target) {
+        if (touchStartRef.current !== null) {
+          const height = e.touches[0].clientY - touchStartRef.current;
+          if (height <= 0 || isNaN(height)) {
+            return;
+          }
+          const poweredHeight = Math.pow(height, tension);
+          showSpinner(poweredHeight);
         }
-        const poweredHeight = Math.pow(height, tension);
-        showSpinner(poweredHeight);
       }
     },
     [showSpinner, tension, isBounceSupported, originTop, targetRef],
   );
 
-  const setTouchStart = useCallback((e: TouchEvent) => {
-    touchStartRef.current = e.touches[0].clientY;
-  }, []);
+  const setTouchStart = useCallback(
+    (e: TouchEvent) => {
+      const $target = targetRef.current;
+      if ($target && $target.getClientRects()[0].top >= originTop) {
+        touchStartRef.current = e.touches[0].clientY;
+      }
+    },
+    [originTop, targetRef],
+  );
 
   useEffect(() => {
     if (!isBounceSupported) {
