@@ -1,3 +1,7 @@
+# 1.0.58 (2022-02-23)
+
+- fix bug in android
+
 # 1.0.57 (2021-12-28)
 
 - not minify build result
