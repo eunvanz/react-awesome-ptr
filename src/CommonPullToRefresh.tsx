@@ -109,9 +109,9 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
       if (!isOpacityChangeOnPullDisabled) {
         $wrapper.style.opacity = "0";
       }
-      isRefreshingRef.current = isRefreshing;
       pullToRefreshTimerRef.current = window.setTimeout(() => {
         $wrapper.classList.remove("transition-enabled");
+        isRefreshingRef.current = isRefreshing;
         if (stateRef.current !== "idle") {
           onChangeState?.("idle");
           stateRef.current = "idle";
