@@ -1,3 +1,7 @@
+# 1.0.59 (2022-03-02)
+
+- improve UX a little bit
+
 # 1.0.58 (2022-02-23)
 
 - fix bug in android
