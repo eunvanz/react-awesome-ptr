@@ -1,3 +1,7 @@
+# 1.0.60 (2022-03-02)
+
+- roll back to 1.0.58
+
 # 1.0.59 (2022-03-02)
 
 - improve UX a little bit
