@@ -316,7 +316,7 @@ const CommonPullToRefresh: React.FC<CommonPullToRefreshProps> = ({
     }
     touchMoveFuncRef.current = (e) => {
       if (!isBounceSupported && stateRef.current !== "idle") {
-        e.preventDefault();
+        e.cancelable && e.preventDefault();
       }
       requestAnimationFrame(() => {
         checkConditionAndRun(() => handleOnTouchMove(e));
