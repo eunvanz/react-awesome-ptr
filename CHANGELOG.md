@@ -1,6 +1,10 @@
+# 1.0.63 (2022-04-06)
+
+- fix issue [#4](https://github.com/eunvanz/react-awesome-ptr/issues/4)
+
 # 1.0.62 (2022-04-06)
 
-- fix issue [#2](https://github.com/eunvanz/react-awesome-ptr/issues/2)
+- fix issue [#3](https://github.com/eunvanz/react-awesome-ptr/issues/3)
 
 # 1.0.61 (2022-04-04)
 
