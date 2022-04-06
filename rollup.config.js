@@ -8,6 +8,7 @@ import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import svgr from "@svgr/rollup";
 import url from "rollup-plugin-url";
+import copy from "rollup-plugin-copy";
 
 const extensions = [".js", ".jsx", ".ts", ".tsx", ".scss"];
 
@@ -45,6 +46,14 @@ export default [
       peerDepsExternal(),
       url(),
       svgr(),
+      copy({
+        targets: [
+          {
+            src: "src/*.scss",
+            dest: "dist",
+          },
+        ],
+      }),
     ],
     external: [...Object.keys(pkg.dependencies), /@babel\/runtime/],
   },
